@@ -39,3 +39,19 @@ options:
   -c CUSTOM_ARGS, --custom-args CUSTOM_ARGS
                         Custom arguments to pass to nmap
 ```
+
+
+# Offline report generator (tooling/reporting)
+
+The [reporting starter](tooling/reporting/README.md) converts synthetic normalized finding JSON into editable Markdown, optional PDF, and a provenance hash manifest. It supplements the Nmap scan exports with structured observations, business impact, remediation, retest steps, and explicit candidate/review status.
+
+It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.1.1 accepts synthetic inputs only; actual-script adapters and approved client-data handling remain future work. Existing scanner/configuration tools and their installation remain unchanged.
+
+Requires Python 3.10+; PDF additionally uses the dependency declared in tooling/reporting/requirements.txt. See the module README for optional PDF installation, full input contract, and rendering QA.
+
+```sh
+python3 tooling/reporting/reportgen.py tooling/reporting/examples/report.json --output-dir output/report-demo
+python3 -m unittest discover -s tooling/reporting/tests -v
+```
+
+Use a new output directory for every export. Generated reports and engagement evidence belong outside public source control.
