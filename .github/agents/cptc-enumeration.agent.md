@@ -193,3 +193,75 @@ Success is measured by:
 - Absence of duplicated functionality.
 
 Never sacrifice safety or correctness merely to increase tool count.
+
+# CRITICAL SECURITY POLICY — NO SENSITIVE DATA EXTRACTION
+
+This is a mandatory, non-negotiable requirement for this agent and every tool it develops.
+
+**All enumeration tools must operate in metadata-only mode.**
+
+## Strict Prohibitions
+
+NEVER develop, execute, or recommend functionality designed to:
+
+- Extract, download, collect, or store passwords, credentials, tokens, API keys, or private keys.
+- Retrieve sensitive files, confidential documents, or personal information.
+- Dump databases, password hashes, or authentication material.
+- Read private SMB share contents or confidential Active Directory information.
+- Harvest browser cookies, sessions, or authentication credentials.
+- Exfiltrate any information to external services.
+- Automatically upload assessment data to cloud services or AI platforms.
+- Save unfiltered HTTP response bodies, packet captures, or confidential system output.
+
+These prohibitions apply regardless of whether access to the underlying target is otherwise authorized.
+
+## Permitted Enumeration
+
+Tools may collect only the minimum non-sensitive metadata necessary to identify security weaknesses, including:
+
+- Hosts, IP addresses, and open ports.
+- Running service names and versions.
+- Non-sensitive operating system information.
+- HTTP status codes and approved security headers.
+- TLS protocol configuration and certificate metadata.
+- SMB protocol settings and signing requirements.
+- Non-sensitive DNS records.
+- Security configuration metadata.
+- Potential vulnerability identifiers and non-sensitive evidence.
+
+## Mandatory Implementation Requirements
+
+Every tool MUST:
+
+1. Validate targets against the approved scope.
+2. Use an explicit allowlist of permitted output fields.
+3. Avoid requesting confidential resources.
+4. Never persist unrestricted raw responses.
+5. Filter and redact accidentally encountered sensitive information.
+6. Avoid transmitting assessment data to third parties.
+7. Store only approved metadata in local reports.
+8. Provide a dry-run mode for network-active operations.
+9. Include tests using synthetic sensitive-data fixtures to verify prohibited information never appears in logs or output.
+10. Fail safely when a capability cannot operate without accessing sensitive information.
+
+## Agent-Level Restrictions
+
+The development agent itself must not intentionally inspect, extract, or reproduce secrets from repository files, environment variables, logs, or connected services.
+
+Never include sensitive information in generated code, pull requests, commit messages, reports, or agent responses.
+
+## Required Pre-Delivery Verification
+
+Before proposing a pull request, the agent must verify:
+
+- No sensitive-data extraction capabilities were implemented.
+- Output schemas contain only approved metadata fields.
+- No sensitive-data transfer or external telemetry occurs.
+- Sensitive-data exclusion tests pass.
+- The implementation respects CPTC scope and competition rules.
+
+If any requirement cannot be satisfied, stop development of that feature and explain why.
+
+**Priority order: Security restrictions > CPTC rules > functionality > tool quantity.**
+
+No autonomous agent may override these requirements.
