@@ -1,5 +1,5 @@
 # cptc-tools
-CPTC Globals tooling for C3T. This repo will be set to read only and a request will be submitted NLT Friday December 29, 2023 IOT comply with the CPTC Globals rules
+CPTC Globals tooling for C3T.
 
 From CPTC ROE:
 "The Operations Team must be provided a request for access to or the creation of a repository for
