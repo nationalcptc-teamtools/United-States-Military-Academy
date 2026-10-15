@@ -51,7 +51,7 @@ Keep exclusions in a separate file:
 
 The [reporting starter](tooling/reporting/README.md) converts synthetic normalized finding JSON into editable Markdown, optional PDF, and a provenance hash manifest. It supplements the Nmap scan exports with structured observations, business impact, remediation, retest steps, and explicit candidate/review status.
 
-It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.3.0 accepts synthetic inputs only, with a cover, contents, numbered sections and evidence/review appendices. Schemas 1.0/1.1 remain supported; schema 1.2 adds structured ORCON/PROPIN/PII/PII Red/FI inheritance and combined markings on every PDF page. Business severity remains supplied, with no severity matrix configured. Existing scanner/configuration tools and their installation remain unchanged.
+It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.3.1 accepts synthetic inputs only, with a cover, contents, numbered sections and evidence/review appendices. Schemas 1.0/1.1 remain supported; schema 1.2 adds structured ORCON/PROPIN/PII/PII Red/FI inheritance and combined markings on every PDF page. Business severity remains supplied, with no severity matrix configured. Existing scanner/configuration tools and their installation remain unchanged.
 
 The [intake design](tooling/reporting/design.md) maps forty proposed farm-toolkit candidates and Nmap XML to future native adapters, helper output contracts or held/reference-only routes. Direct tool imports and approved client-data handling remain future work; current commands accept completed report JSON.
 
@@ -205,6 +205,18 @@ Verbose command logs are intentionally complete and can grow large during deep s
 5. Preserve the complete run directory when handing evidence to the reporting team.
 
 Enumeration output can contain sensitive network and domain data. Generated results and downloaded tool directories are excluded by `.gitignore`.
+
+## Development workbench
+
+The [offline workbench](tooling/workbench/README.md) provides one place to find cataloged tools, compare prerequisites and holds, record capability requests, create tool starters, and manage synthetic preparation records. It reuses the farm catalog and existing report schemas, with human finding review, immutable Markdown/PDF snapshots and separate tool/import/render outcomes.
+
+```sh
+python3 tooling/workbench/workbench.py search modbus --protocol modbus
+python3 tooling/workbench/workbench.py choose "analyze existing capture"
+python3 tooling/workbench/workbench.py --help
+```
+
+Requires Python 3.10+; PDF uses the existing reporting dependency. See [scope and specification](tooling/workbench/SPEC.md), [contracts](tooling/workbench/CONTRACTS.md), [verification and review](tooling/workbench/VERIFICATION.md), and [handover guidance](tooling/workbench/HANDOVER.md). The workbench accepts synthetic preparation data only. Plans are previews/manual records; only a fixed synthetic worker is supervised. Native scanner output remains unsupported. Neutral JSON/Markdown exports support manual cloud handoff; no local AI, correction service, API or automatic transfer is included. Actual tool, client, host and event approval remains separate.
 
 ## Legacy tools
 

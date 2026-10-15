@@ -14,7 +14,7 @@ from datetime import date, datetime
 from pathlib import Path, PurePosixPath
 from xml.sax.saxutils import escape
 
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 MAX_INPUT_BYTES = 2_000_000
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MARKINGS = ("ORCON", "PROPIN", "PII", "PII Red", "FI")
@@ -331,7 +331,23 @@ def sections(data):
         yield f, parts
 
 
-def document_blocks(data):
+def validate_appendix(blocks):
+    """Optional local API, not a new report input schema or scanner adapter."""
+    require(isinstance(blocks, (list, tuple)) and len(blocks) <= 200, "appendix", "invalid block count")
+    for block in blocks:
+        require(isinstance(block, (list, tuple)) and len(block) == 2, "appendix", "invalid block")
+        kind, value = block
+        require(kind in ("heading", "paragraph"), "appendix", "unsupported block kind")
+        if kind == "heading":
+            require(isinstance(value, (list, tuple)) and len(value) == 2
+                    and value[0] in (2, 3), "appendix", "invalid heading")
+            text(value[1], "appendix.heading", 180, True)
+        else:
+            text(value, "appendix.paragraph", 10000)
+    return blocks
+
+
+def document_blocks(data, appendix_blocks=()):
     """One ordered content view for both outputs; no source narrative is inferred."""
     e = data["engagement"]
     yield "heading", (1, CHAPTERS[0])
@@ -402,9 +418,10 @@ def document_blocks(data):
     yield "paragraph", ("Evidence files are referenced, never opened. Supplied hashes do not verify "
                         "the observations; the manifest identifies the input and output files.")
     yield "paragraph", f"Generator {VERSION} | Input schema {data['schema_version']}"
+    yield from validate_appendix(appendix_blocks)
 
 
-def render_markdown(data, release=False):
+def render_markdown(data, release=False, appendix_blocks=()):
     e = data["engagement"]
     label = "REVIEWED TRAINING COPY" if release else "DRAFT"
     lines = ["# Penetration Testing Report", "", f"**{label} | SYNTHETIC DATA**", "",
@@ -418,7 +435,7 @@ def render_markdown(data, release=False):
         anchor = chapter.lower().replace(" ", "-")
         lines.append(f"- [{chapter}](#{anchor})")
     lines.append("")
-    for kind, value in document_blocks(data):
+    for kind, value in document_blocks(data, appendix_blocks):
         if kind == "heading":
             level, title = value
             lines += ["#" * (level + 1) + " " + md(title), ""]
@@ -442,12 +459,12 @@ def all_strings(value):
     elif isinstance(value, dict):
         for item in value.values():
             yield from all_strings(item)
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for item in value:
             yield from all_strings(item)
 
 
-def render_pdf(data, destination, release=False):
+def render_pdf(data, destination, release=False, appendix_blocks=()):
     try:
         from reportlab.lib import colors
         from reportlab.lib.enums import TA_LEFT
@@ -477,7 +494,7 @@ def render_pdf(data, destination, release=False):
             glyphs = set(pdfmetrics.getFont(normal).face.charToGlyph) & set(
                 pdfmetrics.getFont(bold).face.charToGlyph)
             break
-    require(all(ord(char) in glyphs or char == "\n" for s in all_strings(data) for char in s),
+    require(all(ord(char) in glyphs or char == "\n" for s in all_strings([data, validate_appendix(appendix_blocks)]) for char in s),
             "PDF", "input contains glyphs unavailable in the installed fonts; use Markdown or approved fonts")
     navy, ink, muted = colors.HexColor("#17365D"), colors.HexColor("#222222"), colors.HexColor("#526575")
     body = ParagraphStyle("Body", fontName=normal, fontSize=10.5, leading=14.5, textColor=ink,
@@ -541,7 +558,7 @@ def render_pdf(data, destination, release=False):
     toc.dotsMinLevel = 0
     story.append(toc)
     first_finding = True
-    for kind, value in document_blocks(data):
+    for kind, value in document_blocks(data, appendix_blocks):
         if kind == "heading":
             level, title = value
             if level == 1:
@@ -603,8 +620,22 @@ def sha256(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def generate(raw, output_dir, pdf=False, release=False):
+def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appendix_markings=None):
     data = validate(load(raw), release)
+    validate_appendix(appendix_blocks)
+    appendix_raw = None
+    if appendix_blocks:
+        require(appendix_markings is not None, "appendix", "explicit inherited markings required")
+        validate_markings(appendix_markings, "appendix.markings")
+        require("ORCON" in appendix_markings, "appendix.markings", "ORCON baseline required")
+        inherited = set(handling(data)["report"].split("//")) | set(appendix_markings)
+        if "PII Red" in inherited:
+            inherited.discard("PII")
+        data["schema_version"] = "1.2"
+        data["markings"] = [tag for tag in MARKINGS if tag in inherited]
+        validate(data, release)
+        appendix_raw = json.dumps({"blocks": appendix_blocks, "markings": appendix_markings},
+                                  ensure_ascii=False, sort_keys=True).encode("utf-8")
     output_dir = Path(output_dir).resolve()
     require(not any(output_dir == blocked or blocked in output_dir.parents
                     for blocked in (ROOT / "sources", ROOT / "tooling")),
@@ -613,9 +644,9 @@ def generate(raw, output_dir, pdf=False, release=False):
     output_dir.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".report-staging-", dir=output_dir.parent) as staging:
         stage = Path(staging)
-        (stage / "report.md").write_text(render_markdown(data, release), encoding="utf-8")
+        (stage / "report.md").write_text(render_markdown(data, release, appendix_blocks), encoding="utf-8")
         if pdf:
-            render_pdf(data, stage / "report.pdf", release)
+            render_pdf(data, stage / "report.pdf", release, appendix_blocks)
         artifact_hashes = {p.name: sha256(p.read_bytes()) for p in sorted(stage.iterdir())}
         manifest = {
             "generator_version": VERSION, "schema_version": data["schema_version"],
@@ -626,6 +657,10 @@ def generate(raw, output_dir, pdf=False, release=False):
             "marking_policy": MARKING_POLICY, "effective_markings": handling(data)["report"],
             "classification_inheritance": handling(data)["status"],
         }
+        if appendix_raw is not None:
+            manifest["appendix_sha256"] = sha256(appendix_raw)
+            manifest["source_schema_version"] = load(raw)["schema_version"]
+            manifest["appendix_api"] = "cptc.appendix/1.0"
         (stage / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         # Refuse a destination that appeared while rendering; never intentionally overwrite it.
         require(not output_dir.exists(), "destination", "appeared during generation; choose a new directory")
