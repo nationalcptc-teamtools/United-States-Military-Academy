@@ -1,0 +1,99 @@
+{
+  "files": {
+    "tooling/farmkit/CATALOG.md": {
+      "sha256": "f33c914c83f259b529f25e27465b5d229e316d9251075739781cc4571b8881b5",
+      "size": 47261
+    },
+    "tooling/farmkit/INSTALL.md": {
+      "sha256": "888a0d06dc3a52372de8c2b710d96cdb26754e5f11e9e59e912bceec502afc52",
+      "size": 8980
+    },
+    "tooling/farmkit/LICENSE": {
+      "sha256": "f3c61795d4d34ed7a587839ec0c733766981a1464d654e179db56a48a0781c5d",
+      "size": 1079
+    },
+    "tooling/farmkit/NOTICES.md": {
+      "sha256": "c8f053ee175dcbe41dd412ab08027a74765520e7e6f1775020ed930df13ef35f",
+      "size": 2830
+    },
+    "tooling/farmkit/README.md": {
+      "sha256": "957e41b270e1a27043a08e5f0fce4f6d2275c8daaed414ded88eb26178313e48",
+      "size": 10164
+    },
+    "tooling/farmkit/RUNBOOKS.md": {
+      "sha256": "c60d8593b271869466bb4736c350a1758d5162eb69c778f3889b804c1ff112c2",
+      "size": 13278
+    },
+    "tooling/farmkit/VERIFICATION.md": {
+      "sha256": "0fccf765064d10d2e664e03a191341089d48fcea51bce9650d593c9d236459cb",
+      "size": 6650
+    },
+    "tooling/farmkit/artifact-lock.json": {
+      "sha256": "f8baeefa74259e6feb396abc740936319045c11897ae5bb4285ede4197d006fc",
+      "size": 99
+    },
+    "tooling/farmkit/build.py": {
+      "sha256": "360bffd7c14f41e2d29cc24e7b794befc4012a4ffb6d87af0e41385993c56356",
+      "size": 2871
+    },
+    "tooling/farmkit/catalog.json": {
+      "sha256": "29cd91a9a89283d81a352b3e9474eec8f555c92dc284d8576b0095ecda4e864c",
+      "size": 81440
+    },
+    "tooling/farmkit/design.md": {
+      "sha256": "b2c207c59265fbdb8bdd68c585e0d6db889986530c1906f28718edab6609868a",
+      "size": 7069
+    },
+    "tooling/farmkit/examples/artifacts/fixture.txt": {
+      "sha256": "c204268b7f45d90cd06860e5e5f7b8c599df1033984a97b4cd5fd8ae9beddb92",
+      "size": 63
+    },
+    "tooling/farmkit/examples/run-statuses.json": {
+      "sha256": "0aefb4c3b21b20d44ca76878fb55443d77feef9e9ec55175ac0952ceb537d146",
+      "size": 4290
+    },
+    "tooling/farmkit/examples/synthetic-lock.json": {
+      "sha256": "1fa57e8e80d5c58b49816e8d4b47580ca5fd372e2ac11b7a248ac2733071f3c3",
+      "size": 779
+    },
+    "tooling/farmkit/install-manifest.json": {
+      "sha256": "b7ee1aaf35391ce8468acf28741b3614972287cd4b35a7ee84894aed6f9dfe24",
+      "size": 13364
+    },
+    "tooling/farmkit/install.py": {
+      "sha256": "adc09bc31db62d03ae2b87f0a6988870e1a4d44795a7b0a341cb434cfacf757c",
+      "size": 26614
+    },
+    "tooling/farmkit/kit.py": {
+      "sha256": "597742ea9f5300b0a36a771fa584998905f0fc392c033e90143d3b4888409948",
+      "size": 18874
+    },
+    "tooling/farmkit/proposal.md": {
+      "sha256": "38124ca622ad99d04ca5abedd50fe986b80cfaeba4744ff597d6ed2b8f713961",
+      "size": 4169
+    },
+    "tooling/farmkit/readiness.json": {
+      "sha256": "49db905cef5b69e53a6322b6d401929df95d741e2dca2629da32cba446c1cdec",
+      "size": 4950
+    },
+    "tooling/farmkit/sources.json": {
+      "sha256": "782432db7451d4b5671096e77663de0cd7b5db9a60a983ebcec416056ffe06e3",
+      "size": 8158
+    },
+    "tooling/farmkit/spec.md": {
+      "sha256": "d5652ef45a8fd8d0616ac8bedc3b769faef8916a6c9e3798387027d044117eb7",
+      "size": 12229
+    },
+    "tooling/farmkit/tests/test_install.py": {
+      "sha256": "2afc339955b8b3adfed4c8fea37814a2c79a10cb916073e8578fed5312adddbd",
+      "size": 6925
+    },
+    "tooling/farmkit/tests/test_kit.py": {
+      "sha256": "774b827544b33cbc3ae0d764ae1646238094e0913b833d2350383dfd00b1fc21",
+      "size": 15629
+    }
+  },
+  "kind": "team-authored-preparation-only",
+  "package_version": "1.1.0",
+  "upstream_software_included": false
+}

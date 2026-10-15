@@ -1,0 +1,20 @@
+{
+  "contract_version": "0.1.0",
+  "dependencies": [],
+  "input": "Author must define",
+  "license": "MIT",
+  "name": "synthetic_helper",
+  "options": [
+    "--input",
+    "--version"
+  ],
+  "output": "Author must define",
+  "owner": "Training author",
+  "status_codes": {
+    "0": "completed",
+    "1": "local failure",
+    "2": "invalid input",
+    "3": "pending"
+  },
+  "version": "0.1.0"
+}

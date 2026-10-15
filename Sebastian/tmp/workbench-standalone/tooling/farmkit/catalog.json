@@ -1,0 +1,1885 @@
+{
+  "schema_version": "cptc.farm-catalog/1.0",
+  "checked_at": "2026-10-15",
+  "context": {
+    "platforms": [
+      "Kali/Linux x86-64 (provisional)",
+      "Windows x64 payloads (provisional)"
+    ],
+    "asset_knowledge": "unknown",
+    "scenario_status": "hypotheses"
+  },
+  "tools": [
+    {
+      "id": "TOOL-001",
+      "name": "LinPEAS",
+      "upstream": "https://github.com/peass-ng/PEASS-ng",
+      "priority": "P0",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "Linux host configuration and privilege-path enumeration on authorized servers/gateways",
+      "runtime": "Shell on target; review chosen script variant and external commands",
+      "operations": [
+        "H",
+        "A"
+      ],
+      "outputs": [
+        "text, upstream parsers optional"
+      ],
+      "license": {
+        "summary": "GPL v2-or-later with custom clarifications/exceptions, not a plain GPL-3 label. Review output-parsing/aggregation terms and third-party components.",
+        "evidence": [
+          "https://github.com/peass-ng/PEASS-ng/blob/master/LICENSE"
+        ],
+        "review": "hold"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "linux-host"
+      ],
+      "needs": {
+        "dependencies": "Shell on target; review chosen script variant and external commands",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL v2-or-later with custom clarifications/exceptions, not a plain GPL-3 label. Review output-parsing/aggregation terms and third-party components.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#host-enumeration",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-002",
+      "name": "WinPEAS",
+      "upstream": "https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS",
+      "priority": "P0",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "Windows host/HMI/engineering-station configuration enumeration",
+      "runtime": "Match selected C#/.NET/batch variant and architecture; assess AV/runtime effects",
+      "operations": [
+        "H",
+        "A"
+      ],
+      "outputs": [
+        "text"
+      ],
+      "license": {
+        "summary": "Same PEASS license issue; enumerate potential paths, do not automatically exploit them.",
+        "evidence": [
+          "https://github.com/peass-ng/PEASS-ng/blob/master/LICENSE"
+        ],
+        "review": "hold"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "windows-host"
+      ],
+      "needs": {
+        "dependencies": "Match selected C#/.NET/batch variant and architecture; assess AV/runtime effects",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "Same PEASS license issue; enumerate potential paths, do not automatically exploit them.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#host-enumeration",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-003",
+      "name": "Wireshark / TShark",
+      "upstream": "https://github.com/wireshark/wireshark",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "Inspect supplied captures and identify observed IT/OT conversations",
+      "runtime": "Linux CLI first; GUI optional; capture privileges only for live capture",
+      "operations": [
+        "O",
+        "P"
+      ],
+      "outputs": [
+        "PCAP/PCAPNG, fields/JSON/CSV-style exports"
+      ],
+      "license": {
+        "summary": "GPL-2.0 family; preserve component notices. Dissector coverage is release dependent. Packet capture needs authorized placement and may contain secrets.",
+        "evidence": [
+          "https://github.com/wireshark/wireshark"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "packet-analysis"
+      ],
+      "needs": {
+        "dependencies": "Linux CLI first; GUI optional; capture privileges only for live capture",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0 family; preserve component notices. Dissector coverage is release dependent. Packet capture needs authorized placement and may contain secrets.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#offline-pcap",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-004",
+      "name": "Zeek",
+      "upstream": "https://github.com/zeek/zeek",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Turn captures into connection/protocol metadata and support asset hypotheses",
+      "runtime": "Linux binary/build dependencies; optional protocol packages reviewed separately",
+      "operations": [
+        "O",
+        "P"
+      ],
+      "outputs": [
+        "structured logs"
+      ],
+      "license": {
+        "summary": "BSD-style; plugins have their own provenance. Do not assume complete vendor/OT coverage.",
+        "evidence": [
+          "https://github.com/zeek/zeek/blob/master/COPYING"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "packet-analysis"
+      ],
+      "needs": {
+        "dependencies": "Linux binary/build dependencies; optional protocol packages reviewed separately",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "BSD-style; plugins have their own provenance. Do not assume complete vendor/OT coverage.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#offline-pcap",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-005",
+      "name": "Suricata",
+      "upstream": "https://github.com/OISF/suricata",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Offline protocol/event analysis as an alternative or complement to Zeek",
+      "runtime": "Linux/Rust/C build or distro package; selected config/rules must be acquired separately",
+      "operations": [
+        "O",
+        "P"
+      ],
+      "outputs": [
+        "EVE JSON"
+      ],
+      "license": {
+        "summary": "GPL-2.0 family; rules have separate licenses. Use offline/IDS profile; do not deploy inline IPS in the initial kit.",
+        "evidence": [
+          "https://github.com/OISF/suricata"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "packet-analysis"
+      ],
+      "needs": {
+        "dependencies": "Linux/Rust/C build or distro package; selected config/rules must be acquired separately",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0 family; rules have separate licenses. Use offline/IDS profile; do not deploy inline IPS in the initial kit.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#offline-pcap",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-006",
+      "name": "Scapy",
+      "upstream": "https://github.com/secdev/scapy",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Flexible packet parsing and synthetic protocol fixtures when a full product is unnecessary",
+      "runtime": "Python; selected layers/contrib modules, capture backend if needed",
+      "operations": [
+        "O",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "PCAP and custom structured data"
+      ],
+      "license": {
+        "summary": "GPL-2.0 family. Restrict initial helpers to offline parsing; raw packet generation is a separate reviewed use.",
+        "evidence": [
+          "https://github.com/secdev/scapy"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "packet-analysis"
+      ],
+      "needs": {
+        "dependencies": "Python; selected layers/contrib modules, capture backend if needed",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0 family. Restrict initial helpers to offline parsing; raw packet generation is a separate reviewed use.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#offline-pcap",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-007",
+      "name": "enum4linux-ng",
+      "upstream": "https://github.com/cddmp/enum4linux-ng",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Windows/Samba inventory if business systems or file shares are in scope",
+      "runtime": "Linux/Python plus Samba utilities",
+      "operations": [
+        "A"
+      ],
+      "outputs": [
+        "JSON/YAML/text"
+      ],
+      "license": {
+        "summary": "GPL-3.0. Authentication/enumeration creates traffic; distinguish access denial from absent assets.",
+        "evidence": [
+          "https://github.com/cddmp/enum4linux-ng"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "smb"
+      ],
+      "needs": {
+        "dependencies": "Linux/Python plus Samba utilities",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-3.0. Authentication/enumeration creates traffic; distinguish access denial from absent assets.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#host-enumeration",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-008",
+      "name": "NetExec",
+      "upstream": "https://github.com/Pennyw0rth/NetExec",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Scope-limited Windows/network service assessment and inventory",
+      "runtime": "Linux/Python with isolated dependency environment",
+      "operations": [
+        "A",
+        "H",
+        "W"
+      ],
+      "outputs": [
+        "CLI/module-specific output"
+      ],
+      "license": {
+        "summary": "BSD-2-Clause; modules/dependencies reviewed individually. No spraying, remote execution or bulk modules in default profiles.",
+        "evidence": [
+          "https://github.com/Pennyw0rth/NetExec"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "smb",
+        "ldap"
+      ],
+      "needs": {
+        "dependencies": "Linux/Python with isolated dependency environment",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "BSD-2-Clause; modules/dependencies reviewed individually. No spraying, remote execution or bulk modules in default profiles.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#host-enumeration",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-009",
+      "name": "Impacket",
+      "upstream": "https://github.com/fortra/impacket",
+      "priority": "P1",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "SMB/MSRPC/Kerberos protocol helpers for the IT side of an engagement",
+      "runtime": "Python and isolated dependencies",
+      "operations": [
+        "A",
+        "H",
+        "W"
+      ],
+      "outputs": [
+        "tool-dependent text"
+      ],
+      "license": {
+        "summary": "Slightly modified Apache Software License, per upstream. Do not relabel Apache-2.0; select exact examples and review terms/dependencies.",
+        "evidence": [
+          "https://github.com/fortra/impacket/blob/master/LICENSE"
+        ],
+        "review": "hold"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "smb",
+        "msrpc",
+        "kerberos"
+      ],
+      "needs": {
+        "dependencies": "Python and isolated dependencies",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "Slightly modified Apache Software License, per upstream. Do not relabel Apache-2.0; select exact examples and review terms/dependencies.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#host-enumeration",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-010",
+      "name": "testssl.sh",
+      "upstream": "https://github.com/testssl/testssl.sh",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "TLS configuration review of approved web consoles, remote access or APIs",
+      "runtime": "Linux/Bash and compatible OpenSSL/dependencies",
+      "operations": [
+        "A"
+      ],
+      "outputs": [
+        "text/JSON/CSV"
+      ],
+      "license": {
+        "summary": "GPL-2.0. Many handshakes/probes; choose bounded checks and account for fragile embedded endpoints.",
+        "evidence": [
+          "https://github.com/testssl/testssl.sh"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "tls"
+      ],
+      "needs": {
+        "dependencies": "Linux/Bash and compatible OpenSSL/dependencies",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0. Many handshakes/probes; choose bounded checks and account for fragile embedded endpoints.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-011",
+      "name": "ffuf",
+      "upstream": "https://github.com/ffuf/ffuf",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Limited web content discovery on an explicitly approved portal",
+      "runtime": "Go binary; reviewed wordlist with separate license/provenance",
+      "operations": [
+        "A"
+      ],
+      "outputs": [
+        "JSON/text and other exports"
+      ],
+      "license": {
+        "summary": "MIT. Request generation/fuzzing is not a default OT operation; require explicit endpoint and budget.",
+        "evidence": [
+          "https://github.com/ffuf/ffuf"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "http"
+      ],
+      "needs": {
+        "dependencies": "Go binary; reviewed wordlist with separate license/provenance",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "MIT. Request generation/fuzzing is not a default OT operation; require explicit endpoint and budget.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-012",
+      "name": "Metasploit Framework",
+      "upstream": "https://github.com/rapid7/metasploit-framework",
+      "priority": "P2",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "Known module research and controlled lab reproduction; possible scoped IT checks",
+      "runtime": "Ruby/dependencies; substantial optional footprint",
+      "operations": [
+        "A",
+        "H",
+        "W"
+      ],
+      "outputs": [
+        "module-specific evidence"
+      ],
+      "license": {
+        "summary": "BSD-style core with component terms. Module/source review required; no blanket ICS exploitation profile.",
+        "evidence": [
+          "https://github.com/rapid7/metasploit-framework/blob/master/LICENSE"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "module-specific"
+      ],
+      "needs": {
+        "dependencies": "Ruby/dependencies; substantial optional footprint",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "BSD-style core with component terms. Module/source review required; no blanket ICS exploitation profile.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#host-enumeration",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-013",
+      "name": "PyModbus",
+      "upstream": "https://github.com/pymodbus-dev/pymodbus",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "Modbus TCP/serial clients and synthetic server/simulator; possible pump, meter or environmental controller interfaces",
+      "runtime": "Python; serial/simulator extras optional; pin API and Python versions",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "helper-generated structured results"
+      ],
+      "license": {
+        "summary": "BSD-3-Clause-style terms. Upstream warns of API changes and limited nonstandard-device support. No arbitrary register sweeps.",
+        "evidence": [
+          "https://github.com/pymodbus-dev/pymodbus/blob/dev/LICENSE"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "modbus-tcp",
+        "modbus-rtu"
+      ],
+      "needs": {
+        "dependencies": "Python; serial/simulator extras optional; pin API and Python versions",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "BSD-3-Clause-style terms. Upstream warns of API changes and limited nonstandard-device support. No arbitrary register sweeps.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#modbus",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-014",
+      "name": "mbpoll",
+      "upstream": "https://github.com/epsilonrt/mbpoll",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "Convenient Modbus TCP/RTU command-line checks",
+      "runtime": "Compiled CLI plus selected libmodbus/libmodbuspp version",
+      "operations": [
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "text"
+      ],
+      "license": {
+        "summary": "GPL-3.0. Document selected major branch, finite polling, unit/address/type and no-write invocation. Distinct from proprietary modpoll.",
+        "evidence": [
+          "https://github.com/epsilonrt/mbpoll"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "modbus-tcp",
+        "modbus-rtu"
+      ],
+      "needs": {
+        "dependencies": "Compiled CLI plus selected libmodbus/libmodbuspp version",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-3.0. Document selected major branch, finite polling, unit/address/type and no-write invocation. Distinct from proprietary modpoll.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#modbus",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-015",
+      "name": "libmodbus",
+      "upstream": "https://github.com/stephane/libmodbus",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "C backend/alternative for Modbus TCP and RTU helpers",
+      "runtime": "C build/native library; serial adapter for physical RTU",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "LGPL-2.1-or-later. Useful backend, not another mandatory CLI; avoid duplicate implementations without need.",
+        "evidence": [
+          "https://github.com/stephane/libmodbus"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "modbus-tcp",
+        "modbus-rtu"
+      ],
+      "needs": {
+        "dependencies": "C build/native library; serial adapter for physical RTU",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "LGPL-2.1-or-later. Useful backend, not another mandatory CLI; avoid duplicate implementations without need.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#modbus",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-016",
+      "name": "MinimalModbus",
+      "upstream": "https://github.com/pyhys/minimalmodbus",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Modbus RTU/ASCII instrument access where serial-only needs justify it",
+      "runtime": "Python + pySerial; approved RS-232/485 interface",
+      "operations": [
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "Apache-2.0. Not a Modbus TCP replacement. Wiring, serial settings and physical access are prerequisites.",
+        "evidence": [
+          "https://github.com/pyhys/minimalmodbus"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "modbus-rtu",
+        "modbus-ascii"
+      ],
+      "needs": {
+        "dependencies": "Python + pySerial; approved RS-232/485 interface",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "Apache-2.0. Not a Modbus TCP replacement. Wiring, serial settings and physical access are prerequisites.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#modbus",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-017",
+      "name": "python-snap7",
+      "upstream": "https://github.com/gijzelaerr/python-snap7",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "Siemens S7 communication and controlled simulator/metadata work if relevant",
+      "runtime": "Python; exact release determines native vs pure-Python dependencies",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "helper-defined"
+      ],
+      "license": {
+        "summary": "MIT. Current README describes pure Python and model/access limits; older releases may differ. Do not enable PUT/GET or change controller settings to make a test work.",
+        "evidence": [
+          "https://github.com/gijzelaerr/python-snap7/blob/master/LICENSE"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "s7"
+      ],
+      "needs": {
+        "dependencies": "Python; exact release determines native vs pure-Python dependencies",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "MIT. Current README describes pure Python and model/access limits; older releases may differ. Do not enable PUT/GET or change controller settings to make a test work.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#s7",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-018",
+      "name": "cpppo",
+      "upstream": "https://github.com/pjkundert/cpppo",
+      "priority": "P1",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "EtherNet/IP CIP client/server and synthetic fixtures",
+      "runtime": "Python; selected API/example dependency review",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "text/structured helper results"
+      ],
+      "license": {
+        "summary": "GPL-3 with stated exceptions/alternative terms. Use GPL route consistently; choose bounded identity/read operations, not arbitrary CIP services.",
+        "evidence": [
+          "https://github.com/pjkundert/cpppo/blob/master/LICENSE"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "cip"
+      ],
+      "needs": {
+        "dependencies": "Python; selected API/example dependency review",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-3 with stated exceptions/alternative terms. Use GPL route consistently; choose bounded identity/read operations, not arbitrary CIP services.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#cip",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-019",
+      "name": "pycomm3",
+      "upstream": "https://github.com/ottowayi/pycomm3",
+      "priority": "P2",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "Allen-Bradley/Rockwell-specific EtherNet/IP option",
+      "runtime": "Python; test selected controller family and API",
+      "operations": [
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "MIT. Upstream explicitly says no longer actively developed. Keep as documented fallback; do not default-stage without ownership and compatibility evidence.",
+        "evidence": [
+          "https://github.com/ottowayi/pycomm3"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "inactive",
+        "notes": "Explicit inactive/archived upstream warning; fallback owner needed."
+      },
+      "protocols": [
+        "cip"
+      ],
+      "needs": {
+        "dependencies": "Python; test selected controller family and API",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "MIT. Upstream explicitly says no longer actively developed. Keep as documented fallback; do not default-stage without ownership and compatibility evidence.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#cip",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-020",
+      "name": "asyncua / opcua-asyncio",
+      "upstream": "https://github.com/FreeOpcUa/opcua-asyncio",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "OPC UA client/server, namespace inspection and security-mode evaluation",
+      "runtime": "Python plus cryptography dependencies/certificates",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "CLI or helper output"
+      ],
+      "license": {
+        "summary": "LGPL-3.0. Pin API/runtime; credentials/trust policy and node reads must be approved. Do not use writes, method calls or trust bypass by default.",
+        "evidence": [
+          "https://github.com/FreeOpcUa/opcua-asyncio"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "opcua"
+      ],
+      "needs": {
+        "dependencies": "Python plus cryptography dependencies/certificates",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "LGPL-3.0. Pin API/runtime; credentials/trust policy and node reads must be approved. Do not use writes, method calls or trust bypass by default.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#opc-ua",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-021",
+      "name": "open62541",
+      "upstream": "https://github.com/open62541/open62541",
+      "priority": "P1",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "C OPC UA client/server and controlled fixture alternative",
+      "runtime": "C/CMake; crypto plugins/dependencies selected explicitly",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "MPL-2.0; some examples/plugins CC0. Preserve per-file notices. Prefer one sufficient lab/backend over two mandatory stacks.",
+        "evidence": [
+          "https://github.com/open62541/open62541"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "opcua"
+      ],
+      "needs": {
+        "dependencies": "C/CMake; crypto plugins/dependencies selected explicitly",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "MPL-2.0; some examples/plugins CC0. Preserve per-file notices. Prefer one sufficient lab/backend over two mandatory stacks.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#opc-ua",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-022",
+      "name": "BACpypes3",
+      "upstream": "https://github.com/JoelBender/BACpypes3",
+      "priority": "P2",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "Python BACnet option for possible HVAC/ventilation/cold-room controls",
+      "runtime": "Python/asyncio; no MCP/AI extras needed",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "CLI/helper output"
+      ],
+      "license": {
+        "summary": "pyproject says MIT but classifier says BSD. Resolve exact artifact licensing before staging; disable unrelated MCP/AI integration.",
+        "evidence": [
+          "https://github.com/JoelBender/BACpypes3/blob/main/pyproject.toml"
+        ],
+        "review": "hold"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "bacnet-ip"
+      ],
+      "needs": {
+        "dependencies": "Python/asyncio; no MCP/AI extras needed",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "pyproject says MIT but classifier says BSD. Resolve exact artifact licensing before staging; disable unrelated MCP/AI integration.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#bacnet",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-023",
+      "name": "BACnet Stack",
+      "upstream": "https://github.com/bacnet-stack/bacnet-stack",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "BACnet/IP CLI applications plus synthetic device; MS/TP only if separately supported",
+      "runtime": "C/compiled apps; select datalink and exact utilities",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "CLI output"
+      ],
+      "license": {
+        "summary": "GPL-2.0-or-later WITH GCC-exception-2.0 core; examples include MIT/Apache-2.0. Per-file review required. Bound discovery; default to explicit unicast reads.",
+        "evidence": [
+          "https://github.com/bacnet-stack/bacnet-stack"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "bacnet-ip",
+        "bacnet-mstp"
+      ],
+      "needs": {
+        "dependencies": "C/compiled apps; select datalink and exact utilities",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0-or-later WITH GCC-exception-2.0 core; examples include MIT/Apache-2.0. Per-file review required. Bound discovery; default to explicit unicast reads.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#bacnet",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-024",
+      "name": "Mosquitto clients and broker",
+      "upstream": "https://github.com/eclipse-mosquitto/mosquitto",
+      "priority": "P0",
+      "disposition": "selected",
+      "rationale": "Initial primary-protocol evaluation route; not acquired or runtime accepted.",
+      "purpose": "MQTT subscriber/client checks and synthetic broker for possible farm telemetry",
+      "runtime": "Linux CLI; broker optional; TLS credentials/config separate",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "text/topic payloads"
+      ],
+      "license": {
+        "summary": "EPL-2.0 OR BSD-3-Clause. A subscription sends traffic and can expose retained secrets. No publish/retained changes against a target by default.",
+        "evidence": [
+          "https://github.com/eclipse-mosquitto/mosquitto/blob/master/LICENSE.txt"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "mqtt"
+      ],
+      "needs": {
+        "dependencies": "Linux CLI; broker optional; TLS credentials/config separate",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "EPL-2.0 OR BSD-3-Clause. A subscription sends traffic and can expose retained secrets. No publish/retained changes against a target by default.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#mqtt",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-025",
+      "name": "Eclipse Paho MQTT Python",
+      "upstream": "https://github.com/eclipse-paho/paho.mqtt.python",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Scriptable MQTT alternative when a reviewed structured adapter is useful",
+      "runtime": "Python; pin callback/API version",
+      "operations": [
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "EPL-2.0 / EDL-1.0 dual license. Mosquitto CLI may suffice; do not require both without a concrete use.",
+        "evidence": [
+          "https://github.com/eclipse-paho/paho.mqtt.python/blob/master/LICENSE.txt"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "mqtt"
+      ],
+      "needs": {
+        "dependencies": "Python; pin callback/API version",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "EPL-2.0 / EDL-1.0 dual license. Mosquitto CLI may suffice; do not require both without a concrete use.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#mqtt",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-026",
+      "name": "lib60870",
+      "upstream": "https://github.com/mz-automation/lib60870",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "IEC 60870-5-101/104 lab/client work if energy or remote telemetry is established",
+      "runtime": "C; serial for 101, TCP for 104; optional TLS dependencies",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "GPL-3.0 open-source route; commercial alternative is not selected. Commands/control services require separate approval.",
+        "evidence": [
+          "https://github.com/mz-automation/lib60870"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "iec60870-101",
+        "iec60870-104"
+      ],
+      "needs": {
+        "dependencies": "C; serial for 101, TCP for 104; optional TLS dependencies",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-3.0 open-source route; commercial alternative is not selected. Commands/control services require separate approval.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-027",
+      "name": "libiec61850",
+      "upstream": "https://github.com/mz-automation/libiec61850",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "IEC 61850 MMS/GOOSE analysis/lab possibility for site power systems",
+      "runtime": "C; selected Ethernet/TLS/platform capabilities",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "GPL-3.0 open-source route; review dependencies. No GOOSE injection or protection/control operations in initial profiles.",
+        "evidence": [
+          "https://github.com/mz-automation/libiec61850"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "iec61850"
+      ],
+      "needs": {
+        "dependencies": "C; selected Ethernet/TLS/platform capabilities",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-3.0 open-source route; review dependencies. No GOOSE injection or protection/control operations in initial profiles.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-028",
+      "name": "OpenDNP3",
+      "upstream": "https://github.com/dnp3/opendnp3",
+      "priority": "P2",
+      "disposition": "hold",
+      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "purpose": "DNP3 reference/lab fallback for outstation/master scenarios",
+      "runtime": "C++ build, optional bindings and dependencies",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "Apache-2.0; repository archived in 2022. DNP3 coverage is a selection gap until a maintained alternative or owned lab-only fallback is evaluated.",
+        "evidence": [
+          "https://github.com/dnp3/opendnp3"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "archived",
+        "notes": "Explicit inactive/archived upstream warning; fallback owner needed."
+      },
+      "protocols": [
+        "dnp3"
+      ],
+      "needs": {
+        "dependencies": "C++ build, optional bindings and dependencies",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "Apache-2.0; repository archived in 2022. DNP3 coverage is a selection gap until a maintained alternative or owned lab-only fallback is evaluated.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-029",
+      "name": "Gurux DLMS Python",
+      "upstream": "https://github.com/Gurux/Gurux.DLMS.Python",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "DLMS/COSEM electricity/water/gas meter client possibilities",
+      "runtime": "Python; chosen transport and credentials; meter model validation",
+      "operations": [
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "structured/helper output"
+      ],
+      "license": {
+        "summary": "GPL-2.0 family upstream declaration. Meter compatibility/authentication and selected modules need testing; do not alter meter configuration.",
+        "evidence": [
+          "https://github.com/Gurux/Gurux.DLMS.Python"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "dlms-cosem"
+      ],
+      "needs": {
+        "dependencies": "Python; chosen transport and credentials; meter model validation",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0 family upstream declaration. Meter compatibility/authentication and selected modules need testing; do not alter meter configuration.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-030",
+      "name": "can-utils",
+      "upstream": "https://github.com/linux-can/can-utils",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "CAN capture/log tools and J1939/ISOBUS utilities for possible vehicle/implement networks",
+      "runtime": "Linux SocketCAN; vcan for lab, approved adapter for real bus",
+      "operations": [
+        "O",
+        "P",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "CAN logs"
+      ],
+      "license": {
+        "summary": "Per-file terms; candump is GPL-2.0-only OR BSD-3-Clause. Initial profile uses logs/listen-only capture; address claiming/replay/transmit are active and excluded. Not a complete agricultural implement decoder.",
+        "evidence": [
+          "https://github.com/linux-can/can-utils/blob/master/candump.c"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "can",
+        "j1939",
+        "isobus-partial"
+      ],
+      "needs": {
+        "dependencies": "Linux SocketCAN; vcan for lab, approved adapter for real bus",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "Per-file terms; candump is GPL-2.0-only OR BSD-3-Clause. Initial profile uses logs/listen-only capture; address claiming/replay/transmit are active and excluded. Not a complete agricultural implement decoder.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-031",
+      "name": "python-can",
+      "upstream": "https://github.com/hardbyte/python-can",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Flexible CAN log/adapter abstraction and virtual-bus fixtures",
+      "runtime": "Python; backend/driver licenses and hardware vary",
+      "operations": [
+        "O",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "CAN log/helper output"
+      ],
+      "license": {
+        "summary": "LGPL-3.0. Hardware-independent API does not remove adapter or privilege requirements.",
+        "evidence": [
+          "https://github.com/hardbyte/python-can"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "can"
+      ],
+      "needs": {
+        "dependencies": "Python; backend/driver licenses and hardware vary",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "LGPL-3.0. Hardware-independent API does not remove adapter or privilege requirements.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-032",
+      "name": "cantools",
+      "upstream": "https://github.com/cantools/cantools",
+      "priority": "P1",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Decode CAN logs using a supplied DBC or other supported database",
+      "runtime": "Python; authorized/public/synthetic signal database required",
+      "operations": [
+        "O"
+      ],
+      "outputs": [
+        "decoded signals/plots/text"
+      ],
+      "license": {
+        "summary": "MIT. Without signal definitions, report raw frames/uncertainty; do not guess engineering meaning or upload proprietary DBC files.",
+        "evidence": [
+          "https://github.com/cantools/cantools"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "can"
+      ],
+      "needs": {
+        "dependencies": "Python; authorized/public/synthetic signal database required",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "MIT. Without signal definitions, report raw frames/uncertainty; do not guess engineering meaning or upload proprietary DBC files.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-033",
+      "name": "canopen",
+      "upstream": "https://github.com/canopen-python/canopen",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "CANopen object dictionary/EDS workflows if industrial actuators use it",
+      "runtime": "Python + python-can; synthetic EDS and virtual bus initially",
+      "operations": [
+        "A",
+        "W",
+        "L"
+      ],
+      "outputs": [
+        "application-defined"
+      ],
+      "license": {
+        "summary": "MIT. Not interchangeable with J1939/ISOBUS. NMT commands/SDO writes are excluded from initial profiles.",
+        "evidence": [
+          "https://github.com/canopen-python/canopen"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "canopen"
+      ],
+      "needs": {
+        "dependencies": "Python + python-can; synthetic EDS and virtual bus initially",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "MIT. Not interchangeable with J1939/ISOBUS. NMT commands/SDO writes are excluded from initial profiles.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-034",
+      "name": "pymavlink",
+      "upstream": "https://github.com/ArduPilot/pymavlink",
+      "priority": "P2",
+      "disposition": "conditional",
+      "rationale": "Use only when authorized technology evidence justifies this capability; avoid redundant dependencies.",
+      "purpose": "Offline MAVLink log interpretation if aerial/robotic assets enter scope",
+      "runtime": "Python; dialect and log format matter",
+      "operations": [
+        "O",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "telemetry/log output"
+      ],
+      "license": {
+        "summary": "LGPL-3-or-later; generated code MIT, per upstream. Start with offline logs; no arming, navigation, parameter updates or radio operation.",
+        "evidence": [
+          "https://github.com/ArduPilot/pymavlink"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "mavlink"
+      ],
+      "needs": {
+        "dependencies": "Python; dialect and log format matter",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "LGPL-3-or-later; generated code MIT, per upstream. Start with offline logs; no arming, navigation, parameter updates or radio operation.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-035",
+      "name": "ChirpStack",
+      "upstream": "https://github.com/chirpstack/chirpstack",
+      "priority": "P2",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "LoRaWAN server/API reference and synthetic telemetry training",
+      "runtime": "Server stack/dependencies; gateway/keys only for authorized RF lab",
+      "operations": [
+        "L",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "API/log data"
+      ],
+      "license": {
+        "summary": "MIT server; dependencies separate. Not a universal LoRa sniffer or key-recovery tool. Full stack may be too large for event staging.",
+        "evidence": [
+          "https://github.com/chirpstack/chirpstack"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "lorawan"
+      ],
+      "needs": {
+        "dependencies": "Server stack/dependencies; gateway/keys only for authorized RF lab",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "MIT server; dependencies separate. Not a universal LoRa sniffer or key-recovery tool. Full stack may be too large for event staging.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-036",
+      "name": "zigpy",
+      "upstream": "https://github.com/zigpy/zigpy",
+      "priority": "P2",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "Zigbee protocol/coordinator reference if sensors/climate devices are established",
+      "runtime": "Python plus vendor radio library/coordinator for RF",
+      "operations": [
+        "L",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "helper/log output"
+      ],
+      "license": {
+        "summary": "GPL-3.0 family with COPYING details; radio libraries separate. Joining/control/OTA are active; not a passive packet sniffer. No automatic firmware downloads.",
+        "evidence": [
+          "https://github.com/zigpy/zigpy/blob/dev/COPYING"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "zigbee"
+      ],
+      "needs": {
+        "dependencies": "Python plus vendor radio library/coordinator for RF",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "Conditional adapter/driver and physical-access approval; use synthetic files/virtual bus first."
+      },
+      "limitations": [
+        "GPL-3.0 family with COPYING details; radio libraries separate. Joining/control/OTA are active; not a passive packet sniffer. No automatic firmware downloads.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-037",
+      "name": "OpenPLC Runtime v4",
+      "upstream": "https://github.com/Autonomy-Logic/openplc-runtime",
+      "priority": "P1",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "Small synthetic controller process for agreed protocol fixtures",
+      "runtime": "Linux; native or reviewed container route; editor/compiler and resource needs require design",
+      "operations": [
+        "L",
+        "W"
+      ],
+      "outputs": [
+        "synthetic runtime/API logs"
+      ],
+      "license": {
+        "summary": "MIT core upstream declaration; dependency review needed. Use v4 evaluation, not EOL v3. Do not run upstream pipe-to-shell installers or enable cloud integrations by default.",
+        "evidence": [
+          "https://github.com/Autonomy-Logic/openplc-runtime/blob/main/LICENSE"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "plc-lab"
+      ],
+      "needs": {
+        "dependencies": "Linux; native or reviewed container route; editor/compiler and resource needs require design",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "MIT core upstream declaration; dependency review needed. Use v4 evaluation, not EOL v3. Do not run upstream pipe-to-shell installers or enable cloud integrations by default.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-038",
+      "name": "FUXA",
+      "upstream": "https://github.com/frangoteam/FUXA",
+      "priority": "P1",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "Synthetic SCADA/HMI dashboard for Modbus, OPC UA, MQTT and S7 rehearsal",
+      "runtime": "Node.js/web stack, selected connectors; optional containers",
+      "operations": [
+        "L",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "synthetic HMI/log evidence"
+      ],
+      "license": {
+        "summary": "MIT. Lab-only boundary; avoid a heavyweight HMI if minimal protocol fixtures suffice.",
+        "evidence": [
+          "https://github.com/frangoteam/FUXA"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "scada-lab"
+      ],
+      "needs": {
+        "dependencies": "Node.js/web stack, selected connectors; optional containers",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "MIT. Lab-only boundary; avoid a heavyweight HMI if minimal protocol fixtures suffice.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-039",
+      "name": "Node-RED",
+      "upstream": "https://github.com/node-red/node-red",
+      "priority": "P1",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "Synthetic telemetry and workflow fixtures",
+      "runtime": "Node.js; pin any additional protocol node packages separately",
+      "operations": [
+        "L",
+        "A",
+        "W"
+      ],
+      "outputs": [
+        "synthetic flows/logs"
+      ],
+      "license": {
+        "summary": "Apache-2.0 core; contributed nodes have independent licenses/security. No remote flow downloads, dashboard exposure or customer credentials.",
+        "evidence": [
+          "https://github.com/node-red/node-red"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "telemetry-lab"
+      ],
+      "needs": {
+        "dependencies": "Node.js; pin any additional protocol node packages separately",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "Apache-2.0 core; contributed nodes have independent licenses/security. No remote flow downloads, dashboard exposure or customer credentials.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    },
+    {
+      "id": "TOOL-040",
+      "name": "Conpot",
+      "upstream": "https://github.com/mushorg/conpot",
+      "priority": "P2",
+      "disposition": "lab",
+      "rationale": "Optional lab/reference system; do not install in an engagement network.",
+      "purpose": "ICS honeypot/service emulation for identification/capture exercises",
+      "runtime": "Python, selected templates and dependencies",
+      "operations": [
+        "L"
+      ],
+      "outputs": [
+        "synthetic logs/captures"
+      ],
+      "license": {
+        "summary": "GPL-2.0. Emulation does not certify actual PLC behavior. Disable external intelligence feeds/telemetry and isolate the lab.",
+        "evidence": [
+          "https://github.com/mushorg/conpot"
+        ],
+        "review": "pending"
+      },
+      "maintenance": {
+        "state": "unassessed",
+        "notes": "Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance."
+      },
+      "protocols": [
+        "ics-lab"
+      ],
+      "needs": {
+        "dependencies": "Python, selected templates and dependencies",
+        "privileges": "Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.",
+        "hardware": "None for offline metadata; real capture/serial interfaces need separate permission and hardware."
+      },
+      "limitations": [
+        "GPL-2.0. Emulation does not certify actual PLC behavior. Disable external intelligence feeds/telemetry and isolate the lab.",
+        "Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission."
+      ],
+      "owner": "Eligible student maintainer (unassigned)",
+      "checked_at": "2026-10-15",
+      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "acquisition_status": "not_acquired",
+      "runtime_status": "not_run",
+      "runtime_evidence": null
+    }
+  ]
+}

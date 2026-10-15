@@ -1,0 +1,17 @@
+{
+  "generator_version": "0.3.0",
+  "schema_version": "1.2",
+  "data_category": "synthetic",
+  "classification": "SYNTHETIC TRAINING DATA",
+  "review_label": "draft",
+  "input_sha256": "0cb5e911caf0e65c79997f2814c1d44cc42c696079b1325f0362e3d09da55513",
+  "artifacts": {
+    "report.md": "4a0fbf1ad4ea614c1fcff5d0f655bf24d74f32f7a1bc45ecfd3087aaecc23e33",
+    "report.pdf": "cbcb63f4a244cb8e720125a9eff4b8aef3d048f074e35c20c2cffd7e9e6c1b8e"
+  },
+  "evidence_files_opened": false,
+  "cvss_recalculated": false,
+  "marking_policy": "cptc.handling/1.0",
+  "effective_markings": "ORCON",
+  "classification_inheritance": "structured"
+}

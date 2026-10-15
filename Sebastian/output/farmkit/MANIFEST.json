@@ -1,0 +1,67 @@
+{
+  "files": {
+    "tooling/farmkit/CATALOG.md": {
+      "sha256": "4d831b3898c22321ed538c5983ab4b1f598c75fae1471097d85ca2eee3cf3557",
+      "size": 47909
+    },
+    "tooling/farmkit/LICENSE": {
+      "sha256": "f3c61795d4d34ed7a587839ec0c733766981a1464d654e179db56a48a0781c5d",
+      "size": 1079
+    },
+    "tooling/farmkit/NOTICES.md": {
+      "sha256": "c8f053ee175dcbe41dd412ab08027a74765520e7e6f1775020ed930df13ef35f",
+      "size": 2830
+    },
+    "tooling/farmkit/README.md": {
+      "sha256": "0c9edb6bb66fecab0bd0817a561e181ea67233d7a47c7ecfa6a7e7faea460503",
+      "size": 8985
+    },
+    "tooling/farmkit/RUNBOOKS.md": {
+      "sha256": "c60d8593b271869466bb4736c350a1758d5162eb69c778f3889b804c1ff112c2",
+      "size": 13278
+    },
+    "tooling/farmkit/artifact-lock.json": {
+      "sha256": "17a8bdc43ddf228aa171e6d72d2aad093774e685a025ce4b2f197ac9eed91e9c",
+      "size": 104
+    },
+    "tooling/farmkit/build.py": {
+      "sha256": "2377152bdbfea4797e98786251febef96e7ab7bfb746f15549057852339b77e3",
+      "size": 2727
+    },
+    "tooling/farmkit/catalog.json": {
+      "sha256": "fbb2ee2c42de6fa8dd756dbaa42eeacbd85a6e060da3a3f755dd77d0bac16d68",
+      "size": 83325
+    },
+    "tooling/farmkit/examples/artifacts/fixture.txt": {
+      "sha256": "c204268b7f45d90cd06860e5e5f7b8c599df1033984a97b4cd5fd8ae9beddb92",
+      "size": 63
+    },
+    "tooling/farmkit/examples/run-statuses.json": {
+      "sha256": "80e649de9d080ba1a2946f52eaac9c568f7f0439b2fc9813ca10e8b1257580db",
+      "size": 4410
+    },
+    "tooling/farmkit/examples/synthetic-lock.json": {
+      "sha256": "8e42bee6ddea4d723dc10d2a1c0b7ae4071a74b4832a5d3d0e6567845851941f",
+      "size": 802
+    },
+    "tooling/farmkit/kit.py": {
+      "sha256": "fcf270196ffa994a8b1ccbdce2e48f508a5e2eca62922cda0265bb487dd08861",
+      "size": 18874
+    },
+    "tooling/farmkit/readiness.json": {
+      "sha256": "ec7e32f9bc66953cf5505e5319bf7672116633acb31c7c982bd84fb88441014e",
+      "size": 5093
+    },
+    "tooling/farmkit/sources.json": {
+      "sha256": "41a36db41adbcdcd45b95aeb4dffd33e23268ce4d564a592931a06dfbcc0178b",
+      "size": 8325
+    },
+    "tooling/farmkit/tests/test_kit.py": {
+      "sha256": "774b827544b33cbc3ae0d764ae1646238094e0913b833d2350383dfd00b1fc21",
+      "size": 15629
+    }
+  },
+  "kind": "team-authored-preparation-only",
+  "package_version": "1.0.0",
+  "upstream_software_included": false
+}

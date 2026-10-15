@@ -1,0 +1,37 @@
+{
+  "contract_version": "cptc.tool-run/1.0",
+  "data_category": "synthetic",
+  "run": {
+    "id": "RUN-SYNTHETIC-001",
+    "tool_id": "TOOL-013",
+    "tool_name": "Synthetic PyModbus metadata helper",
+    "tool_version": "synthetic-1.0",
+    "profile_id": "synthetic-endpoint-metadata",
+    "collector": "Synthetic fixture author",
+    "scope_ref": "SCOPE-SYNTHETIC-001",
+    "started_at": "2026-10-14T14:00:00-04:00",
+    "finished_at": "2026-10-14T14:00:01-04:00",
+    "status": "success",
+    "exit_code": 0,
+    "input_sha256": null,
+    "limitations": [
+      "Invented design example; no tool or target was executed.",
+      "No distinct source artifact exists; a future importer computes the received envelope hash separately.",
+      "Endpoint metadata does not prove a vulnerability or process safety."
+    ]
+  },
+  "observations": [
+    {
+      "id": "OBS-SYNTHETIC-001",
+      "asset_ref": "ASSET-SYNTHETIC-001",
+      "observed_at": "2026-10-14T14:00:01-04:00",
+      "kind": "ot.endpoint",
+      "metadata": {
+        "protocol": "modbus",
+        "transport": "tcp",
+        "device_model": "Synthetic controller fixture",
+        "capabilities": ["synthetic-device-identification"]
+      }
+    }
+  ]
+}

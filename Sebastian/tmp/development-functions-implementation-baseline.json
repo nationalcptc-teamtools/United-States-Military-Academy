@@ -1,0 +1,502 @@
+[
+  {
+    "path": "docs\\workflow.md",
+    "hash": "53660ACD06CE4E5B03CD1579DA307EF4873ECB8C86F324E70E0518503ABE8FCF"
+  },
+  {
+    "path": "docs\\roadmap.md",
+    "hash": "D576B0DD6981108F7C632503175D5133380817F85144B61AF8039B6A5FBAFD26"
+  },
+  {
+    "path": "docs\\references.md",
+    "hash": "93294D1204852BDC0A47670E1CBB851887A14A1000B044F3135886B78EF45684"
+  },
+  {
+    "path": "tooling\\AGENTS.md",
+    "hash": "5D5F5257FFBA318B86FA1C18B49917A08E68C225B93D97546BAF11E560BEF0D4"
+  },
+  {
+    "path": "tooling\\reporting\\reportgen.py",
+    "hash": "FDECF7B89B6EEB7272F9C8351B87928C62832064E2CA1B866FC54F00337B2F70"
+  },
+  {
+    "path": "tooling\\reporting\\README.md",
+    "hash": "9BA70C57BEE08C57468E48BFDB8DAA070BE3A143695D6F140D4EDE6FB626192E"
+  },
+  {
+    "path": "docs\\policies\\competition-and-data.md",
+    "hash": "6431CA5ED9BAC9E7A49C4E0FE8EB3B4CC30492B272911ACDAF14170B458D2F57"
+  },
+  {
+    "path": "docs\\journal.md",
+    "hash": "36E80334576F92860277D3C3C371E5B14EFAF61DF63E48AF4CD01FABF88675F9"
+  },
+  {
+    "path": "tooling\\reporting\\design.md",
+    "hash": "F6114538382E328EFD6225B62207E7C5341B45D50917F6CC0BE637C7B0347437"
+  },
+  {
+    "path": "tooling\\farmkit\\VERIFICATION.md",
+    "hash": "0FCCF765064D10D2E664E03A191341089D48FCEA51BCE9650D593C9D236459CB"
+  },
+  {
+    "path": "tooling\\reporting\\examples\\tool-run.json",
+    "hash": "F11C23398EB42D6E26EE706A175CC09313ABF84FA5DE676A34974F2D4982EEDF"
+  },
+  {
+    "path": "tooling\\reporting\\examples\\report.json",
+    "hash": "6305B7BFA0CB10DBABAC0ABAC4F9C9AFA37F1E19BC7C3850EED15717C951ADD9"
+  },
+  {
+    "path": "tooling\\reporting\\examples\\report-marked.json",
+    "hash": "36BF23C09401943EDA0177C20CBE240E4CB77050B4EE10F9D80125D149B71CDD"
+  },
+  {
+    "path": "tooling\\farmkit\\install.py",
+    "hash": "ADC09BC31DB62D03AE2B87F0A6988870E1A4D44795A7B0A341CB434CFACF757C"
+  },
+  {
+    "path": "tooling\\farmkit\\INSTALL.md",
+    "hash": "888A0D06DC3A52372DE8C2B710D96CDB26754E5F11E9E59E912BCEEC502AFC52"
+  },
+  {
+    "path": "tooling\\farmkit\\install-manifest.json",
+    "hash": "B7EE1AAF35391CE8468ACF28741B3614972287CD4B35A7EE84894AED6F9DFE24"
+  },
+  {
+    "path": "docs\\proposals\\development-functions\\spec.md",
+    "hash": "57B66216F7EF491FAA6175FFCE738C794ED749D91BCE1901CCDC7EF7B792A928"
+  },
+  {
+    "path": "docs\\proposals\\development-functions\\proposal.md",
+    "hash": "44C88A275403BCADA1F5DB8F4D627511BBC6F3C9B52B65E3FD3ACBB0D4D971F3"
+  },
+  {
+    "path": "docs\\proposals\\development-functions\\ideas.md",
+    "hash": "3DCB4BB3CEF397ED14E789322241E7821E9DF0C99E819DF56BFF6955BDC7F83F"
+  },
+  {
+    "path": "docs\\proposals\\development-functions\\decisions.md",
+    "hash": "8C2B1081618D3E1C9E2750B565C9F289D18A3F05CD6C68C1200F54C2CFB66808"
+  },
+  {
+    "path": "docs\\project-profile.md",
+    "hash": "AB15337C13341F4EB78461C09C2CFAAFC30A3153EEB2CAD42FC627289CEE19D2"
+  },
+  {
+    "path": "tooling\\farmkit\\catalog.json",
+    "hash": "29CD91A9A89283D81A352B3E9474EEC8F555C92DC284D8576B0095ECDA4E864C"
+  },
+  {
+    "path": "tooling\\farmkit\\build.py",
+    "hash": "360BFFD7C14F41E2D29CC24E7B794BEFC4012A4FFB6D87AF0E41385993C56356"
+  },
+  {
+    "path": "tooling\\farmkit\\artifact-lock.json",
+    "hash": "F8BAEEFA74259E6FEB396ABC740936319045C11897AE5BB4285EDE4197D006FC"
+  },
+  {
+    "path": "tooling\\farmkit\\CATALOG.md",
+    "hash": "F33C914C83F259B529F25E27465B5D229E316D9251075739781CC4571B8881B5"
+  },
+  {
+    "path": "tooling\\farmkit\\design.md",
+    "hash": "B2C207C59265FBDB8BDD68C585E0D6DB889986530C1906F28718EDAB6609868A"
+  },
+  {
+    "path": "tooling\\farmkit\\readiness.json",
+    "hash": "49DB905CEF5B69E53A6322B6D401929DF95D741E2DCA2629DA32CBA446C1CDEC"
+  },
+  {
+    "path": "tooling\\farmkit\\proposal.md",
+    "hash": "38124CA622AD99D04CA5ABEDD50FE986B80CFAEBA4744FF597D6ED2B8F713961"
+  },
+  {
+    "path": "tooling\\farmkit\\NOTICES.md",
+    "hash": "C8F053EE175DCBE41DD412AB08027A74765520E7E6F1775020ED930DF13EF35F"
+  },
+  {
+    "path": "tooling\\farmkit\\LICENSE",
+    "hash": "F3C61795D4D34ED7A587839EC0C733766981A1464D654E179DB56A48A0781C5D"
+  },
+  {
+    "path": "tooling\\farmkit\\kit.py",
+    "hash": "597742EA9F5300B0A36A771FA584998905F0FC392C033E90143D3B4888409948"
+  },
+  {
+    "path": "tooling\\farmkit\\RUNBOOKS.md",
+    "hash": "C60D8593B271869466BB4736C350A1758D5162EB69C778F3889B804C1FF112C2"
+  },
+  {
+    "path": "tooling\\farmkit\\README.md",
+    "hash": "957E41B270E1A27043A08E5F0FCE4F6D2275C8DAAED414DED88EB26178313E48"
+  },
+  {
+    "path": "tooling\\farmkit\\sources.json",
+    "hash": "782432DB7451D4B5671096E77663DE0CD7B5DB9A60A983EBCEC416056FFE06E3"
+  },
+  {
+    "path": "tooling\\farmkit\\spec.md",
+    "hash": "D5652EF45A8FD8D0616AC8BEDC3B769FAEF8916A6C9E3798387027D044117EB7"
+  },
+  {
+    "path": "tooling\\reporting\\requirements.txt",
+    "hash": "F8861167226FE74234F523F397738F8662E2368693DD4E5DB6EE110BD2B1D0DA"
+  },
+  {
+    "path": "tooling\\reporting\\templates\\report.md",
+    "hash": "1C9C1AF02FF8A4432795FC88276AD8D170603A36142F34053A6FE5FECA543DB0"
+  },
+  {
+    "path": "tooling\\reporting\\templates\\incident.md",
+    "hash": "EA03D566CEB7408374431405EC997157942ECA915FA3F5C12ED0E87AB40AA63C"
+  },
+  {
+    "path": "tooling\\reporting\\templates\\finding.md",
+    "hash": "E80B9EEFD2950DED7D09EA2524597B944205DEA553404F3DED1E75D597966077"
+  },
+  {
+    "path": "tooling\\reporting\\tests\\check_pdf_rendering.py",
+    "hash": "E58114728B2BB200327B305895284EF0DDC4EF5DBEAA09BB4D9B4F66A001D45E"
+  },
+  {
+    "path": "tooling\\reporting\\tests\\check_markdown_rendering.py",
+    "hash": "D2C6C5C87D4E03A74C125C56F829723B044012EE7D6F6D2AC86923D0D196B460"
+  },
+  {
+    "path": "tooling\\reporting\\tests\\test_reportgen.py",
+    "hash": "7D48EA5243BBF2138961244F63FD3C0C8FC7892B5E0B4524F4BA67F9D4E0C4EB"
+  },
+  {
+    "path": "tooling\\farmkit\\tests\\test_kit.py",
+    "hash": "774B827544B33CBC3AE0D764AE1646238094E0913B833D2350383DFD00B1FC21"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\verification.md",
+    "hash": "CA18A392BFD183C5475C9B541320AF115A36D4F70AD29639240B3045182AD36D"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\tool-catalog.md",
+    "hash": "AB021AAAD49993D36E87A8ECBCFDEA7CC79AA35302654208E82D5F015E17538B"
+  },
+  {
+    "path": "tooling\\farmkit\\tests\\test_install.py",
+    "hash": "2AFC339955B8B3ADFED4C8FEA37814A2C79A10CB916073E8578FED5312ADDDBD"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\tasks.md",
+    "hash": "52F279356118F77D44CC4D29A7CA6BF3CA11405327ACA4AC3E4BD406ED2CC5BB"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\spec.md",
+    "hash": "EC6D288168750A4DDA134758197753AC98B7E97D4C389BCAA4F3FCF6746DCC02"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\review.md",
+    "hash": "51D41E3551DA85B02109735C82F8F4D4A038966E6AC81097608A2FF3414A43F0"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\proposal.md",
+    "hash": "6FCB3D0DB8A47A9B8A1D1BA04E11DF2E6E12B49D2E4A69BA1437747C19F03F75"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\execution-guide.md",
+    "hash": "04D7DB2DD7AD5EE97CD66B4514F81C6BD7DF7B764B5173E1CF325A39FF0C08DB"
+  },
+  {
+    "path": "docs\\proposals\\farm-toolkit\\design.md",
+    "hash": "95583AF494EFB1F93E6DCF67CA8B3CE5F3E258A60DDE311A425A7803B8C3F37A"
+  },
+  {
+    "path": "docs\\proposals\\report-generator\\design.md",
+    "hash": "9C6932D3CD714AE86B9D255A4AE443BA356D00D40721020AD8714E6709B6B0F1"
+  },
+  {
+    "path": "docs\\proposals\\report-generator\\tasks.md",
+    "hash": "7983677BFDA3812F96D190124DD5E7C2E90164AC815F9DC0A5F90195435BE093"
+  },
+  {
+    "path": "docs\\proposals\\report-generator\\spec.md",
+    "hash": "FE7AE28970CFD1538C16E8C893585F4538B23D09B8C76689F4BA9157C96E1083"
+  },
+  {
+    "path": "docs\\proposals\\report-generator\\review.md",
+    "hash": "3E468DF4E1F2D09C97501F9411B6AFBF24D6B3701D9B829519465B7F33507EF3"
+  },
+  {
+    "path": "docs\\proposals\\report-generator\\proposal.md",
+    "hash": "496018AD57E055CB29EDF1D2F2C4743B944D20E94CFA3C675B74BBD4E13A5CD2"
+  },
+  {
+    "path": "docs\\proposals\\report-generator\\execution-guide.md",
+    "hash": "56D2CB2A91EA490A5D7F645B9974B1563FA273A8C67A069FFA94842649466B1D"
+  },
+  {
+    "path": "tooling\\farmkit\\examples\\synthetic-lock.json",
+    "hash": "1FA57E8E80D5C58B49816E8D4B47580CA5FD372E2AC11B7A248AC2733071F3C3"
+  },
+  {
+    "path": "tooling\\farmkit\\examples\\run-statuses.json",
+    "hash": "0AEFB4C3B21B20D44CA76878FB55443D77FEEF9E9EC55175AC0952CEB537D146"
+  },
+  {
+    "path": "tooling\\farmkit\\examples\\artifacts\\fixture.txt",
+    "hash": "C204268B7F45D90CD06860E5E5F7B8C599DF1033984A97B4CD5FD8AE9BEDDB92"
+  },
+  {
+    "path": "integrations\\reporting-classification\\LICENSE",
+    "hash": "792899AC66456CE81B97FDAE94FBBE238BEB721B6CE1662D1C714F5FE41C4217"
+  },
+  {
+    "path": "integrations\\reporting-classification\\requirements.txt",
+    "hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "path": "integrations\\reporting-classification\\README.md",
+    "hash": "B6A708904AB9D4064F7213522612C0FC95F37E0E4F69270FE203E181457C74A4"
+  },
+  {
+    "path": "integrations\\reporting-classification\\config.py",
+    "hash": "1DFCFE9F3E7370B44EF5C36FB247E5FB7E7509C6DA95E15E14254EAAFC09D3BF"
+  },
+  {
+    "path": "integrations\\reporting-classification\\super_nmap.py",
+    "hash": "A34BD62C6FE58953F21569E6D2339ED6C8953B7184AEB800294B65F1D3FA4481"
+  },
+  {
+    "path": "integrations\\reporting-classification\\install.sh",
+    "hash": "A75441F42C7D72FCB21AA07D286F4B929F8F67F7A738F9EE76325CB76B52AD18"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\LICENSE",
+    "hash": "792899AC66456CE81B97FDAE94FBBE238BEB721B6CE1662D1C714F5FE41C4217"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\install.sh",
+    "hash": "8D6CF0C0AF4E1805FBD717B6A448D3DE7C88C4A168BD7A4983E28CD7E00AF6FF"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\config.py",
+    "hash": "1DFCFE9F3E7370B44EF5C36FB247E5FB7E7509C6DA95E15E14254EAAFC09D3BF"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\requirements.txt",
+    "hash": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\README.md",
+    "hash": "8D5C0034A28EF0CE45DA4E4C77C2126E0E91A12A3BA4E6D6991BAC1D06F25C30"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\super_nmap.py",
+    "hash": "A34BD62C6FE58953F21569E6D2339ED6C8953B7184AEB800294B65F1D3FA4481"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\tests\\test_reportgen.py",
+    "hash": "7D48EA5243BBF2138961244F63FD3C0C8FC7892B5E0B4524F4BA67F9D4E0C4EB"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\tests\\check_pdf_rendering.py",
+    "hash": "E58114728B2BB200327B305895284EF0DDC4EF5DBEAA09BB4D9B4F66A001D45E"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\tests\\check_markdown_rendering.py",
+    "hash": "D2C6C5C87D4E03A74C125C56F829723B044012EE7D6F6D2AC86923D0D196B460"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\tests\\test_reportgen.py",
+    "hash": "7D48EA5243BBF2138961244F63FD3C0C8FC7892B5E0B4524F4BA67F9D4E0C4EB"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\tests\\check_pdf_rendering.py",
+    "hash": "E58114728B2BB200327B305895284EF0DDC4EF5DBEAA09BB4D9B4F66A001D45E"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\tests\\check_markdown_rendering.py",
+    "hash": "D2C6C5C87D4E03A74C125C56F829723B044012EE7D6F6D2AC86923D0D196B460"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\README.md",
+    "hash": "9BA70C57BEE08C57468E48BFDB8DAA070BE3A143695D6F140D4EDE6FB626192E"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\reportgen.py",
+    "hash": "FDECF7B89B6EEB7272F9C8351B87928C62832064E2CA1B866FC54F00337B2F70"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\requirements.txt",
+    "hash": "F8861167226FE74234F523F397738F8662E2368693DD4E5DB6EE110BD2B1D0DA"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\design.md",
+    "hash": "F6114538382E328EFD6225B62207E7C5341B45D50917F6CC0BE637C7B0347437"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\design.md",
+    "hash": "F6114538382E328EFD6225B62207E7C5341B45D50917F6CC0BE637C7B0347437"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\reportgen.py",
+    "hash": "FDECF7B89B6EEB7272F9C8351B87928C62832064E2CA1B866FC54F00337B2F70"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\README.md",
+    "hash": "9BA70C57BEE08C57468E48BFDB8DAA070BE3A143695D6F140D4EDE6FB626192E"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\requirements.txt",
+    "hash": "F8861167226FE74234F523F397738F8662E2368693DD4E5DB6EE110BD2B1D0DA"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\templates\\report.md",
+    "hash": "1C9C1AF02FF8A4432795FC88276AD8D170603A36142F34053A6FE5FECA543DB0"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\templates\\incident.md",
+    "hash": "EA03D566CEB7408374431405EC997157942ECA915FA3F5C12ED0E87AB40AA63C"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\templates\\finding.md",
+    "hash": "E80B9EEFD2950DED7D09EA2524597B944205DEA553404F3DED1E75D597966077"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\examples\\tool-run.json",
+    "hash": "F11C23398EB42D6E26EE706A175CC09313ABF84FA5DE676A34974F2D4982EEDF"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\examples\\report.json",
+    "hash": "6305B7BFA0CB10DBABAC0ABAC4F9C9AFA37F1E19BC7C3850EED15717C951ADD9"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\examples\\report-marked.json",
+    "hash": "36BF23C09401943EDA0177C20CBE240E4CB77050B4EE10F9D80125D149B71CDD"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\examples\\tool-run.json",
+    "hash": "F11C23398EB42D6E26EE706A175CC09313ABF84FA5DE676A34974F2D4982EEDF"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\templates\\report.md",
+    "hash": "1C9C1AF02FF8A4432795FC88276AD8D170603A36142F34053A6FE5FECA543DB0"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\examples\\report.json",
+    "hash": "6305B7BFA0CB10DBABAC0ABAC4F9C9AFA37F1E19BC7C3850EED15717C951ADD9"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\reporting\\examples\\report-marked.json",
+    "hash": "36BF23C09401943EDA0177C20CBE240E4CB77050B4EE10F9D80125D149B71CDD"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\templates\\incident.md",
+    "hash": "EA03D566CEB7408374431405EC997157942ECA915FA3F5C12ED0E87AB40AA63C"
+  },
+  {
+    "path": "integrations\\reporting-classification\\tooling\\reporting\\templates\\finding.md",
+    "hash": "E80B9EEFD2950DED7D09EA2524597B944205DEA553404F3DED1E75D597966077"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\VERIFICATION.md",
+    "hash": "0FCCF765064D10D2E664E03A191341089D48FCEA51BCE9650D593C9D236459CB"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\tests\\test_kit.py",
+    "hash": "774B827544B33CBC3AE0D764AE1646238094E0913B833D2350383DFD00B1FC21"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\tests\\test_install.py",
+    "hash": "2AFC339955B8B3ADFED4C8FEA37814A2C79A10CB916073E8578FED5312ADDDBD"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\spec.md",
+    "hash": "D5652EF45A8FD8D0616AC8BEDC3B769FAEF8916A6C9E3798387027D044117EB7"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\sources.json",
+    "hash": "782432DB7451D4B5671096E77663DE0CD7B5DB9A60A983EBCEC416056FFE06E3"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\RUNBOOKS.md",
+    "hash": "C60D8593B271869466BB4736C350A1758D5162EB69C778F3889B804C1FF112C2"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\README.md",
+    "hash": "957E41B270E1A27043A08E5F0FCE4F6D2275C8DAAED414DED88EB26178313E48"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\readiness.json",
+    "hash": "49DB905CEF5B69E53A6322B6D401929DF95D741E2DCA2629DA32CBA446C1CDEC"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\proposal.md",
+    "hash": "38124CA622AD99D04CA5ABEDD50FE986B80CFAEBA4744FF597D6ED2B8F713961"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\NOTICES.md",
+    "hash": "C8F053EE175DCBE41DD412AB08027A74765520E7E6F1775020ED930DF13EF35F"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\LICENSE",
+    "hash": "F3C61795D4D34ED7A587839EC0C733766981A1464D654E179DB56A48A0781C5D"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\kit.py",
+    "hash": "597742EA9F5300B0A36A771FA584998905F0FC392C033E90143D3B4888409948"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\install.py",
+    "hash": "ADC09BC31DB62D03AE2B87F0A6988870E1A4D44795A7B0A341CB434CFACF757C"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\INSTALL.md",
+    "hash": "888A0D06DC3A52372DE8C2B710D96CDB26754E5F11E9E59E912BCEEC502AFC52"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\install-manifest.json",
+    "hash": "B7EE1AAF35391CE8468ACF28741B3614972287CD4B35A7EE84894AED6F9DFE24"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\catalog.json",
+    "hash": "29CD91A9A89283D81A352B3E9474EEC8F555C92DC284D8576B0095ECDA4E864C"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\build.py",
+    "hash": "360BFFD7C14F41E2D29CC24E7B794BEFC4012A4FFB6D87AF0E41385993C56356"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\artifact-lock.json",
+    "hash": "F8BAEEFA74259E6FEB396ABC740936319045C11897AE5BB4285EDE4197D006FC"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\CATALOG.md",
+    "hash": "F33C914C83F259B529F25E27465B5D229E316D9251075739781CC4571B8881B5"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\design.md",
+    "hash": "B2C207C59265FBDB8BDD68C585E0D6DB889986530C1906F28718EDAB6609868A"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\examples\\synthetic-lock.json",
+    "hash": "1FA57E8E80D5C58B49816E8D4B47580CA5FD372E2AC11B7A248AC2733071F3C3"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\examples\\run-statuses.json",
+    "hash": "0AEFB4C3B21B20D44CA76878FB55443D77FEEF9E9EC55175AC0952CEB537D146"
+  },
+  {
+    "path": "integrations\\United-States-Military-Academy\\tooling\\farmkit\\examples\\artifacts\\fixture.txt",
+    "hash": "C204268B7F45D90CD06860E5E5F7B8C599DF1033984A97B4CD5FD8AE9BEDDB92"
+  },
+  {
+    "path": "AGENTS.md",
+    "hash": "12D03C532BA92E92FD3331F2513990A77541D94544570697AAF598B9DA763E81"
+  },
+  {
+    "path": "README.md",
+    "hash": "BE8C518AC68E858837D642EC5C170372D362DDC1D1D0321C1790EFFA84192234"
+  },
+  {
+    "path": ".gitignore",
+    "hash": "81B1DBAD0FA4E9A64D092E66A792E6561ADA3AA9A0AE65EDB2F8C1921FD9D4DE"
+  }
+]

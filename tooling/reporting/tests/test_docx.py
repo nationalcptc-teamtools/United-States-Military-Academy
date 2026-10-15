@@ -119,6 +119,19 @@ class WordTests(unittest.TestCase):
         self.assertIn("python-docx", str(error.exception))
         self.assertFalse((self.root / "word").exists())
 
+    def test_word_retains_workbench_appendix_and_markings(self):
+        destination = self.root / 'appendix'
+        manifest = reportgen.generate(self.raw, destination, True, False,
+                                      [('heading', (2, 'Workbench records')),
+                                       ('paragraph', 'Synthetic appendix retained in every format')],
+                                      ['ORCON', 'FI'], docx=True)
+        with ZipFile(destination / 'report.docx') as archive:
+            xml = archive.read('word/document.xml').decode('utf-8')
+        self.assertIn('Synthetic appendix retained in every format', xml)
+        self.assertIn('Workbench records', xml)
+        self.assertIn('FI', manifest['effective_markings'])
+        self.assertIn('appendix_sha256', manifest)
+
     def test_illegal_xml_fails_safely_and_cli_exposes_word_flag(self):
         self.data["findings"][0]["description"] = "PRIVATE-SENTINEL\uffff"
         with self.assertRaises(reportgen.ContractError) as error:

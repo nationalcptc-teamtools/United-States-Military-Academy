@@ -1,0 +1,23 @@
+{
+  "schema_version": "cptc.artifact-lock/1.0",
+  "data_category": "synthetic",
+  "artifacts": [
+    {
+      "id": "SYNTHETIC-ARTIFACT-001",
+      "tool_ids": [],
+      "version": "synthetic-1.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "origin": "https://example.invalid/synthetic/fixture.txt",
+      "path": "fixture.txt",
+      "size": 63,
+      "sha256": "c204268b7f45d90cd06860e5e5f7b8c599df1033984a97b4cd5fd8ae9beddb92",
+      "platform": "synthetic",
+      "architecture": "none",
+      "license": "Team-authored synthetic fixture",
+      "license_review": "synthetic-only",
+      "dependencies": [],
+      "dependency_review": "reviewed",
+      "smoke_check": "Integrity-helper fixture only; not an upstream tool smoke test."
+    }
+  ]
+}

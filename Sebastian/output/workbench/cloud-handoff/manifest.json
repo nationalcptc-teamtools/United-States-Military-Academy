@@ -1,0 +1,14 @@
+{
+  "artifacts": {
+    "handoff.json": "2539e66c242f817db3230edc97236ffbfcc8c63767d5f1fe38ae31a566e8ed8d",
+    "handoff.md": "b307538419e2c00792c1dfd0d9797fe1f4b25f1f1b2a6e0a07f0bdff4b986eae"
+  },
+  "automatic_transfer": false,
+  "data_category": "synthetic",
+  "markings": [
+    "ORCON",
+    "PROPIN",
+    "PII Red",
+    "FI"
+  ]
+}

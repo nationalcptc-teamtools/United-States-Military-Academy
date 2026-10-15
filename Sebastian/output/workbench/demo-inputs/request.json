@@ -1,0 +1,18 @@
+{
+  "problem": "Avoid retyping synthetic Modbus preparation notes",
+  "user": "Training operator",
+  "input": "Invented metadata",
+  "output": "Reviewable draft",
+  "acceptance": "All supplied fields visible",
+  "owner": "Author",
+  "backup": "Backup",
+  "reviewer": "Reviewer",
+  "kind": "documentation",
+  "value": 4,
+  "frequency": 3,
+  "confidence": 3,
+  "effort": 2,
+  "risk": 2,
+  "dependencies": [],
+  "reuse_query": "modbus"
+}

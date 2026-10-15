@@ -1,0 +1,18 @@
+{
+  "generator_version": "0.4.0",
+  "schema_version": "1.2",
+  "data_category": "synthetic",
+  "classification": "SYNTHETIC TRAINING DATA",
+  "review_label": "draft",
+  "input_sha256": "36bf23c09401943eda0177c20cbe240e4cb77050b4ee10f9d80125d149b71cdd",
+  "artifacts": {
+    "report.docx": "42f4ccc01fca8d1486e8556a6e9fc85c81f2be66f3bfd28b106586922fbdf3b3",
+    "report.md": "b9160d80513dd74ef016314b99ed862a2a2af77caaf580a2f5830287d697700a",
+    "report.pdf": "9ca33a836ed08c5fdb63b2a3abbd9643de9e4a624ab2c023be3bdc5972d365db"
+  },
+  "evidence_files_opened": false,
+  "cvss_recalculated": false,
+  "marking_policy": "cptc.handling/1.0",
+  "effective_markings": "ORCON//PROPIN//PII Red//FI",
+  "classification_inheritance": "structured"
+}

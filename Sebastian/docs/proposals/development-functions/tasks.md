@@ -1,0 +1,19 @@
+# Workbench task plan
+
+Planner/root, 2026-10-15. Sole editor root. Baseline: 125-file preimplementation hash snapshot in local tmp; integration clean at 7ccc0a6. User authorized full role cycle after all 120 choices and a read-only independent reviewer. [Design](design.md) and [decisions](decisions.md) control scope.
+
+All tasks run in this preparation workspace; only new workbench module, a small reporting appendix API and active proposal/journal/navigation are intended edits. No integration checkout/publish/target/client/cloud operations.
+
+| Task / owner | Dependencies | Requirements / ideas | Deliverable and acceptance | Checks / state |
+| --- | --- | --- | --- | --- |
+| T-DF-01 Architect/Planner/root | All user choices | All 44 requirement dispositions / all 120 ideas | Scope reconciliation, design, ordered plan and execution guidance | Source/decision agreement; complete |
+| T-DF-02 Developer/root | 01 | FR-DF-002–008/014/028/029 | Catalog search/cards/compare/chooser, owned intake/decisions, scaffold/helpers, readiness and manual metrics | Complete; V-DF-01/04, scope rows 001–060/113/119; no measured speed claim |
+| T-DF-03 Developer/root | 02 | FR-DF-016–022/030/032 | Revision-safe workspace, authored conflicts, separate discovery/plan preview/revalidation, manual run/log, synthetic stop/resume/status/handoff | Complete; V-DF-01/03/04; cancellation owns fixed synthetic tree only |
+| T-DF-04 Developer/root | 03 | FR-DF-023–027 | Existing-report preview/import/review, dedup/merge/revert, prefill, retest/incident, snapshots/diff, renderer appendix | Complete; V-DF-01/02/04/05; ten PDF pages inspected |
+| T-DF-05 Developer/root | 04 | FR-DF-006/007/015/023/028 | Reviewed bundles/recovery/cloud handoff/cohort guidance/UI evaluation and selected-check guidance | Complete; V-DF-06/09; manual neutral handoff, no local AI/API |
+| T-DF-06 Tester/root | 02–05 settled | All adopted outcomes | Meaningful selected tests, old-schema regression, seeded-secret and link checks; verification.md with exact versions/results/gaps | Complete; V-DF-01–06; failures/corrections/optional Linux skip retained |
+| T-DF-07 Reviewer/read-only; root editor | 06 | NFR-DF-011; accepted review packet | Independent compliance/quality review, stable R-DF findings, root corrections and affected retests | Complete; V-DF-07 and review.md; R-DF-01–06 and final catalog cautions resolved/rechecked; independent role-document check positive |
+| T-DF-08 Delivery Lead/root | 07 | FR-DF-015/025/030 | Source-only preparation bundle, reviewer/handoff samples and truthful status links | Complete; V-DF-08/09 passed:125-file preservation,120 choices,44 requirements,168 references, matching reviewed source ZIP; acceptance/event gates separate |
+| T-DF-09 Integration/root | 08; explicit user commit/push request | FR-DF-015; preserve reviewed source | Integrate reusable files/portable records into current published repository history, retest, independently check public docs, commit and push a new branch | Complete; 18 workbench +36 reporter tests pass, staged source matches reviewed bytes, independent public review positive; pushed6e22cbb on codex/development-workbench; no PR/merge |
+
+Each task's detailed contracts are in design.md; runnable procedures/actual results are recorded in [verification.md](verification.md). Failed checks reopen affected tasks, preserving findings. Native adapters, target execution, real cloud delivery and excluded initiatives are not hidden prerequisites for a completed local workbench slice.

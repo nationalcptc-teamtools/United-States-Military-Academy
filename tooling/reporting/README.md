@@ -1,6 +1,6 @@
 # Offline reporting starter
 
-Version 0.4.0. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
+Version 0.4.1. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
 
 The original report format loosely follows a conventional assessment/exam-report structure: cover, contents, numbered introduction, high-level summary/recommendations, methodology, detailed findings and evidence/review appendices. PDF contents include actual page numbers. Source text and review status are retained; section headings do not assert that any activity occurred.
 
@@ -36,6 +36,8 @@ Choose a **new output directory** each time. Existing destinations are refused. 
 Word contains native editable paragraphs, heading styles and lists, with internal contents links, repeated handling/draft markings and a page-number field. Its contents do not reuse PDF page numbers, since Word pagination can differ. Source markup stays plain text; there are no macros, external links or evidence attachments. Word generation needs neither Word nor LibreOffice installed. Native layout QA requires a separate approved document renderer; the preparation environment lacked bundled LibreOffice, so Word visual layout has not been certified there.
 
 The editable JSON is the source of truth. Editing Markdown or Word does not update the other outputs and changes the edited file's manifest identity. Revise JSON and regenerate to synchronize outputs, or record manual amendments under the review process.
+
+The optional Python `generate` API also accepts `appendix_blocks` and `appendix_markings` for the [development workbench](../workbench/README.md). This additive `cptc.appendix/1.0` interface accepts only paragraphs and level-2/3 headings (maximum 200 blocks, 10,000 characters per paragraph, 180 per heading). Explicit inherited markings are required; restrictions are combined before the same blocks render in Markdown and PDF. The manifest records the appendix hash and source schema. Ordinary report schemas and CLI inputs remain unchanged; this API does not accept native scanner exports.
 
 Use - as input to consume a future adapter's JSON from stdin. --release changes the training label only when a reviewer/date and fully confirmed findings/verified CVE applicability are supplied. It neither validates evidence nor approves event submission. The sample includes a candidate, so its release request is deliberately rejected.
 

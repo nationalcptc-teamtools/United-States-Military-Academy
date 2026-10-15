@@ -1,0 +1,14 @@
+{
+  "generator_version": "0.2.0",
+  "schema_version": "1.1",
+  "data_category": "synthetic",
+  "classification": "SYNTHETIC TRAINING DATA",
+  "review_label": "draft",
+  "input_sha256": "a270f7adb4ce401ca6abd0b3d9029a2ad8e06c4b445babf435eb65142ff89c6f",
+  "artifacts": {
+    "report.md": "79dbc451e47bf10b629eb9f06d02eaad47ecd207aeeca54f7e4e0ba35b4d4351",
+    "report.pdf": "af1f3828b4e6e1916fcbafd1ee12d591d0bc634153650686e9d7b7077cff92f0"
+  },
+  "evidence_files_opened": false,
+  "cvss_recalculated": false
+}

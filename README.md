@@ -9,6 +9,20 @@ These scripts are for systems listed in the competition ROE. They require explic
 - `cptc-linux.sh`: Bash 5 runner for Kali, Debian, and Ubuntu.
 - `cptc-windows.ps1`: Windows PowerShell 5.1 runner.
 
+Install the supported assessment suite on Kali Linux x86-64. Setup acquires packages during preparation; the installed workstation can then be checked without Internet. Lab servers are optional and separately documented.
+
+```sh
+git clone https://github.com/nationalcptc-teamtools/United-States-Military-Academy.git
+cd United-States-Military-Academy
+bash install.sh --plan
+bash install.sh --profile full
+source .cptc-suite/activate
+bash install.sh --check --profile full
+```
+
+Includes protocol/IT clients, isolated Python libraries, source-built OT clients/SDKs, reporting dependencies and hash-checked LinPEAS/WinPEAS downloads. Setup never runs payloads, assessment tools or lab servers. Use `--profile core` for the smaller selected-protocol profile; Prowler and legacy wkhtmltopdf are explicit options. All forty candidates have installation or held/lab dispositions.
+
+Read [installation and offline-use guidance](tooling/farmkit/INSTALL.md), [the catalog](tooling/farmkit/CATALOG.md) and [actual checks and limitations](tooling/farmkit/VERIFICATION.md). No full offline reinstallation cache or operational/event approval is claimed. The [proposal/spec/design](tooling/farmkit/proposal.md) record requirements, source evidence and unresolved gates. Existing scanner/configuration behavior is preserved; its general Nmap defaults are not approved OT profiles.
 Both scripts install or locate tools, check the workstation, enumerate a supplied scope, retain raw evidence, and build a report. The older `config.py`, `install.sh`, and `super_nmap.py` remain available for compatibility.
 
 [Nmap searches per-user directories when a requested data file is absent](https://nmap.org/book/data-files-replacing-data-files.html). The runners bind Nmap to a hashed, complete data tree and refuse nonempty per-user Nmap override directories such as `~/.nmap` or `%APPDATA%\nmap`; move intentional overrides aside before a competition run.
@@ -37,7 +51,7 @@ Keep exclusions in a separate file:
 
 The [reporting starter](tooling/reporting/README.md) converts synthetic normalized finding JSON into editable Markdown, optional PDF, and a provenance hash manifest. It supplements the Nmap scan exports with structured observations, business impact, remediation, retest steps, and explicit candidate/review status.
 
-It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.3.0 accepts synthetic inputs only, with a cover, contents, numbered sections and evidence/review appendices. Schemas 1.0/1.1 remain supported; schema 1.2 adds structured ORCON/PROPIN/PII/PII Red/FI inheritance and combined markings on every PDF page. Business severity remains supplied, with no severity matrix configured. Existing scanner/configuration tools and their installation remain unchanged.
+It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.3.1 accepts synthetic inputs only, with a cover, contents, numbered sections and evidence/review appendices. Schemas 1.0/1.1 remain supported; schema 1.2 adds structured ORCON/PROPIN/PII/PII Red/FI inheritance and combined markings on every PDF page. Business severity remains supplied, with no severity matrix configured. Existing scanner/configuration tools and their installation remain unchanged.
 
 The [intake design](tooling/reporting/design.md) maps forty proposed farm-toolkit candidates and Nmap XML to future native adapters, helper output contracts or held/reference-only routes. Direct tool imports and approved client-data handling remain future work; current commands accept completed report JSON.
 
@@ -192,6 +206,18 @@ Verbose command logs are intentionally complete and can grow large during deep s
 
 Enumeration output can contain sensitive network and domain data. Generated results and downloaded tool directories are excluded by `.gitignore`.
 
+## Development workbench
+
+The [offline workbench](tooling/workbench/README.md) provides one place to find cataloged tools, compare prerequisites and holds, record capability requests, create tool starters, and manage synthetic preparation records. It reuses the farm catalog and existing report schemas, with human finding review, immutable Markdown/PDF snapshots and separate tool/import/render outcomes.
+
+```sh
+python3 tooling/workbench/workbench.py search modbus --protocol modbus
+python3 tooling/workbench/workbench.py choose "analyze existing capture"
+python3 tooling/workbench/workbench.py --help
+```
+
+Requires Python 3.10+; PDF uses the existing reporting dependency. See [scope and specification](tooling/workbench/SPEC.md), [contracts](tooling/workbench/CONTRACTS.md), [verification and review](tooling/workbench/VERIFICATION.md), and [handover guidance](tooling/workbench/HANDOVER.md). The workbench accepts synthetic preparation data only. Plans are previews/manual records; only a fixed synthetic worker is supervised. Native scanner output remains unsupported. Neutral JSON/Markdown exports support manual cloud handoff; no local AI, correction service, API or automatic transfer is included. Actual tool, client, host and event approval remains separate.
+
 ## Legacy tools
 
 - `config.py` interactively writes the original `{"ranges": [], "hosts": []}` JSON format.
@@ -209,3 +235,9 @@ python3 tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.
 ```
 
 PDF and Word dependencies are declared in tooling/reporting/requirements.txt. The reporting module does not run the enumeration tools or open evidence references.
+
+## Sebastian project files
+
+[Project documentation and working records](Sebastian/README.md) are collected under `Sebastian/`. The runnable products remain at the repository root: `cptc-linux.sh`, `cptc-windows.ps1`, `install.sh`, and `tooling/`.
+
+`Sebastian/integrations/`, `Sebastian/tmp/`, and `Sebastian/output/` preserve project snapshots and preparation artifacts; use the root products for current code. [The file manifest](Sebastian/PROJECT-FILES.json) records source and destination hashes. Git metadata and caches are excluded.

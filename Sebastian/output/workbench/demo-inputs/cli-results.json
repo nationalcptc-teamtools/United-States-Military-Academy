@@ -1,0 +1,520 @@
+{
+  "data_category": "synthetic",
+  "checks": [
+    {
+      "arguments": [
+        "init",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--owner",
+        "Synthetic exercise owner"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"data_category\": \"synthetic\",\n  \"revision\": 0\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "search",
+        "modbus",
+        "--protocol",
+        "modbus"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"coverage_gap\": false,\n  \"executed\": false,\n  \"results\": [\n    {\n      \"disposition\": \"selected\",\n      \"eligible\": true,\n      \"id\": \"TOOL-013\",\n      \"name\": \"PyModbus\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"protocol:match\"\n      ],\n      \"score\": 1\n    },\n    {\n      \"disposition\": \"selected\",\n      \"eligible\": true,\n      \"id\": \"TOOL-014\",\n      \"name\": \"mbpoll\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"protocol:match\"\n      ],\n      \"score\": 1\n    },\n    {\n      \"disposition\": \"conditional\",\n      \"eligible\": true,\n      \"id\": \"TOOL-015\",\n      \"name\": \"libmodbus\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"protocol:match\"\n      ],\n      \"score\": 1\n    },\n    {\n      \"disposition\": \"conditional\",\n      \"eligible\": true,\n      \"id\": \"TOOL-016\",\n      \"name\": \"MinimalModbus\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"protocol:match\"\n      ],\n      \"score\": 1\n    }\n  ],\n  \"telemetry\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "search",
+        "winpeas",
+        "--platform",
+        "linux",
+        "--explain-excluded"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"coverage_gap\": true,\n  \"executed\": false,\n  \"results\": [\n    {\n      \"disposition\": \"hold\",\n      \"eligible\": false,\n      \"id\": \"TOOL-002\",\n      \"name\": \"WinPEAS\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#host-enumeration\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"platform:incompatible\"\n      ],\n      \"score\": 1\n    }\n  ],\n  \"telemetry\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "choose",
+        "analyze existing capture"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"candidates\": [\n    {\n      \"disposition\": \"selected\",\n      \"eligible\": true,\n      \"id\": \"TOOL-003\",\n      \"name\": \"Wireshark / TShark\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#offline-pcap\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"task/name match\"\n      ],\n      \"score\": 1\n    },\n    {\n      \"disposition\": \"conditional\",\n      \"eligible\": true,\n      \"id\": \"TOOL-004\",\n      \"name\": \"Zeek\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#offline-pcap\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"task/name match\"\n      ],\n      \"score\": 1\n    },\n    {\n      \"disposition\": \"conditional\",\n      \"eligible\": true,\n      \"id\": \"TOOL-005\",\n      \"name\": \"Suricata\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#offline-pcap\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"task/name match\"\n      ],\n      \"score\": 1\n    },\n    {\n      \"disposition\": \"conditional\",\n      \"eligible\": true,\n      \"id\": \"TOOL-006\",\n      \"name\": \"Scapy\",\n      \"next_actions\": [\n        \"Read tooling/farmkit/RUNBOOKS.md#offline-pcap\",\n        \"Check selected runtime and approval\",\n        \"Review output route: native adapters not implemented\"\n      ],\n      \"ready\": false,\n      \"reasons\": [\n        \"task/name match\"\n      ],\n      \"score\": 1\n    }\n  ],\n  \"coverage_gap\": false,\n  \"executed\": false,\n  \"operation_approved\": false,\n  \"task\": \"analyze existing capture\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "card",
+        "TOOL-013"
+      ],
+      "exit": 3,
+      "stdout": "{\n  \"acquisition_status\": \"not_acquired\",\n  \"aliases\": [\n    \"modbus\",\n    \"register client\"\n  ],\n  \"checked_at\": \"2026-10-15\",\n  \"declaration_note\": \"Catalog state is a dated declaration; installed image evidence is separate.\",\n  \"disposition\": \"selected\",\n  \"id\": \"TOOL-013\",\n  \"input\": \"operator-supplied parameters\",\n  \"input_note\": \"Capability candidate, not a tested import/operation.\",\n  \"license\": {\n    \"evidence\": [\n      \"https://github.com/pymodbus-dev/pymodbus/blob/dev/LICENSE\"\n    ],\n    \"review\": \"pending\",\n    \"summary\": \"BSD-3-Clause-style terms. Upstream warns of API changes and limited nonstandard-device support. No arbitrary register sweeps.\"\n  },\n  \"limitations\": [\n    \"BSD-3-Clause-style terms. Upstream warns of API changes and limited nonstandard-device support. No arbitrary register sweeps.\",\n    \"Scenario is hypothetical; tool capability does not establish customer technology, vulnerability or permission.\"\n  ],\n  \"maintenance\": {\n    \"notes\": \"Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.\",\n    \"state\": \"unassessed\"\n  },\n  \"name\": \"PyModbus\",\n  \"needs\": {\n    \"dependencies\": \"Python; serial/simulator extras optional; pin API and Python versions\",\n    \"hardware\": \"None for offline metadata; real capture/serial interfaces need separate permission and hardware.\",\n    \"privileges\": \"Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.\"\n  },\n  \"next_actions\": [\n    \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n    \"Check selected runtime and approval\",\n    \"Review output route: native adapters not implemented\"\n  ],\n  \"operation_classes\": [\n    \"active-query-capable\",\n    \"write/control-capable\",\n    \"lab\"\n  ],\n  \"operations\": [\n    \"A\",\n    \"W\",\n    \"L\"\n  ],\n  \"outputs\": [\n    \"helper-generated structured results\"\n  ],\n  \"owner\": \"Eligible student maintainer (unassigned)\",\n  \"platform\": \"linux/windows\",\n  \"priority\": \"P0\",\n  \"protocols\": [\n    \"modbus-tcp\",\n    \"modbus-rtu\"\n  ],\n  \"purpose\": \"Modbus TCP/serial clients and synthetic server/simulator; possible pump, meter or environmental controller interfaces\",\n  \"rationale\": \"Initial primary-protocol evaluation route; not acquired or runtime accepted.\",\n  \"readiness\": {\n    \"accepted\": \"pending\",\n    \"acquired\": \"not verified here\",\n    \"cataloged\": true,\n    \"event_approved\": \"pending\",\n    \"integrity_checked\": \"not verified here\",\n    \"published\": \"not verified here\",\n    \"reviewed\": \"pending\",\n    \"tested\": \"not_run\"\n  },\n  \"ready\": false,\n  \"runbook\": \"RUNBOOKS.md#modbus\",\n  \"runtime\": \"Python; serial/simulator extras optional; pin API and Python versions\",\n  \"runtime_evidence\": null,\n  \"runtime_status\": \"not_run\",\n  \"upstream\": \"https://github.com/pymodbus-dev/pymodbus\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "compare",
+        "TOOL-013",
+        "TOOL-014"
+      ],
+      "exit": 0,
+      "stdout": "[\n  {\n    \"disposition\": \"selected\",\n    \"id\": \"TOOL-013\",\n    \"input\": \"operator-supplied parameters\",\n    \"license\": {\n      \"evidence\": [\n        \"https://github.com/pymodbus-dev/pymodbus/blob/dev/LICENSE\"\n      ],\n      \"review\": \"pending\",\n      \"summary\": \"BSD-3-Clause-style terms. Upstream warns of API changes and limited nonstandard-device support. No arbitrary register sweeps.\"\n    },\n    \"name\": \"PyModbus\",\n    \"needs\": {\n      \"dependencies\": \"Python; serial/simulator extras optional; pin API and Python versions\",\n      \"hardware\": \"None for offline metadata; real capture/serial interfaces need separate permission and hardware.\",\n      \"privileges\": \"Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.\"\n    },\n    \"next_actions\": [\n      \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n      \"Check selected runtime and approval\",\n      \"Review output route: native adapters not implemented\"\n    ],\n    \"outputs\": [\n      \"helper-generated structured results\"\n    ],\n    \"platform\": \"linux/windows\",\n    \"readiness\": {\n      \"accepted\": \"pending\",\n      \"acquired\": \"not verified here\",\n      \"cataloged\": true,\n      \"event_approved\": \"pending\",\n      \"integrity_checked\": \"not verified here\",\n      \"published\": \"not verified here\",\n      \"reviewed\": \"pending\",\n      \"tested\": \"not_run\"\n    },\n    \"ready\": false,\n    \"runtime\": \"Python; serial/simulator extras optional; pin API and Python versions\"\n  },\n  {\n    \"disposition\": \"selected\",\n    \"id\": \"TOOL-014\",\n    \"input\": \"operator-supplied parameters\",\n    \"license\": {\n      \"evidence\": [\n        \"https://github.com/epsilonrt/mbpoll\"\n      ],\n      \"review\": \"pending\",\n      \"summary\": \"GPL-3.0. Document selected major branch, finite polling, unit/address/type and no-write invocation. Distinct from proprietary modpoll.\"\n    },\n    \"name\": \"mbpoll\",\n    \"needs\": {\n      \"dependencies\": \"Compiled CLI plus selected libmodbus/libmodbuspp version\",\n      \"hardware\": \"None for offline metadata; real capture/serial interfaces need separate permission and hardware.\",\n      \"privileges\": \"Least privilege; exact selected-release and operation requirements remain to be verified. Do not disable endpoint controls.\"\n    },\n    \"next_actions\": [\n      \"Read tooling/farmkit/RUNBOOKS.md#modbus\",\n      \"Check selected runtime and approval\",\n      \"Review output route: native adapters not implemented\"\n    ],\n    \"outputs\": [\n      \"text\"\n    ],\n    \"platform\": \"linux\",\n    \"readiness\": {\n      \"accepted\": \"pending\",\n      \"acquired\": \"not verified here\",\n      \"cataloged\": true,\n      \"event_approved\": \"pending\",\n      \"integrity_checked\": \"not verified here\",\n      \"published\": \"not verified here\",\n      \"reviewed\": \"pending\",\n      \"tested\": \"not_run\"\n    },\n    \"ready\": false,\n    \"runtime\": \"Compiled CLI plus selected libmodbus/libmodbuspp version\"\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "platforms"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"Linux\": {\n    \"needs\": \"write access; DejaVu/approved font for Unicode PDF\",\n    \"runtime\": \"Python 3.10+; ReportLab optional for PDF\",\n    \"status\": \"see verification.md\"\n  },\n  \"Windows\": {\n    \"needs\": \"write access to chosen output; font for PDF\",\n    \"runtime\": \"Python 3.10+; ReportLab optional for PDF\",\n    \"status\": \"see verification.md\"\n  },\n  \"actual_event_hosts\": \"not tested\",\n  \"upstream_tools\": \"use existing installer/runtime evidence\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "preflight",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\future-output",
+        "--require",
+        "C:\\Users\\sebastian.solberg\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"checks\": {\n    \"dependency_1\": true,\n    \"free_space\": true,\n    \"new_destination\": true,\n    \"parent_writable\": true,\n    \"platform\": true,\n    \"python_3_10\": true\n  },\n  \"event_approved\": false,\n  \"installed_or_executed\": false,\n  \"platform\": \"windows\",\n  \"ready\": true\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "intake",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\request.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"acceptance\": \"All supplied fields visible\",\n  \"backup\": \"Backup\",\n  \"confidence\": 3,\n  \"dependencies\": [],\n  \"effort\": 2,\n  \"frequency\": 3,\n  \"id\": \"request-9ef5903540d04772\",\n  \"input\": \"Invented metadata\",\n  \"kind\": \"documentation\",\n  \"output\": \"Reviewable draft\",\n  \"owner\": \"Author\",\n  \"priority_basis\": \"value * frequency * confidence / (effort * risk); estimates, not measured gains\",\n  \"priority_score\": 9.0,\n  \"problem\": \"Avoid retyping synthetic Modbus preparation notes\",\n  \"reuse_check\": \"existing catalog searched; user must justify duplicate development or coverage gap\",\n  \"reuse_query\": \"modbus\",\n  \"reuse_results\": [\n    \"TOOL-013\",\n    \"TOOL-014\",\n    \"TOOL-015\",\n    \"TOOL-016\",\n    \"TOOL-038\"\n  ],\n  \"reviewer\": \"Reviewer\",\n  \"revision\": 1,\n  \"risk\": 2,\n  \"updated_at\": \"2026-10-15T20:57:30+00:00\",\n  \"user\": \"Training operator\",\n  \"value\": 4\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "decision",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\decision.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"alternatives\": [\n    \"duplicate wrapper\"\n  ],\n  \"choice\": \"accepted\",\n  \"id\": \"decision-40a31a81b0c24704\",\n  \"owner\": \"Exercise owner\",\n  \"reason\": \"Existing capability covers invented task\",\n  \"revision\": 1,\n  \"topic\": \"Synthetic tool choice\",\n  \"updated_at\": \"2026-10-15T20:57:31+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "owner",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "TOOL-013",
+        "--primary",
+        "Author",
+        "--backup",
+        "Backup",
+        "--reviewer",
+        "Reviewer"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"backup\": \"Backup\",\n  \"id\": \"TOOL-013\",\n  \"owner\": \"Author\",\n  \"reviewer\": \"Reviewer\",\n  \"revision\": 1,\n  \"status\": \"assigned\",\n  \"updated_at\": \"2026-10-15T20:57:31+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "scaffold",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-tool",
+        "--name",
+        "synthetic_helper",
+        "--owner",
+        "Training author"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"METADATA.json\": \"79968fc6bfe2e87b61294be7a6eed987abb9c06fbac03b89eceeab44eed6bff6\",\n  \"RUNBOOK.md\": \"1195ac5d0c1c49fb36f0707ac5332ec60abad54566543b7d2e81668e7e55a4cf\",\n  \"helpers.py\": \"d66c86e60dba06bb1f3c1eacb1c74ee9d373731c7d2dfef04ab8f7f40959f6fa\",\n  \"tool.py\": \"aa39429d83d4d710ac92c445a4a849ef6c1d54c4412bb820e81cee3a83de4b23\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "check-docs",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-tool"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"checks\": {\n    \"declared_options\": true,\n    \"declared_status_codes\": true,\n    \"runbook_options\": true,\n    \"version\": true\n  },\n  \"consistent\": true,\n  \"executed\": false,\n  \"limits\": \"Declarations/help options only; no claim that every tool behavior is verified\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "check-links"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"consistent\": true,\n  \"issues\": [],\n  \"network_used\": false,\n  \"references\": 46\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "plan",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\plan.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"approved_targets\": [\n    \"192.0.2.10\"\n  ],\n  \"command\": \"synthetic-preview --token=[REDACTED]\",\n  \"destination\": \"C:\\\\Users\\\\sebastian.solberg\\\\.codex\\\\.chatgpt-projects\\\\g-p-6acfeaef10c4819195f163da5efbcba5\\\\output\\\\workbench\\\\future-output\",\n  \"discovered\": [\n    \"192.0.2.11\"\n  ],\n  \"effects\": \"Preview only\",\n  \"excluded_targets\": [],\n  \"executed\": false,\n  \"id\": \"plan-e66cec86af674a81\",\n  \"input_sha256\": \"8058df3306d85acda1cf48b5bee1c359c033465288c0ce57e0e36f35de8cbee2\",\n  \"limits\": \"No target operation\",\n  \"plan_sha256\": \"1186b465f9fc5c158a129481c245123d029f2e614fd4349f87b498f9002b2ed4\",\n  \"profile\": \"manual-example-v1\",\n  \"revision\": 1,\n  \"scope_ref\": \"Synthetic SOW v1 (not authorization)\",\n  \"status\": \"preview\",\n  \"targets\": [\n    \"192.0.2.10\"\n  ],\n  \"updated_at\": \"2026-10-15T20:57:33+00:00\",\n  \"validated\": true,\n  \"validation_basis\": \"operator-supplied scope metadata, not authorization\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "revalidate",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "plan-e66cec86af674a81",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\current.json",
+        "--reviewer",
+        "Synthetic reviewer"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"approved_targets\": [\n    \"192.0.2.10\"\n  ],\n  \"changed_since_preview\": false,\n  \"command\": \"synthetic-preview --token=[REDACTED]\",\n  \"current_scope_sha256\": \"6df6e803b2ea7f7ed0855968d4c301dc9bba8aad3aa63da3c470966f7be4f14b\",\n  \"destination\": \"C:\\\\Users\\\\sebastian.solberg\\\\.codex\\\\.chatgpt-projects\\\\g-p-6acfeaef10c4819195f163da5efbcba5\\\\output\\\\workbench\\\\future-output\",\n  \"discovered\": [\n    \"192.0.2.11\"\n  ],\n  \"effects\": \"Preview only\",\n  \"excluded_targets\": [],\n  \"executed\": false,\n  \"id\": \"plan-e66cec86af674a81\",\n  \"input_sha256\": \"8058df3306d85acda1cf48b5bee1c359c033465288c0ce57e0e36f35de8cbee2\",\n  \"limits\": \"No target operation\",\n  \"plan_sha256\": \"1186b465f9fc5c158a129481c245123d029f2e614fd4349f87b498f9002b2ed4\",\n  \"profile\": \"manual-example-v1\",\n  \"revalidated_by\": \"Synthetic reviewer\",\n  \"revision\": 2,\n  \"scope_ref\": \"Synthetic SOW v1 (not authorization)\",\n  \"status\": \"preview\",\n  \"targets\": [\n    \"192.0.2.10\"\n  ],\n  \"updated_at\": \"2026-10-15T20:57:33+00:00\",\n  \"validated\": true,\n  \"validation_basis\": \"operator-supplied scope metadata, not authorization\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "run-record",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--tool",
+        "Synthetic success",
+        "--version",
+        "fixture-1",
+        "--operator",
+        "Exercise author",
+        "--status",
+        "success",
+        "--limitations",
+        "Invented outcome; no target testing occurred",
+        "--scope-ref",
+        "Synthetic scope",
+        "--evidence-ref",
+        "E-SYNTHETIC-CLI",
+        "--exit-code",
+        "0"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"data_category\": \"synthetic\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": 0,\n  \"id\": \"run-19dd7231e6814fe6\",\n  \"kind\": \"manual\",\n  \"limitations\": \"Invented outcome; no target testing occurred\",\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"revision\": 2,\n  \"scope_ref\": \"Synthetic scope\",\n  \"stage\": \"tool\",\n  \"stages\": {\n    \"tool\": {\n      \"diagnostic_code\": \"recorded\",\n      \"exit_code\": 0,\n      \"status\": \"success\",\n      \"updated_at\": \"2026-10-15T20:57:34+00:00\"\n    }\n  },\n  \"status\": \"success\",\n  \"tool\": \"Synthetic success\",\n  \"tool_version\": \"fixture-1\",\n  \"updated_at\": \"2026-10-15T20:57:34+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "run-record",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--tool",
+        "Synthetic partial",
+        "--version",
+        "fixture-1",
+        "--operator",
+        "Exercise author",
+        "--status",
+        "partial",
+        "--limitations",
+        "Invented outcome; no target testing occurred",
+        "--scope-ref",
+        "Synthetic scope",
+        "--evidence-ref",
+        "E-SYNTHETIC-CLI",
+        "--exit-code",
+        "0"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"data_category\": \"synthetic\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": 0,\n  \"id\": \"run-414fccce497743a5\",\n  \"kind\": \"manual\",\n  \"limitations\": \"Invented outcome; no target testing occurred\",\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"revision\": 2,\n  \"scope_ref\": \"Synthetic scope\",\n  \"stage\": \"tool\",\n  \"stages\": {\n    \"tool\": {\n      \"diagnostic_code\": \"recorded\",\n      \"exit_code\": 0,\n      \"status\": \"partial\",\n      \"updated_at\": \"2026-10-15T20:57:34+00:00\"\n    }\n  },\n  \"status\": \"partial\",\n  \"tool\": \"Synthetic partial\",\n  \"tool_version\": \"fixture-1\",\n  \"updated_at\": \"2026-10-15T20:57:34+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "run-record",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--tool",
+        "Synthetic failed",
+        "--version",
+        "fixture-1",
+        "--operator",
+        "Exercise author",
+        "--status",
+        "failed",
+        "--limitations",
+        "Invented outcome; no target testing occurred",
+        "--scope-ref",
+        "Synthetic scope",
+        "--evidence-ref",
+        "E-SYNTHETIC-CLI",
+        "--exit-code",
+        "7"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"data_category\": \"synthetic\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": 7,\n  \"id\": \"run-21ab8cad4ed1426b\",\n  \"kind\": \"manual\",\n  \"limitations\": \"Invented outcome; no target testing occurred\",\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"revision\": 2,\n  \"scope_ref\": \"Synthetic scope\",\n  \"stage\": \"tool\",\n  \"stages\": {\n    \"tool\": {\n      \"diagnostic_code\": \"recorded\",\n      \"exit_code\": 7,\n      \"status\": \"failed\",\n      \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n    }\n  },\n  \"status\": \"failed\",\n  \"tool\": \"Synthetic failed\",\n  \"tool_version\": \"fixture-1\",\n  \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "run-record",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--tool",
+        "Synthetic cancelled",
+        "--version",
+        "fixture-1",
+        "--operator",
+        "Exercise author",
+        "--status",
+        "cancelled",
+        "--limitations",
+        "Invented outcome; no target testing occurred",
+        "--scope-ref",
+        "Synthetic scope",
+        "--evidence-ref",
+        "E-SYNTHETIC-CLI",
+        "--exit-code",
+        "130"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"data_category\": \"synthetic\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": 130,\n  \"id\": \"run-bab2097963b645bc\",\n  \"kind\": \"manual\",\n  \"limitations\": \"Invented outcome; no target testing occurred\",\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"revision\": 2,\n  \"scope_ref\": \"Synthetic scope\",\n  \"stage\": \"tool\",\n  \"stages\": {\n    \"tool\": {\n      \"diagnostic_code\": \"recorded\",\n      \"exit_code\": 130,\n      \"status\": \"cancelled\",\n      \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n    }\n  },\n  \"status\": \"cancelled\",\n  \"tool\": \"Synthetic cancelled\",\n  \"tool_version\": \"fixture-1\",\n  \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "run-record",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--tool",
+        "Synthetic not_run",
+        "--version",
+        "fixture-1",
+        "--operator",
+        "Exercise author",
+        "--status",
+        "not_run",
+        "--limitations",
+        "Invented outcome; no target testing occurred",
+        "--scope-ref",
+        "Synthetic scope",
+        "--evidence-ref",
+        "E-SYNTHETIC-CLI"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"data_category\": \"synthetic\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": null,\n  \"id\": \"run-15767639e1264b1e\",\n  \"kind\": \"manual\",\n  \"limitations\": \"Invented outcome; no target testing occurred\",\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"revision\": 2,\n  \"scope_ref\": \"Synthetic scope\",\n  \"stage\": \"tool\",\n  \"stages\": {\n    \"tool\": {\n      \"diagnostic_code\": \"recorded\",\n      \"exit_code\": null,\n      \"status\": \"not_run\",\n      \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n    }\n  },\n  \"status\": \"not_run\",\n  \"tool\": \"Synthetic not_run\",\n  \"tool_version\": \"fixture-1\",\n  \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "event",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "run-19dd7231e6814fe6",
+        "--stage",
+        "import",
+        "--status",
+        "failed",
+        "--code",
+        "synthetic_format_failure",
+        "--exit-code",
+        "2"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"action\": \"import\",\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"diagnostic_code\": \"synthetic_format_failure\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": 2,\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"reference\": \"run-19dd7231e6814fe6\",\n  \"scope_ref\": \"Synthetic scope\",\n  \"sequence\": 16,\n  \"stage\": \"import\",\n  \"status\": \"failed\",\n  \"time\": \"2026-10-15T20:57:36+00:00\",\n  \"tool\": \"Synthetic success\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "event",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "run-19dd7231e6814fe6",
+        "--stage",
+        "render",
+        "--status",
+        "failed",
+        "--code",
+        "synthetic_render_failure",
+        "--exit-code",
+        "1"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"action\": \"render\",\n  \"binary_sha256\": \"unknown\",\n  \"config_sha256\": \"unknown\",\n  \"diagnostic_code\": \"synthetic_render_failure\",\n  \"evidence_refs\": [\n    \"E-SYNTHETIC-CLI\"\n  ],\n  \"exit_code\": 1,\n  \"operator\": \"Exercise author\",\n  \"plan\": null,\n  \"profile\": \"manual\",\n  \"reference\": \"run-19dd7231e6814fe6\",\n  \"scope_ref\": \"Synthetic scope\",\n  \"sequence\": 17,\n  \"stage\": \"render\",\n  \"status\": \"failed\",\n  \"time\": \"2026-10-15T20:57:36+00:00\",\n  \"tool\": \"Synthetic success\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "resume",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "run-21ab8cad4ed1426b",
+        "--disposition",
+        "skip",
+        "--actor",
+        "Synthetic author"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"actor\": \"Synthetic author\",\n  \"disposition\": \"skip\",\n  \"executed\": false,\n  \"id\": \"note-9953b5905d3b4550\",\n  \"kind\": \"resume_decision\",\n  \"next_action\": \"Retain coverage limitation\",\n  \"revision\": 1,\n  \"run\": \"run-21ab8cad4ed1426b\",\n  \"updated_at\": \"2026-10-15T20:57:36+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "preview-import",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\tooling\\reporting\\examples\\report-marked.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"data_category\": \"synthetic\",\n  \"findings\": 2,\n  \"limitations\": [\n    \"No real systems, credentials, client data, or actual CPTC environment were tested.\",\n    \"Candidate observations require human validation; this report is not an event submission.\",\n    \"CVE/CVSS values are intentionally omitted because no public vulnerability match was established.\",\n    \"Handling tags in this invented fixture demonstrate inheritance only; no actual personal or financial information is included.\"\n  ],\n  \"markings\": \"ORCON//PROPIN//PII Red//FI\",\n  \"mutated\": false,\n  \"schema\": \"1.2\",\n  \"source_hashes\": \"Supplied evidence hashes remain unverified; no evidence file opened\",\n  \"source_sha256\": \"36bf23c09401943eda0177c20cbe240e4cb77050b4ee10f9d80125d149b71cdd\",\n  \"statuses\": [\n    \"confirmed\",\n    \"candidate\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "import-report",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\tooling\\reporting\\examples\\report-marked.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"duplicate\": false,\n  \"findings\": 2,\n  \"human_review\": \"pending\",\n  \"id\": \"import-36bf23c09401943eda01\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "import-report",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\tooling\\reporting\\examples\\report-marked.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"duplicate\": true,\n  \"id\": \"import-36bf23c09401943eda01\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "prefill",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "import-36bf23c09401943eda01",
+        "F-001"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"author_must_verify\": [\n    \"business_impact\",\n    \"severity\",\n    \"remediation\",\n    \"retest_steps\"\n  ],\n  \"confirmed_by_template\": false,\n  \"finding\": {\n    \"assets\": [\n      \"training.example.test / application error handler\"\n    ],\n    \"business_impact\": \"In an actual deployment, unnecessary implementation details could aid reconnaissance. The demonstration does not establish access to client records or an exploitation chain.\",\n    \"description\": \"A synthetic error-response fixture includes an internal path and application component names. The training analyst marked this finding confirmed after reviewing the fixture. This status describes the exercise only.\",\n    \"evidence\": [\n      {\n        \"artifact\": \"evidence/synthetic-error-response.txt\",\n        \"collector\": \"Training analyst\",\n        \"id\": \"E-001\",\n        \"markings\": [\n          \"FI\"\n        ],\n        \"observed_at\": \"2026-10-14T14:00:00-04:00\",\n        \"summary\": \"Invented response excerpt: error at /opt/training/app/handler.py. No actual host or file was accessed.\",\n        \"tool\": \"synthetic-response-fixture\",\n        \"tool_version\": \"1.0\"\n      }\n    ],\n    \"id\": \"F-001\",\n    \"markings\": [\n      \"PROPIN\"\n    ],\n    \"remediation\": \"Configure the application error handler to return a generic message and correlation ID. Keep diagnostic paths and stack traces in access-controlled application logs. Add regression coverage for unauthenticated error responses.\",\n    \"retest_steps\": [\n      \"In an authorized test environment, trigger the same error and verify the response contains only the generic message and correlation ID.\",\n      \"Confirm authorized operators can still correlate the ID with protected diagnostic logs.\"\n    ],\n    \"severity\": \"medium\",\n    \"severity_rationale\": \"In the training scenario, internal paths and component details are exposed without authentication; no sensitive records or access gain were demonstrated.\",\n    \"status\": \"candidate\",\n    \"title\": \"Unnecessary internal details in a public error response\",\n    \"validation_steps\": [\n      \"2026-10-14T14:00:00-04:00: reviewed the synthetic application response fixture.\",\n      \"Compared the response against the training requirement that public errors contain only a correlation ID.\"\n    ]\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "duplicates",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "import-36bf23c09401943eda01"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "review",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "import-36bf23c09401943eda01",
+        "F-001",
+        "--decision",
+        "accept",
+        "--reason",
+        "Automated exercise of synthetic review gate only; actual human review remains required",
+        "--reviewer",
+        "Synthetic test actor"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"decision\": \"accept\",\n  \"finding\": \"F-001\",\n  \"id\": \"review-bab6295844254cd7\",\n  \"import\": \"import-36bf23c09401943eda01\",\n  \"reason\": \"Automated exercise of synthetic review gate only; actual human review remains required\",\n  \"reviewer\": \"Synthetic test actor\",\n  \"updated_at\": \"2026-10-15T20:57:39+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "complete",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "import-36bf23c09401943eda01",
+        "--rubric",
+        "scope"
+      ],
+      "exit": 3,
+      "stdout": "{\n  \"event_submission_approved\": false,\n  \"issues\": [\n    {\n      \"code\": \"human_review_pending\",\n      \"finding\": \"F-002\"\n    }\n  ],\n  \"ready_for_reviewed_training_copy\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "incident",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\incident.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"actor\": \"Exercise author\",\n  \"automatically_notified\": false,\n  \"cleanup\": \"pending\",\n  \"containment\": \"pending\",\n  \"id\": \"incident-52560a14c0054ada\",\n  \"markings\": [\n    \"FI\"\n  ],\n  \"notification\": \"pending\",\n  \"revision\": 1,\n  \"run\": \"run-21ab8cad4ed1426b\",\n  \"stop\": \"No target process started\",\n  \"summary\": \"Invented failure; no real incident or notification\",\n  \"updated_at\": \"2026-10-15T20:57:39+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "retest",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\retest.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"actor\": \"Exercise author\",\n  \"evidence_verification\": \"human supplied references, not automatically proven\",\n  \"finding\": \"F-001\",\n  \"id\": \"retest-344d431ebd27469e\",\n  \"revision\": 1,\n  \"status\": \"recommended\",\n  \"summary\": \"Invented recommendation; fix not applied\",\n  \"updated_at\": \"2026-10-15T20:57:40+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "handling",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-inputs\\handling.json"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"handling\": {\n    \"custodian\": \"Synthetic exercise owner\",\n    \"deletion\": \"No automatic deletion\",\n    \"export\": \"Synthetic files only\",\n    \"retention\": \"Preparation example only; actual policy unresolved\"\n  },\n  \"performed_transfer_or_deletion\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "snapshot",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "import-36bf23c09401943eda01",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\pdf\\workbench-demo",
+        "--pdf"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"changes\": {\n    \"added\": [\n      \"F-001\",\n      \"F-002\"\n    ],\n    \"changed\": [],\n    \"engagement_changed\": false,\n    \"incidents\": {\n      \"added\": [\n        \"incident-52560a14c0054ada\"\n      ],\n      \"changed\": [],\n      \"removed\": []\n    },\n    \"markings_changed\": false,\n    \"removed\": [],\n    \"retests\": {\n      \"added\": [\n        \"retest-344d431ebd27469e\"\n      ],\n      \"changed\": [],\n      \"removed\": []\n    },\n    \"runs\": {\n      \"added\": [\n        \"run-15767639e1264b1e\",\n        \"run-19dd7231e6814fe6\",\n        \"run-21ab8cad4ed1426b\",\n        \"run-414fccce497743a5\",\n        \"run-bab2097963b645bc\"\n      ],\n      \"changed\": [],\n      \"removed\": []\n    }\n  },\n  \"context\": {\n    \"incidents\": {\n      \"incident-52560a14c0054ada\": \"a046edfef1fbd0c5014ab0df746802542de356d914e34200588d87bcbd109e67\"\n    },\n    \"retests\": {\n      \"retest-344d431ebd27469e\": \"c3e8a2f27d3aad8ee94535005f6555861927d4a81035b82808edeb4e2e0d5eda\"\n    },\n    \"runs\": {\n      \"run-15767639e1264b1e\": \"35750d0e51485e54c3fa2fc50aaec38936f2f36554ab0fe7e9c40f2ab6a7b8d9\",\n      \"run-19dd7231e6814fe6\": \"ff58fd8d419ac5ff6fd51d0fac092e43669d77e8bbbd18d0460a9ff61993a695\",\n      \"run-21ab8cad4ed1426b\": \"d0dd2d8899f9e397ce9958ca337062cd6f6026688ad893b44037a61bcb181d48\",\n      \"run-414fccce497743a5\": \"aa65701587ba99dff04d5a837d729f25eb761fc2dda44df1cea1d0840a34c258\",\n      \"run-bab2097963b645bc\": \"3ef683400fdb6687d44d7f653d1d44edbfe86526821e77f8e6c90c5957f54745\"\n    }\n  },\n  \"destination\": \"C:\\\\Users\\\\sebastian.solberg\\\\.codex\\\\.chatgpt-projects\\\\g-p-6acfeaef10c4819195f163da5efbcba5\\\\output\\\\pdf\\\\workbench-demo\",\n  \"id\": \"snapshot-38cdf0ce68a54894\",\n  \"import\": \"import-36bf23c09401943eda01\",\n  \"manifest\": {\n    \"appendix_api\": \"cptc.appendix/1.0\",\n    \"appendix_sha256\": \"42eaa95a9f35d514287300770f19f82f10010428ea9e10f37be137ad2c74c890\",\n    \"artifacts\": {\n      \"changes.json\": \"fac1e8675ac134e75666051160416a36ac6c958cddb46744babb4cf663a0a48b\",\n      \"input.json\": \"dec136336094084d6a4506a6d8ab520ef51dc5beedc2cd8cba813687b03ab7e1\",\n      \"report.md\": \"04d635a0cac39501936c59b18e0070c9af30fd4b8bc1000ed7c307dfb8df9b3b\",\n      \"report.pdf\": \"3228f54fef721ea3bd69cf46f0f37080676448e8369d883131336cb2bfc00ee2\"\n    },\n    \"classification\": \"SYNTHETIC TRAINING DATA\",\n    \"classification_inheritance\": \"structured\",\n    \"cvss_recalculated\": false,\n    \"data_category\": \"synthetic\",\n    \"effective_markings\": \"ORCON//PROPIN//PII Red//FI\",\n    \"evidence_files_opened\": false,\n    \"generator_version\": \"0.3.1\",\n    \"imported_export_sha256\": \"36bf23c09401943eda0177c20cbe240e4cb77050b4ee10f9d80125d149b71cdd\",\n    \"input_sha256\": \"dec136336094084d6a4506a6d8ab520ef51dc5beedc2cd8cba813687b03ab7e1\",\n    \"marking_policy\": \"cptc.handling/1.0\",\n    \"review_label\": \"draft\",\n    \"schema_version\": \"1.2\",\n    \"source_schema_version\": \"1.2\",\n    \"workbench_version\": \"1.0.0\",\n    \"workspace_revision\": 24\n  },\n  \"report\": {\n    \"classification\": \"SYNTHETIC TRAINING DATA\",\n    \"data_category\": \"synthetic\",\n    \"engagement\": {\n      \"client\": \"Synthetic Training Organization\",\n      \"executive_summary\": \"Two synthetic observations demonstrate the workflow: one confirmed training finding about unnecessary information exposure and one candidate requiring validation. The generator carries supplied evidence and remediation into a draft report; it makes no independent vulnerability judgments.\",\n      \"id\": \"TRAINING-001\",\n      \"limitations\": [\n        \"No real systems, credentials, client data, or actual CPTC environment were tested.\",\n        \"Candidate observations require human validation; this report is not an event submission.\",\n        \"CVE/CVSS values are intentionally omitted because no public vulnerability match was established.\",\n        \"Handling tags in this invented fixture demonstrate inheritance only; no actual personal or financial information is included.\",\n        \"Workbench snapshot; 0 explicitly rejected findings omitted; imported source preserved. Run results are operator-supplied, not complete assessment proof.\"\n      ],\n      \"methodology\": \"This report demonstrates importing structured findings from future team-script adapters. The observations and evidence below are invented training data. Analysts would verify actual findings against authorized evidence before submission.\",\n      \"methodology_sections\": {\n        \"cleanup\": \"No target state was changed in this exercise. Remediation and retest actions below are proposed checks for an authorized environment, not completed work.\",\n        \"information_gathering\": \"The fixture author defined a synthetic web application and two invented response examples. No customer inventory or scope was inferred.\",\n        \"service_enumeration\": \"Only synthetic response metadata was reviewed. No port scan, active request, or service discovery was performed.\",\n        \"validation\": \"The training analyst reviewed each fixture and retained the supplied confirmed or candidate status. No exploitation or access gain is claimed.\"\n      },\n      \"objective\": \"Demonstrate a structured assessment report using invented observations. No actual client, host, or network was assessed.\",\n      \"recommendations\": [\n        \"In the synthetic scenario, keep detailed diagnostics in protected logs and return a generic public error with a correlation ID.\",\n        \"Validate the complete session flow before deciding whether the candidate cookie configuration needs remediation.\"\n      ],\n      \"report_date\": \"2026-10-14\",\n      \"scope\": [\n        \"Synthetic web application at training.example.test\",\n        \"Demonstration observations only; no network actions were performed\"\n      ],\n      \"team\": \"Training assessment team\"\n    },\n    \"findings\": [\n      {\n        \"assets\": [\n          \"training.example.test / application error handler\"\n        ],\n        \"business_impact\": \"In an actual deployment, unnecessary implementation details could aid reconnaissance. The demonstration does not establish access to client records or an exploitation chain.\",\n        \"description\": \"A synthetic error-response fixture includes an internal path and application component names. The training analyst marked this finding confirmed after reviewing the fixture. This status describes the exercise only.\",\n        \"evidence\": [\n          {\n            \"artifact\": \"evidence/synthetic-error-response.txt\",\n            \"collector\": \"Training analyst\",\n            \"id\": \"E-001\",\n            \"markings\": [\n              \"FI\"\n            ],\n            \"observed_at\": \"2026-10-14T14:00:00-04:00\",\n            \"summary\": \"Invented response excerpt: error at /opt/training/app/handler.py. No actual host or file was accessed.\",\n            \"tool\": \"synthetic-response-fixture\",\n            \"tool_version\": \"1.0\"\n          }\n        ],\n        \"id\": \"F-001\",\n        \"markings\": [\n          \"PROPIN\"\n        ],\n        \"remediation\": \"Configure the application error handler to return a generic message and correlation ID. Keep diagnostic paths and stack traces in access-controlled application logs. Add regression coverage for unauthenticated error responses.\",\n        \"retest_steps\": [\n          \"In an authorized test environment, trigger the same error and verify the response contains only the generic message and correlation ID.\",\n          \"Confirm authorized operators can still correlate the ID with protected diagnostic logs.\"\n        ],\n        \"severity\": \"medium\",\n        \"severity_rationale\": \"In the training scenario, internal paths and component details are exposed without authentication; no sensitive records or access gain were demonstrated.\",\n        \"status\": \"confirmed\",\n        \"title\": \"Unnecessary internal details in a public error response\",\n        \"validation_steps\": [\n          \"2026-10-14T14:00:00-04:00: reviewed the synthetic application response fixture.\",\n          \"Compared the response against the training requirement that public errors contain only a correlation ID.\"\n        ]\n      },\n      {\n        \"assets\": [\n          \"training.example.test / session creation\"\n        ],\n        \"business_impact\": \"If confirmed in context, weaker cookie handling could reduce protection against certain session attacks. No session compromise is claimed.\",\n        \"description\": \"A training fixture suggests that one session-cookie attribute may be missing. The excerpt alone does not prove a vulnerability or an exploitable session flow.\",\n        \"evidence\": [\n          {\n            \"collector\": \"Training analyst\",\n            \"id\": \"E-002\",\n            \"markings\": [\n              \"PII Red\"\n            ],\n            \"observed_at\": \"2026-10-14T14:10:00-04:00\",\n            \"summary\": \"Invented header excerpt: Set-Cookie: training_session=[REDACTED]; Path=/. This is a fabricated value, not a credential.\",\n            \"tool\": \"synthetic-header-fixture\",\n            \"tool_version\": \"1.0\"\n          }\n        ],\n        \"id\": \"F-002\",\n        \"markings\": [\n          \"PII\"\n        ],\n        \"remediation\": \"First validate the complete session flow and identify the intended browser security controls. If a required cookie attribute is missing, configure it in the session middleware and verify application compatibility.\",\n        \"retest_steps\": [\n          \"Review session creation and renewal responses in the authorized environment.\",\n          \"Verify the intended attributes persist throughout the flow and document any compensating controls.\"\n        ],\n        \"severity\": \"low\",\n        \"severity_rationale\": \"A synthetic header suggests a missing attribute, but the full session flow and compensating controls have not been validated.\",\n        \"status\": \"candidate\",\n        \"title\": \"Candidate: incomplete session-cookie configuration\",\n        \"validation_steps\": [\n          \"2026-10-14T14:10:00-04:00: reviewed only the synthetic header excerpt.\",\n          \"Full session behavior, transport settings, and compensating controls remain untested.\"\n        ]\n      }\n    ],\n    \"markings\": [\n      \"ORCON\",\n      \"PROPIN\",\n      \"PII Red\",\n      \"FI\"\n    ],\n    \"schema_version\": \"1.2\"\n  },\n  \"revision\": 1,\n  \"status\": \"draft\",\n  \"updated_at\": \"2026-10-15T20:57:41+00:00\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "status",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "--destination",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-status"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"acceptance\": {\n    \"event\": \"pending\",\n    \"implementation\": \"see verification\",\n    \"user\": \"pending\"\n  },\n  \"counts\": {\n    \"conflicts\": 0,\n    \"decisions\": 1,\n    \"imports\": 1,\n    \"incidents\": 1,\n    \"merges\": 0,\n    \"metrics\": 0,\n    \"notes\": 1,\n    \"owners\": 1,\n    \"plans\": 1,\n    \"requests\": 1,\n    \"retests\": 1,\n    \"reviews\": 1,\n    \"runs\": 5,\n    \"snapshots\": 1\n  },\n  \"data_category\": \"synthetic\",\n  \"log_truncated\": false,\n  \"markings\": [\n    \"ORCON\",\n    \"PROPIN\",\n    \"PII Red\",\n    \"FI\"\n  ],\n  \"next_action\": \"Resolve blockers, review candidates and inspect actual records; no automatic dispatch\",\n  \"records\": {\n    \"incidents\": [\n      {\n        \"age_seconds\": 3,\n        \"id\": \"incident-52560a14c0054ada\",\n        \"revision\": 1,\n        \"status\": \"recorded\",\n        \"updated_at\": \"2026-10-15T20:57:39+00:00\"\n      }\n    ],\n    \"owners\": [\n      {\n        \"age_seconds\": 11,\n        \"id\": \"TOOL-013\",\n        \"revision\": 1,\n        \"status\": \"assigned\",\n        \"updated_at\": \"2026-10-15T20:57:31+00:00\"\n      }\n    ],\n    \"requests\": [\n      {\n        \"age_seconds\": 12,\n        \"id\": \"request-9ef5903540d04772\",\n        \"revision\": 1,\n        \"status\": \"recorded\",\n        \"updated_at\": \"2026-10-15T20:57:30+00:00\"\n      }\n    ],\n    \"runs\": [\n      {\n        \"age_seconds\": 7,\n        \"id\": \"run-15767639e1264b1e\",\n        \"revision\": 2,\n        \"status\": \"not_run\",\n        \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n      },\n      {\n        \"age_seconds\": 6,\n        \"id\": \"run-19dd7231e6814fe6\",\n        \"revision\": 4,\n        \"status\": \"success\",\n        \"updated_at\": \"2026-10-15T20:57:36+00:00\"\n      },\n      {\n        \"age_seconds\": 7,\n        \"id\": \"run-21ab8cad4ed1426b\",\n        \"revision\": 2,\n        \"status\": \"failed\",\n        \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n      },\n      {\n        \"age_seconds\": 8,\n        \"id\": \"run-414fccce497743a5\",\n        \"revision\": 2,\n        \"status\": \"partial\",\n        \"updated_at\": \"2026-10-15T20:57:34+00:00\"\n      },\n      {\n        \"age_seconds\": 7,\n        \"id\": \"run-bab2097963b645bc\",\n        \"revision\": 2,\n        \"status\": \"cancelled\",\n        \"updated_at\": \"2026-10-15T20:57:35+00:00\"\n      }\n    ],\n    \"snapshots\": [\n      {\n        \"age_seconds\": 1,\n        \"id\": \"snapshot-38cdf0ce68a54894\",\n        \"revision\": 1,\n        \"status\": \"draft\",\n        \"updated_at\": \"2026-10-15T20:57:41+00:00\"\n      }\n    ]\n  },\n  \"revision\": 25,\n  \"updated_at\": \"2026-10-15T20:57:41+00:00\",\n  \"version\": \"1.0.0\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "handoff",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\cloud-handoff",
+        "--reviewer",
+        "Synthetic export exercise",
+        "--import-id",
+        "import-36bf23c09401943eda01"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"files\": [\n    \"handoff.json\",\n    \"handoff.md\",\n    \"manifest.json\"\n  ],\n  \"markings\": [\n    \"ORCON\",\n    \"PROPIN\",\n    \"PII Red\",\n    \"FI\"\n  ],\n  \"next_action\": \"Inspect synthetic content; explicitly approve export to create files\",\n  \"preview\": true,\n  \"source_sha256\": \"d8c3c2a6bc362a51a8ed90f7bf218dedacaeee16b652d6ef135c2733079c410d\",\n  \"written\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "handoff",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\demo-session",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\output\\workbench\\cloud-handoff",
+        "--reviewer",
+        "Synthetic export exercise",
+        "--import-id",
+        "import-36bf23c09401943eda01",
+        "--approve-export"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"artifacts\": {\n    \"handoff.json\": \"2539e66c242f817db3230edc97236ffbfcc8c63767d5f1fe38ae31a566e8ed8d\",\n    \"handoff.md\": \"b307538419e2c00792c1dfd0d9797fe1f4b25f1f1b2a6e0a07f0bdff4b986eae\",\n    \"manifest.json\": \"eb419954da299f73d53b341497a9624153c7be7f8252ba408ab7bd84c6552ab5\"\n  },\n  \"data_category\": \"synthetic\",\n  \"transferred\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "integrity",
+        "C:\\Users\\sebastian.solberg\\.codex\\.chatgpt-projects\\g-p-6acfeaef10c4819195f163da5efbcba5\\tooling\\reporting\\examples\\report-marked.json",
+        "36bf23c09401943eda0177c20cbe240e4cb77050b4ee10f9d80125d149b71cdd"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"authenticity_proven\": false,\n  \"bytes\": 6869,\n  \"computed_sha256\": \"36bf23c09401943eda0177c20cbe240e4cb77050b4ee10f9d80125d149b71cdd\",\n  \"matches\": true\n}\n",
+      "stderr": ""
+    }
+  ],
+  "limits": "Automated exercise; not actual human, event, operational or cloud acceptance"
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.2",
+  "data_category": "synthetic",
+  "classification": "SYNTHETIC TRAINING DATA",
+  "engagement": {
+    "id": "TRAINING-001",
+    "client": "Synthetic Training Organization",
+    "team": "Training assessment team",
+    "report_date": "2026-10-14",
+    "objective": "Demonstrate a structured assessment report using invented observations. No actual client, host, or network was assessed.",
+    "scope": [
+      "Synthetic web application at training.example.test",
+      "Demonstration observations only; no network actions were performed"
+    ],
+    "methodology": "Only an empty synthetic report was formatted; no assessment activity was performed.",
+    "executive_summary": "No findings were supplied. No conclusion about system security or assessment coverage is established.",
+    "limitations": [
+      "No real systems, credentials, client data, or actual CPTC environment were tested.",
+      "Candidate observations require human validation; this report is not an event submission.",
+      "CVE/CVSS values are intentionally omitted because no public vulnerability match was established.",
+      "Handling tags in this invented fixture demonstrate inheritance only; no actual personal or financial information is included."
+    ]
+  },
+  "findings": [],
+  "markings": [
+    "ORCON"
+  ]
+}

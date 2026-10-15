@@ -1,0 +1,12 @@
+# Word report export
+
+User request (2026-10-15): Add generation of a Word document (.docx) in addition to existing outputs. User then explicitly directed use of master, no further pull requests, and direct commits provided others' work is not significantly modified.
+
+Root owns editing in the isolated integrations/reporting-classification checkout only. Baseline master c4e01c5b8472adeeb6aa53794954e56b46eb0972; no farm/workbench branch changes are included. Existing schemas, Markdown/PDF, handling and synthetic-only gates remain. Shared project-role updates are proposed here while other chats own shared work. Sources are read-only.
+
+Current status: Word implementation, structural/function checks and independent source review complete. Commit c8f88dd57735924d6d6549064857022fdeec0056 was pushed directly to master and verified against the remote; no PR created. Separate workbench branch remains 6e22cbb43269825dc8456336a95eba403f24ff90. Native DOCX page rendering is unavailable because bundled LibreOffice is absent, so no visually verified sample is delivered. User's explicit master/no-PR direction supersedes the initial optional latest-combined-code suggestion. One git tracking setup attempt partially changed the isolated index/tree without changing HEAD; verified those bytes matched master exactly, then completed a no-track local master switch to the correct clean c4e01c5 base. No other checkout was modified.
+
+Validation notes: initial6-test Word run had one generic CLI failure; focused reproduction passed and no source bug was reproduced. Added exception diagnostics to that test; all6 then passed, followed by all42 twice and real CLI exports. No false claim of a source fix is made. Renderer first reported missing soffice.exe plus system-temp cleanup permission errors; retry with task-local temp reported only missing soffice.exe. No desktop renderer or external service used. Root README's preexisting bytes retained as a prefix, seven local links resolve, private-source/credential markers excluded, other tools untouched.
+
+[Spec](spec.md), [design](design.md), [tasks](tasks.md), [execution](execution-guide.md), [review](review.md). Implementation, structural/function verification, independent source review and authorized publication complete; native Word visual QA remains open and user acceptance remains separate. Shared role records remain proposed in this private packet for their editor. No new PR was created.
+

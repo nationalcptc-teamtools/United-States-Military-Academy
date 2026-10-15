@@ -1,0 +1,11 @@
+{
+  "scope_ref": "Synthetic SOW v1 (not authorization)",
+  "profile": "manual-example-v1",
+  "targets": [
+    "192.0.2.10"
+  ],
+  "approved_targets": [
+    "192.0.2.10"
+  ],
+  "excluded_targets": []
+}

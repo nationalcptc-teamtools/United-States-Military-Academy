@@ -1,14 +1,27 @@
-#!/bin/bash
-sudo apt update && sudo apt install -y xsltproc nmap git wkhtmltopdf python3-pip -y
-if [ ! -d vulscan ]
-then
-    git clone https://github.com/scipag/vulscan vulscan
+#!/usr/bin/env bash
+set -euo pipefail
+repo_dir="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+action=install
+args=()
+for arg in "$@"; do
+    case "$arg" in
+        --plan) action=plan ;;
+        --check) action=check ;;
+        *) args+=("$arg") ;;
+    esac
+done
+python_cmd="${CPTC_PYTHON:-python3}"
+if ! command -v "$python_cmd" >/dev/null 2>&1; then
+    if [[ "$action" != install ]] || ! command -v apt-get >/dev/null 2>&1; then
+        printf '%s\n' 'Python 3.10+ is required; preview/check never installs prerequisites.' >&2
+        exit 1
+    fi
+    if [[ "${EUID}" -eq 0 ]]; then
+        apt-get update
+        env DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-venv
+    else
+        sudo apt-get update
+        sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-venv
+    fi
 fi
-#ask if the user wants to install the AWS prowler script
-echo "Do you want to install the AWS prowler script? (y/n)"
-read answer
-if [ "$answer" != "${answer#[Yy]}" ] ;then
-    pip install prowler
-    prowler -v
-fi 
-#
+exec "$python_cmd" "$repo_dir/tooling/farmkit/install.py" "$action" "${args[@]}"

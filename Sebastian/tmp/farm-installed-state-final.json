@@ -1,0 +1,361 @@
+{
+  "schema_version": "cptc.install-state/1.0",
+  "profile": "full",
+  "options": {
+    "prowler": false,
+    "legacy_pdf": false
+  },
+  "manifest_sha256": "b7ee1aaf35391ce8468acf28741b3614972287cd4b35a7ee84894aed6f9dfe24",
+  "started_at": "2026-10-15T15:39:47.196143+00:00",
+  "complete": true,
+  "steps": [
+    "Python reporting",
+    "Python ot",
+    "Python cip",
+    "Python extended",
+    "source mbpoll",
+    "source bacnet",
+    "source lib60870",
+    "source libiec61850",
+    "source vulscan",
+    "stage linpeas.sh",
+    "stage winPEASx64.exe"
+  ],
+  "apt_packages": [
+    "ca-certificates",
+    "git",
+    "python3",
+    "python3-venv",
+    "python3-pip",
+    "build-essential",
+    "cmake",
+    "pkg-config",
+    "libmodbus-dev",
+    "nmap",
+    "xsltproc",
+    "tshark",
+    "mosquitto-clients",
+    "can-utils",
+    "ffuf",
+    "testssl.sh",
+    "smbclient",
+    "enum4linux-ng",
+    "netexec"
+  ],
+  "native": {
+    "mbpoll": {
+      "commit": "d541211d0e2451888de11c82fb1604c3d6285b1a",
+      "files": {
+        "bin/mbpoll": "665607cd62aeb1162e6c1f83d003042bb2a5918719dc92e558bab2debc4f3832"
+      },
+      "notice": "GPL-3 upstream; libmodbus supplied by distro."
+    },
+    "bacnet": {
+      "commit": "7a53f0a72a92de1621d30fc63703a29afe12bfaf",
+      "files": {
+        "bin/bacnet-readprop": "737f03662c5adb596e9289386ae0cce0d91c988685dda17a7d70a25d5361564c"
+      },
+      "notice": "GPL-with-exception core plus per-file MIT/Apache examples; source notices retained."
+    },
+    "lib60870": {
+      "commit": "7a388e3e133999e1ca77ba7521d55d074b7cd2bc",
+      "files": {
+        "lib/liblib60870.a": "3ff99abe792842499dbbf1abd471d6b87fdda57141114d3bae75075f5ba2f47c",
+        "lib/liblib60870.so.2.4.1": "a309515dcb1197d365e23a1ef9c319dcc921adc7bf684abc8f0200cc4b003dde",
+        "include/lib60870/cs104_connection.h": "a24bb12ccc9d3a319cf591ee3c1ca37fb210121d581c824277996e542841cf61"
+      },
+      "notice": "GPL-3 route, no separately acquired TLS dependency."
+    },
+    "libiec61850": {
+      "commit": "6e7a603c771d6124cd3cafea7ec38b7e0f2e7aaf",
+      "files": {
+        "lib/libiec61850.so.1.6.2": "1b59ecc69fadb276dd870a312bc22ea197af0e3bf43d7fffef485d1a531f2d98",
+        "lib/libiec61850.a": "73dd17c9defe6fc2d550351ba91125ee9290770acdfb8d6cb67ad32592783cf6",
+        "include/libiec61850/iec61850_client.h": "94c81be94605eb522b44322e903e710b748041c3ac5b4c87e6bef55253709082"
+      },
+      "notice": "GPL-3 route, no separately acquired TLS/R-GOOSE/R-SMV dependency."
+    },
+    "vulscan": {
+      "commit": "bd642ed1bc9d96795a91cdf1acd8c93ceef2d07e",
+      "files": {
+        "src/vulscan/vulscan.nse": "647ee86e659b67e1e66302e0757bfb5c36aef876b7a0176a281f203a655bd57a",
+        "src/vulscan/COPYING.TXT": "8713c815d3319221aa289498b25838ee241b19450390c933729b963e28f553ac"
+      },
+      "notice": "Upstream COPYING.TXT contains merge markers/multiple texts; NSE declares Nmap terms. No license clearance claimed. No database updater run."
+    }
+  },
+  "python_groups": {
+    "reporting": {
+      "requirements": [
+        "reportlab==4.4.9"
+      ],
+      "packages": [
+        {
+          "name": "charset-normalizer",
+          "version": "3.5.2"
+        },
+        {
+          "name": "pillow",
+          "version": "12.3.0"
+        },
+        {
+          "name": "pip",
+          "version": "26.1.2"
+        },
+        {
+          "name": "reportlab",
+          "version": "4.4.9"
+        }
+      ],
+      "interpreter": "/opt/cptc-suite/venvs/reporting/bin/python"
+    },
+    "ot": {
+      "requirements": [
+        "pymodbus==3.16.1",
+        "python-snap7==3.2.1",
+        "asyncua==2.1.0"
+      ],
+      "packages": [
+        {
+          "name": "aiosqlite",
+          "version": "0.22.1"
+        },
+        {
+          "name": "anyio",
+          "version": "4.15.1"
+        },
+        {
+          "name": "asyncua",
+          "version": "2.1.0"
+        },
+        {
+          "name": "cffi",
+          "version": "2.1.1"
+        },
+        {
+          "name": "cryptography",
+          "version": "50.0.2"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "pip",
+          "version": "26.1.2"
+        },
+        {
+          "name": "pycparser",
+          "version": "3.11"
+        },
+        {
+          "name": "pymodbus",
+          "version": "3.16.1"
+        },
+        {
+          "name": "python-dateutil",
+          "version": "2.9.0.post0"
+        },
+        {
+          "name": "python-snap7",
+          "version": "3.2.1"
+        },
+        {
+          "name": "pytz",
+          "version": "2026.5"
+        },
+        {
+          "name": "six",
+          "version": "1.17.0"
+        },
+        {
+          "name": "sortedcontainers",
+          "version": "2.4.0"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        }
+      ],
+      "interpreter": "/opt/cptc-suite/venvs/ot/bin/python"
+    },
+    "cip": {
+      "requirements": [
+        "cpppo==5.2.5"
+      ],
+      "packages": [
+        {
+          "name": "certifi",
+          "version": "2026.7.22"
+        },
+        {
+          "name": "charset-normalizer",
+          "version": "3.5.2"
+        },
+        {
+          "name": "click",
+          "version": "8.5.0"
+        },
+        {
+          "name": "cpppo",
+          "version": "5.2.5"
+        },
+        {
+          "name": "crypto_licensing",
+          "version": "6.0.1"
+        },
+        {
+          "name": "dnspython",
+          "version": "2.9.0"
+        },
+        {
+          "name": "greenery",
+          "version": "2.1"
+        },
+        {
+          "name": "idna",
+          "version": "3.20"
+        },
+        {
+          "name": "pip",
+          "version": "26.1.2"
+        },
+        {
+          "name": "pycryptodome",
+          "version": "3.24.1"
+        },
+        {
+          "name": "pytz-deprecation-shim",
+          "version": "0.1.0.post0"
+        },
+        {
+          "name": "requests",
+          "version": "2.34.2"
+        },
+        {
+          "name": "requests-toolbelt",
+          "version": "1.0.0"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026.5"
+        },
+        {
+          "name": "tzlocal",
+          "version": "5.4.4"
+        },
+        {
+          "name": "urllib3",
+          "version": "2.8.0"
+        }
+      ],
+      "interpreter": "/opt/cptc-suite/venvs/cip/bin/python"
+    },
+    "extended": {
+      "requirements": [
+        "scapy==2.8.0",
+        "minimalmodbus==2.1.1",
+        "paho-mqtt==2.1.0",
+        "python-can==4.6.1",
+        "cantools==45.0.0",
+        "canopen==2.4.1",
+        "gurux-dlms==1.0.203",
+        "pymavlink==2.4.50"
+      ],
+      "packages": [
+        {
+          "name": "argparse-addons",
+          "version": "0.12.0"
+        },
+        {
+          "name": "bitstruct",
+          "version": "8.23.0"
+        },
+        {
+          "name": "canopen",
+          "version": "2.4.1"
+        },
+        {
+          "name": "cantools",
+          "version": "45.0.0"
+        },
+        {
+          "name": "crccheck",
+          "version": "1.3.1"
+        },
+        {
+          "name": "fastcrc",
+          "version": "0.5.0"
+        },
+        {
+          "name": "gurux_dlms",
+          "version": "1.0.203"
+        },
+        {
+          "name": "lxml",
+          "version": "6.1.3"
+        },
+        {
+          "name": "minimalmodbus",
+          "version": "2.1.1"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "paho-mqtt",
+          "version": "2.1.0"
+        },
+        {
+          "name": "pip",
+          "version": "26.1.2"
+        },
+        {
+          "name": "pymavlink",
+          "version": "2.4.50"
+        },
+        {
+          "name": "pyserial",
+          "version": "3.5"
+        },
+        {
+          "name": "python-can",
+          "version": "4.6.1"
+        },
+        {
+          "name": "scapy",
+          "version": "2.8.0"
+        },
+        {
+          "name": "textparser",
+          "version": "0.26.2"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "wrapt",
+          "version": "1.17.3"
+        }
+      ],
+      "interpreter": "/opt/cptc-suite/venvs/extended/bin/python"
+    }
+  },
+  "payloads": [
+    {
+      "name": "linpeas.sh",
+      "sha256": "056636b301a4bcda37dba989a5bea25b9de036f38f1d046626cef063e31ad9a2",
+      "source": "https://github.com/peass-ng/PEASS-ng/releases/download/20261015-c468195d/linpeas.sh"
+    },
+    {
+      "name": "winPEASx64.exe",
+      "sha256": "4b8dda5958f975c45317e8653ff460ba2fea1cc85b522ddd92adf313380ec88a",
+      "source": "https://github.com/peass-ng/PEASS-ng/releases/download/20261015-c468195d/winPEASx64.exe"
+    }
+  ],
+  "apt_versions": "build-essential=12.12\nca-certificates=20260816\ncan-utils=2023.03-1\ncmake=4.3.4-1\nenum4linux-ng=1.3.10-0kali1\nffuf=2.2.1-1\ngit=1:2.53.0-1\nlibmodbus-dev=3.2.0-1\nmosquitto-clients=2.1.2-3\nnetexec=1.5.1-0kali2\nnmap=7.991+dfsg-1kali1\npkg-config=2.5.1-4\npython3=3.14.7-3\npython3-pip=26.1.2+dfsg-1\npython3-venv=3.14.7-3\nsmbclient=2:4.25.0+dfsg-1\ntestssl.sh=3.2.4+dfsg-2\ntshark=4.6.6-1\nxsltproc=1.1.45-0.1\n",
+  "current_step": "stage winPEASx64.exe",
+  "finished_at": "2026-10-15T15:39:58.533898+00:00"
+}

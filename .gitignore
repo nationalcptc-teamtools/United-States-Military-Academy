@@ -185,3 +185,7 @@ cython_debug/
 /private/
 /data/
 /engagements/
+
+# Local assessment installation and legacy source link
+/.cptc-suite/
+/vulscan

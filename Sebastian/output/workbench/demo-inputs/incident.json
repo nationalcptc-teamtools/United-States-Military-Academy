@@ -1,0 +1,9 @@
+{
+  "run": "run-21ab8cad4ed1426b",
+  "actor": "Exercise author",
+  "summary": "Invented failure; no real incident or notification",
+  "stop": "No target process started",
+  "markings": [
+    "FI"
+  ]
+}

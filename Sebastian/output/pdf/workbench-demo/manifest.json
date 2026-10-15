@@ -1,0 +1,25 @@
+{
+  "appendix_api": "cptc.appendix/1.0",
+  "appendix_sha256": "42eaa95a9f35d514287300770f19f82f10010428ea9e10f37be137ad2c74c890",
+  "artifacts": {
+    "changes.json": "fac1e8675ac134e75666051160416a36ac6c958cddb46744babb4cf663a0a48b",
+    "input.json": "dec136336094084d6a4506a6d8ab520ef51dc5beedc2cd8cba813687b03ab7e1",
+    "report.md": "04d635a0cac39501936c59b18e0070c9af30fd4b8bc1000ed7c307dfb8df9b3b",
+    "report.pdf": "3228f54fef721ea3bd69cf46f0f37080676448e8369d883131336cb2bfc00ee2"
+  },
+  "classification": "SYNTHETIC TRAINING DATA",
+  "classification_inheritance": "structured",
+  "cvss_recalculated": false,
+  "data_category": "synthetic",
+  "effective_markings": "ORCON//PROPIN//PII Red//FI",
+  "evidence_files_opened": false,
+  "generator_version": "0.3.1",
+  "imported_export_sha256": "36bf23c09401943eda0177c20cbe240e4cb77050b4ee10f9d80125d149b71cdd",
+  "input_sha256": "dec136336094084d6a4506a6d8ab520ef51dc5beedc2cd8cba813687b03ab7e1",
+  "marking_policy": "cptc.handling/1.0",
+  "review_label": "draft",
+  "schema_version": "1.2",
+  "source_schema_version": "1.2",
+  "workbench_version": "1.0.0",
+  "workspace_revision": 24
+}

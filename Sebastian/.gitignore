@@ -1,0 +1,16 @@
+# Client-derived material must also be kept out of uploads and already-tracked files.
+/engagements/
+/data/
+/output/
+/outputs/
+/tmp/
+/private/
+*.pcap
+*.pcapng
+*.har
+.env
+.env.*
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
