@@ -47,6 +47,60 @@ readonly -a NMAP_ALL_NSE_NAMES=(
     "${NMAP_SERVICE_NSE_NAMES[@]}" "${NMAP_VULN_NSE_NAMES[@]}"
 )
 
+# Operational-technology / industrial-control ports.
+#
+# These are identified but NEVER version-probed or NSE-scanned.  Rationale,
+# measured on a loopback listener with the service-phase flags this script
+# used before this guard existed (-sV --version-all plus the banner script):
+# a device that closes unparsed connections took 15162 connections carrying
+# 15159 distinct probe payloads in under seven seconds, because --version-all
+# is intensity 9 and walks the whole nmap-service-probes database regardless
+# of which service the port is registered to.  Dropping -sV and NSE for these
+# ports takes that to a single connection and zero payloads.
+#
+# That traffic pattern is unacceptable against a safety PLC, a motor drive, a
+# Modbus/TCP-to-serial gateway that serialises onto a shared RS-485 bus, or a
+# fire/HVAC controller.  A park's ride interlocks sit on exactly these ports
+# while the ride is carrying people.  Report them and let a human decide.
+readonly -a OT_TCP_PORTS=(
+    102    # ISO-TSAP / Siemens S7comm
+    502    # Modbus/TCP
+    789    # Red Lion Crimson
+    1911   # Niagara Fox (Tridium)
+    1962   # PCWorx (Phoenix Contact)
+    2404   # IEC 60870-5-104
+    4840   # OPC-UA
+    4843   # OPC-UA over TLS
+    4911   # Niagara Fox over TLS
+    5006   # Mitsubishi MELSEC / MELSOFT
+    5007   # Mitsubishi MELSEC / MELSOFT
+    9600   # OMRON FINS
+    18245  # GE SRTP
+    18246  # GE SRTP
+    20000  # DNP3
+    20547  # ProConOS / ProConOS eCLR
+    44818  # EtherNet/IP explicit messaging (CIP)
+)
+# 2222/udp is EtherNet/IP implicit cyclic I/O between a safety PLC and its
+# remote I/O and drive racks.  It is frequency rank 33 among UDP ports, so
+# --top-ports 100 and 250 both selected it before this guard existed.
+readonly -a OT_UDP_PORTS=(
+    319    # PTP/IEEE-1588 event   - grandmaster clock
+    320    # PTP/IEEE-1588 general - best-master-clock election
+    789 2222 4840 5006 5007 9600 34962 34963 34964 44818
+)
+readonly OT_UDP_PORT_RANGES="47808-47823"   # BACnet/IP and alternate networks
+
+# Serial-to-Ethernet device-server data ports (Moxa NPort, Lantronix, Digi).
+# These bridge raw TCP onto a shared RS-485 bus, so a connection here can
+# occupy a bus that live cyclic polling depends on.  Unlike the ports above
+# they are genuinely ambiguous -- an ordinary web service can sit on 3001 or
+# 10001 -- so excluding them outright would lose real coverage.  They instead
+# get --version-intensity 0, which the loopback measurement showed sends two
+# connections and zero application payloads, versus 15162/15159 under
+# --version-all.  Identification without a probe database walk.
+readonly OT_TCP_LIGHT_RANGES="771,2001-2016,2101-2116,3001-3016,4001-4016,9660-9669,10001-10016"
+
 # Values in this array are masked in the replayable command journal.
 declare -a SECRET_VALUES=()
 
@@ -2393,14 +2447,132 @@ phase_udp() {
         standard) count=100 ;;
         deep) count=250 ;;
     esac
+    # 2222/udp is EtherNet/IP cyclic I/O and sits at frequency rank 33, so it
+    # was inside every --top-ports value this script uses.  Exclude the OT UDP
+    # set before nmap selects its top-ports list.
+    local ot_exclude
+    ot_exclude="$(ot_udp_exclude_spec)"
     run_nmap_family "$phase" "IPv4 top $count UDP ports" 4 "$RUN_DIR/scope/targets.ipv4.txt" \
-        "$RUN_DIR/raw/nmap-udp-ipv4" -Pn -sU -sV --version-light --top-ports "$count" --open -T4 || failed=1
+        "$RUN_DIR/raw/nmap-udp-ipv4" -Pn -sU -sV --version-light --top-ports "$count" \
+        --exclude-ports "$ot_exclude" --open -T4 || failed=1
     run_nmap_family "$phase" "IPv6 top $count UDP ports" 6 "$RUN_DIR/scope/targets.ipv6.txt" \
-        "$RUN_DIR/raw/nmap-udp-ipv6" -Pn -sU -sV --version-light --top-ports "$count" --open -T4 || failed=1
+        "$RUN_DIR/raw/nmap-udp-ipv6" -Pn -sU -sV --version-light --top-ports "$count" \
+        --exclude-ports "$ot_exclude" --open -T4 || failed=1
     if (( DRY_RUN == 0 )) && ! extract_inventory; then
         failed=1
     fi
     return "$failed"
+}
+
+# Builds the nmap --exclude-ports value that keeps UDP probing off OT ports.
+ot_udp_exclude_spec() {
+    local joined
+    joined="$(IFS=,; printf '%s' "${OT_UDP_PORTS[*]:-}")"
+    printf '%s,%s' "$joined" "$OT_UDP_PORT_RANGES"
+}
+
+# Splits a comma-separated nmap port list into the ports we may probe and the
+# OT ports we may not.  Sets OT_PORTS_KEPT and OT_PORTS_WITHHELD rather than
+# echoing, because a command substitution would run this in a subshell and
+# discard the withheld list, leaving the operator with no notice that OT
+# endpoints were found and skipped.
+OT_PORTS_KEPT=""
+OT_PORTS_LIGHT=""
+OT_PORTS_WITHHELD=""
+# Expands a port spec that may contain ranges into the caller-named array.
+expand_port_spec() {
+    local spec="$1" name="$2" item low high value
+    local -n out="$name"
+    out=()
+    local saved_ifs="$IFS"
+    IFS=,
+    for item in $spec; do
+        [[ -n "$item" ]] || continue
+        if [[ "$item" == *-* ]]; then
+            low="${item%%-*}"; high="${item##*-}"
+            for (( value = low; value <= high; value++ )); do out+=("$value"); done
+        else
+            out+=("$item")
+        fi
+    done
+    IFS="$saved_ifs"
+}
+filter_ot_ports() {
+    local list="$1" port
+    local -a keep=() light=() withheld=() light_ports=()
+    local -A is_ot=() is_light=()
+    for port in "${OT_TCP_PORTS[@]}"; do is_ot["$port"]=1; done
+    expand_port_spec "$OT_TCP_LIGHT_RANGES" light_ports
+    for port in "${light_ports[@]}"; do is_light["$port"]=1; done
+    local saved_ifs="$IFS"
+    IFS=,
+    for port in $list; do
+        [[ -n "$port" ]] || continue
+        if [[ -n "${is_ot[$port]:-}" ]]; then
+            withheld+=("$port")
+        elif [[ -n "${is_light[$port]:-}" ]]; then
+            light+=("$port")
+        else
+            keep+=("$port")
+        fi
+    done
+    IFS="$saved_ifs"
+    OT_PORTS_KEPT="$(IFS=,; printf '%s' "${keep[*]:-}")"
+    OT_PORTS_LIGHT="$(IFS=,; printf '%s' "${light[*]:-}")"
+    OT_PORTS_WITHHELD="$(IFS=,; printf '%s' "${withheld[*]:-}")"
+}
+
+# Records every discovered OT endpoint to a quarantine file.  These are
+# reported but deliberately never probed; see the OT_TCP_PORTS comment.
+record_ot_quarantine() {
+    local services="$RUN_DIR/targets/services.tsv"
+    local destination="$RUN_DIR/targets/ot-quarantine.tsv"
+    [[ -s "$services" ]] || { : >"$destination"; return 0; }
+    python3 -I - "$services" "$destination" \
+        "$(IFS=,; printf '%s' "${OT_TCP_PORTS[*]:-}")" \
+        "$(ot_udp_exclude_spec)" <<'PY'
+import csv
+import sys
+from pathlib import Path
+
+services, destination, tcp_spec, udp_spec = (
+    Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4])
+
+
+def expand(spec):
+    ports = set()
+    for item in spec.split(","):
+        item = item.strip()
+        if not item:
+            continue
+        if "-" in item:
+            low, _, high = item.partition("-")
+            ports.update(range(int(low), int(high) + 1))
+        else:
+            ports.add(int(item))
+    return ports
+
+
+watched = {"tcp": expand(tcp_spec), "udp": expand(udp_spec)}
+rows = []
+with services.open(newline="") as handle:
+    for row in csv.DictReader(handle, delimiter="\t"):
+        try:
+            port = int(row["port"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        protocol = (row.get("protocol") or "").lower()
+        if port in watched.get(protocol, ()):
+            rows.append(row)
+
+fields = ("address", "hostname", "protocol", "port", "name", "product", "version", "extra")
+with destination.open("w", newline="") as handle:
+    writer = csv.writer(handle, delimiter="\t", lineterminator="\n")
+    writer.writerow(fields)
+    for row in sorted(rows, key=lambda item: (item["address"], item["protocol"], int(item["port"]))):
+        writer.writerow([row.get(field, "") for field in fields])
+print(len(rows))
+PY
 }
 
 phase_services() {
@@ -2409,7 +2581,35 @@ phase_services() {
     extract_inventory || return 1
     ports="$(<"$RUN_DIR/targets/open-tcp-ports.txt")"
     [[ -n "$ports" ]] || { record_skip "$phase" "TCP service scan" "no open TCP ports were discovered"; return 0; }
+    # Identify OT endpoints, then take them out of the version/NSE port list.
+    record_ot_quarantine >/dev/null || return 1
+    filter_ot_ports "$ports"
+    ports="$OT_PORTS_KEPT"
+    if [[ -n "$OT_PORTS_WITHHELD" ]]; then
+        warn "[$phase] OT/ICS ports discovered and withheld from service probing: $OT_PORTS_WITHHELD"
+        warn "[$phase] these are recorded in targets/ot-quarantine.tsv for manual review"
+        record_skip "$phase" "OT/ICS service probing" \
+            "ports $OT_PORTS_WITHHELD are industrial control endpoints; version and NSE probing is withheld by policy"
+    fi
     (( EUID == 0 )) && scan_type="-sS" || scan_type="-sT"
+
+    # Ambiguous serial device-server ports: identify with a zero-payload probe
+    # and no NSE, instead of either skipping them or walking the probe database.
+    if [[ -n "$OT_PORTS_LIGHT" ]]; then
+        warn "[$phase] serial device-server ports probed at zero intensity only: $OT_PORTS_LIGHT"
+        local -a light=(-Pn "$scan_type" -sV --version-intensity 0 -p "$OT_PORTS_LIGHT" -T3)
+        run_nmap_family "$phase" "IPv4 serial device-server identification" 4 \
+            "$RUN_DIR/targets/open-hosts.ipv4.txt" "$RUN_DIR/raw/nmap-serial-ipv4" "${light[@]}" || failed=1
+        run_nmap_family "$phase" "IPv6 serial device-server identification" 6 \
+            "$RUN_DIR/targets/open-hosts.ipv6.txt" "$RUN_DIR/raw/nmap-serial-ipv6" "${light[@]}" || failed=1
+    fi
+
+    if [[ -z "$ports" ]]; then
+        record_skip "$phase" "TCP service scan" \
+            "no discovered TCP port is eligible for full service probing"
+        extract_inventory || return 1
+        return "$failed"
+    fi
 
     [[ -n "$NMAP_SERVICE_NSE_SCRIPTS" ]] \
         || { error "[$phase] Absolute service NSE binding is unavailable"; return 1; }
@@ -2962,6 +3162,13 @@ phase_vuln() {
         httpx_input="$RUN_DIR/targets/http.capped.txt"
     fi
     ports="$(<"$RUN_DIR/targets/open-tcp-ports.txt")"
+    # OT endpoints are excluded here for the same reason as in phase_services.
+    filter_ot_ports "$ports"
+    ports="$OT_PORTS_KEPT"
+    if [[ -n "$OT_PORTS_WITHHELD" ]]; then
+        record_skip "$phase" "OT/ICS vulnerability NSE" \
+            "ports $OT_PORTS_WITHHELD are industrial control endpoints; NSE probing is withheld by policy"
+    fi
 
     if [[ -n "$ports" ]]; then
         local scan_type
@@ -3485,6 +3692,346 @@ report_existing() {
     ok "Report refreshed: $RUN_DIR/reports/index.html"
 }
 
+# ---------------------------------------------------------------------------
+# Native activity logging
+#
+# Turns on the operating system's own auditing so the operator's actions on a
+# competition workstation are recorded for the client report and for
+# deconfliction.  This logs US, not a target.  Everything here is reversible
+# with `logging revert`, and `logging verify` proves each facility is actually
+# recording rather than merely configured.
+#
+# The guiding lesson from testing: configuration state lies.  On the
+# development box `systemctl is-active auditd` reported active and
+# `auditctl -l` listed four loaded rules while `auditctl -s` reported
+# `enabled 0`, audit.log was 22 hours stale and `ausearch -ts recent` returned
+# nothing at all.  Rules can be loaded into a subsystem that is switched off.
+# So every check below is a round trip: emit a marker, then read it back.
+# ---------------------------------------------------------------------------
+
+readonly CPTC_SUDOERS_DROPIN="/etc/sudoers.d/99-cptc-logging"
+readonly CPTC_AUDIT_RULES="/etc/audit/rules.d/99-cptc.rules"
+readonly CPTC_AUDIT_KEY="cptc-exec"
+readonly CPTC_BASHRC_BEGIN="# ---- CPTC-LOGGING-BEGIN (remove this block to revert) ----"
+readonly CPTC_BASHRC_END="# ---- CPTC-LOGGING-END ----"
+
+# The operator is whoever invoked sudo, never root.  Under sudo, $HOME is
+# root's home and $(id -u) is 0, so a rule keyed on either silently matches
+# nothing the operator does and a transcript lands in the wrong home.
+logging_operator_name() { printf '%s' "${SUDO_USER:-$(id -un)}"; }
+logging_operator_uid() { printf '%s' "${SUDO_UID:-$(id -u)}"; }
+logging_operator_home() {
+    local entry
+    entry="$(getent passwd "$(logging_operator_name)" 2>/dev/null)" || return 1
+    printf '%s' "$(printf '%s' "$entry" | cut -d: -f6)"
+}
+logging_dir() { printf '%s/.cptc-logs' "$(logging_operator_home)"; }
+
+# Runs a command as the operator even when we are root.
+as_operator() {
+    if (( EUID == 0 )) && [[ -n "${SUDO_USER:-}" ]]; then
+        runuser -u "$SUDO_USER" -- "$@"
+    else
+        "$@"
+    fi
+}
+
+logging_enable_shell() {
+    local home dir rc marker
+    home="$(logging_operator_home)" || { error "cannot resolve the operator's home directory"; return 1; }
+    dir="$(logging_dir)"
+    rc="$home/.bashrc"
+    [[ -f "$rc" ]] || as_operator touch "$rc" || { error "cannot create $rc"; return 1; }
+
+    as_operator mkdir -p "$dir/session" || return 1
+    as_operator chmod 700 "$dir" "$dir/session" || return 1
+
+    # The session launcher.  The four guards are what keep this from recursing
+    # forever and from breaking scp, rsync, sftp and `ssh host command`, all of
+    # which run a non-interactive shell that must never be wrapped.
+    as_operator tee "$dir/session-log.sh" >/dev/null <<'LAUNCHER'
+# Started from ~/.bashrc.  Replaces the shell with one running under script(1).
+__cptc_session_log() {
+    local dir="${1:-$HOME/.cptc-logs/session}" base
+    case $- in *i*) ;; *) return 0 ;; esac            # G1 interactive only
+    [[ -t 0 && -t 1 ]] || return 0                    # G2 a real tty both ends
+    [[ -n "${CPTC_SESSION_LOG:-}" ]] && return 0      # G3 already inside one
+    [[ -n "${SSH_ORIGINAL_COMMAND:-}" ]] && return 0  # G4 ForceCommand
+    command -v script >/dev/null 2>&1 || return 0
+    mkdir -p "$dir" 2>/dev/null || return 0
+    chmod 700 "$dir" 2>/dev/null
+    base="$dir/session-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+    CPTC_SESSION_LOG="$base.log"
+    export CPTC_SESSION_LOG
+    umask 077
+    logger -t cptc-session -p user.notice \
+        "session-start user=$(id -un) tty=$(tty) log=$base.log" 2>/dev/null
+    # -f flushes after every write so a kill -9 keeps the transcript;
+    # -o caps output so a runaway scan cannot fill the disk.
+    exec script -q -f -a -T "$base.timing" -O "$base.log" -o 512m \
+        -c "${SHELL:-/bin/bash} -i"
+}
+LAUNCHER
+    as_operator chmod 600 "$dir/session-log.sh" || return 1
+
+    if as_operator grep -qF 'CPTC-LOGGING-BEGIN' "$rc" 2>/dev/null; then
+        info "shell logging block already present in $rc"
+        return 0
+    fi
+
+    # HISTCONTROL is cleared deliberately.  The distro default `ignoreboth`
+    # silently drops duplicate commands AND any command typed with a leading
+    # space -- measured: three history entries collapsed to one, and the
+    # space-prefixed one disappeared.  That is the exact habit used to keep a
+    # credential out of history, so for an audit trail it has to go.  The
+    # trade-off is real and runs the other way: a password typed with a
+    # leading space now DOES land in the history file.  See `logging notes`.
+    as_operator tee -a "$rc" >/dev/null <<LOGGINGBLOCK
+$CPTC_BASHRC_BEGIN
+HISTFILE="\$HOME/.bash_history"
+HISTTIMEFORMAT='%Y-%m-%dT%H:%M:%S%z '
+HISTSIZE=1000000
+HISTFILESIZE=1000000
+HISTCONTROL=
+HISTIGNORE=
+shopt -s histappend
+shopt -s cmdhist
+if [[ \${PROMPT_COMMAND@a} == *a* ]]; then
+    PROMPT_COMMAND+=( 'history -a' )
+else
+    PROMPT_COMMAND="history -a\${PROMPT_COMMAND:+; \$PROMPT_COMMAND}"
+fi
+[[ -r "\$HOME/.cptc-logs/session-log.sh" ]] \\
+    && . "\$HOME/.cptc-logs/session-log.sh" \\
+    && __cptc_session_log
+$CPTC_BASHRC_END
+LOGGINGBLOCK
+    ok "shell history hardening and session transcripts enabled for $(logging_operator_name)"
+    info "they take effect in newly opened shells (or run: source ~/.bashrc)"
+}
+
+logging_enable_auditd() {
+    local uid rules
+    (( EUID == 0 )) || { warn "auditd execve auditing needs root; skipped"; return 0; }
+    have auditctl || { warn "auditctl is not installed; install the auditd package to get the authoritative trail"; return 0; }
+    uid="$(logging_operator_uid)"
+    [[ "$uid" =~ ^[0-9]+$ ]] || { error "could not resolve the operator uid"; return 1; }
+    if [[ "$uid" == 0 ]]; then
+        warn "operator uid resolved to 0; an auid rule keyed on root would miss the operator's own commands"
+    fi
+
+    # auid is the login uid, which survives su/sudo, so this follows the
+    # operator through privilege changes.  auid!=unset drops kernel threads.
+    rules="-a always,exit -F arch=b64 -S execve -F auid=$uid -F auid!=unset -k $CPTC_AUDIT_KEY
+-a always,exit -F arch=b32 -S execve -F auid=$uid -F auid!=unset -k $CPTC_AUDIT_KEY"
+
+    # The subsystem can be administratively disabled while rules load fine.
+    local enabled
+    enabled="$(auditctl -s 2>/dev/null | tr ' ' '\n' | grep -A1 '^enabled$' | tail -1)"
+    if [[ "$enabled" == 0 ]]; then
+        warn "the audit subsystem is loaded but switched off (enabled 0); turning it on"
+        auditctl -e 1 >/dev/null 2>&1 || warn "could not enable the audit subsystem"
+    fi
+
+    local line
+    while IFS= read -r line; do
+        [[ -n "$line" ]] || continue
+        # shellcheck disable=SC2086
+        auditctl $line >/dev/null 2>&1 || warn "could not load audit rule: $line"
+    done <<<"$rules"
+
+    if [[ -d /etc/audit/rules.d ]]; then
+        printf '# CPTC operator activity auditing. Remove this file to revert.\n%s\n' "$rules" \
+            >"$CPTC_AUDIT_RULES" || warn "could not persist audit rules"
+        chmod 640 "$CPTC_AUDIT_RULES" 2>/dev/null || true
+        info "audit rules persisted to $CPTC_AUDIT_RULES"
+    else
+        warn "/etc/audit/rules.d is absent; audit rules are active now but will not survive a reboot"
+    fi
+    ok "auditd execve auditing enabled for uid $uid (key $CPTC_AUDIT_KEY)"
+}
+
+logging_enable_sudo_io() {
+    local temporary
+    (( EUID == 0 )) || { warn "sudo I/O logging needs root; skipped"; return 0; }
+    have visudo || { warn "visudo is not available; refusing to touch sudoers"; return 0; }
+    [[ -d /etc/sudoers.d ]] || { warn "/etc/sudoers.d is absent; skipping sudo I/O logging"; return 0; }
+
+    temporary="$(mktemp)" || return 1
+    printf '%s\n' \
+        '# CPTC operator activity logging. Remove this file to revert.' \
+        'Defaults log_input, log_output' \
+        'Defaults iolog_dir=/var/log/sudo-io' \
+        'Defaults!/usr/bin/sudoreplay !log_output' \
+        'Defaults!/usr/sbin/visudo !log_output' \
+        >"$temporary"
+
+    # A malformed sudoers file locks the operator out of sudo entirely, so it
+    # is validated in place before it is ever installed.
+    if ! visudo -cqf "$temporary" >/dev/null 2>&1; then
+        rm -f -- "$temporary"
+        error "the generated sudoers snippet failed validation; sudo was left untouched"
+        return 1
+    fi
+    install -m 0440 -o root -g root "$temporary" "$CPTC_SUDOERS_DROPIN" || {
+        rm -f -- "$temporary"; error "could not install $CPTC_SUDOERS_DROPIN"; return 1; }
+    rm -f -- "$temporary"
+    mkdir -p /var/log/sudo-io 2>/dev/null || true
+    chmod 700 /var/log/sudo-io 2>/dev/null || true
+    ok "sudo I/O logging enabled (sessions under /var/log/sudo-io, replay with sudoreplay)"
+    warn "sudo I/O logs capture full terminal output, which can include target data and anything typed"
+}
+
+logging_enable_journal() {
+    (( EUID == 0 )) || { warn "journald persistence needs root; skipped"; return 0; }
+    have journalctl || { warn "journalctl is not available; skipped"; return 0; }
+    if [[ -d /var/log/journal ]]; then
+        info "journald storage is already persistent"
+    else
+        mkdir -p /var/log/journal || { warn "could not create /var/log/journal"; return 0; }
+        chmod 2755 /var/log/journal 2>/dev/null || true
+        journalctl --flush >/dev/null 2>&1 || warn "could not flush the journal to disk"
+        ok "journald persistence enabled (/var/log/journal)"
+    fi
+    if have accton && [[ -d /var/log/account || -d /var/account ]]; then
+        local pacct=/var/log/account/pacct
+        [[ -d /var/log/account ]] || pacct=/var/account/pacct
+        if accton "$pacct" >/dev/null 2>&1; then
+            ok "process accounting enabled ($pacct)"
+        else
+            warn "could not enable process accounting"
+        fi
+    fi
+}
+
+# Round-trip proof that each facility is recording, not merely configured.
+logging_verify() {
+    local failures=0 nonce marker dir
+    nonce="cptcmarker$$$(date -u +%s)"
+    dir="$(logging_dir)"
+    info "verifying that each facility actually records (not just that it is configured)"
+
+    # auditd: emit a uniquely-argumented execve, then read it back by key.
+    if have auditctl && (( EUID == 0 )); then
+        local enabled
+        enabled="$(auditctl -s 2>/dev/null | tr ' ' '\n' | grep -A1 '^enabled$' | tail -1)"
+        if [[ "$enabled" != 1 ]]; then
+            error "auditd: subsystem reports enabled=$enabled, so nothing is being recorded"
+            failures=$((failures + 1))
+        elif have ausearch; then
+            as_operator /bin/true "$nonce" 2>/dev/null || true
+            sleep 1
+            if ausearch -k "$CPTC_AUDIT_KEY" -ts recent 2>/dev/null | grep -qF "$nonce"; then
+                ok "auditd: marker recovered from the audit trail"
+            else
+                error "auditd: rules are loaded but the marker was not recorded"
+                failures=$((failures + 1))
+            fi
+        else
+            warn "auditd: ausearch is unavailable, cannot round-trip the trail"
+        fi
+    else
+        warn "auditd: not verifiable without root and auditctl"
+    fi
+
+    # bash history: the file must exist, be appendable and carry timestamps.
+    local histfile
+    histfile="$(logging_operator_home)/.bash_history"
+    if [[ -f "$histfile" ]]; then
+        if grep -qE '^#[0-9]{9,}' "$histfile" 2>/dev/null; then
+            ok "bash history: timestamped entries present"
+        else
+            warn "bash history: no timestamp lines yet (open a new shell and run a command)"
+        fi
+    else
+        warn "bash history: $histfile does not exist yet"
+    fi
+
+    # session transcripts: the launcher must be installed and sourced.
+    if [[ -r "$dir/session-log.sh" ]] \
+        && grep -qF 'CPTC-LOGGING-BEGIN' "$(logging_operator_home)/.bashrc" 2>/dev/null; then
+        local count
+        count="$(find "$dir/session" -name 'session-*.log' 2>/dev/null | wc -l)"
+        ok "session transcripts: launcher installed and sourced ($count transcript(s) so far)"
+        (( count == 0 )) && info "transcripts appear once the operator opens a new interactive shell"
+    else
+        error "session transcripts: launcher is not installed or not sourced from .bashrc"
+        failures=$((failures + 1))
+    fi
+
+    # sudo I/O logging
+    if [[ -f "$CPTC_SUDOERS_DROPIN" ]]; then
+        if [[ -d /var/log/sudo-io ]]; then
+            ok "sudo I/O logging: configured, iolog directory present"
+        else
+            warn "sudo I/O logging: configured but /var/log/sudo-io is missing"
+        fi
+    else
+        warn "sudo I/O logging: not configured"
+    fi
+
+    # journald persistence
+    if [[ -d /var/log/journal ]]; then
+        ok "journald: persistent storage present"
+    else
+        warn "journald: storage is volatile; logs are lost on reboot"
+    fi
+
+    if (( failures )); then
+        error "$failures logging facility check(s) failed; the activity trail is incomplete"
+        return 1
+    fi
+    ok "every checked logging facility is recording"
+}
+
+logging_revert() {
+    local home rc
+    home="$(logging_operator_home)" || { error "cannot resolve the operator's home"; return 1; }
+    rc="$home/.bashrc"
+    if [[ -f "$rc" ]] && grep -qF 'CPTC-LOGGING-BEGIN' "$rc"; then
+        if as_operator sed -i "/${CPTC_BASHRC_BEGIN//\//\\/}/,/${CPTC_BASHRC_END//\//\\/}/d" "$rc"; then
+            ok "removed the logging block from $rc"
+        else
+            warn "could not edit $rc"
+        fi
+    else
+        info "no logging block present in $rc"
+    fi
+    as_operator rm -f -- "$home/.cptc-logs/session-log.sh" 2>/dev/null || true
+
+    if (( EUID == 0 )); then
+        if have auditctl; then
+            if auditctl -D -k "$CPTC_AUDIT_KEY" >/dev/null 2>&1; then
+                ok "removed runtime audit rules keyed $CPTC_AUDIT_KEY"
+            fi
+        fi
+        [[ -f "$CPTC_AUDIT_RULES" ]] && { rm -f -- "$CPTC_AUDIT_RULES"; ok "removed $CPTC_AUDIT_RULES"; }
+        [[ -f "$CPTC_SUDOERS_DROPIN" ]] && { rm -f -- "$CPTC_SUDOERS_DROPIN"; ok "removed $CPTC_SUDOERS_DROPIN"; }
+    else
+        warn "re-run under sudo to also remove the auditd rules and sudoers drop-in"
+    fi
+    info "collected logs are left in place; remove them yourself when the engagement is reported"
+}
+
+logging_action() {
+    local mode="${1:-enable}"
+    case "$mode" in
+        enable)
+            info "enabling native activity logging for operator $(logging_operator_name)"
+            (( EUID == 0 )) || warn "running without root: auditd, sudo I/O and journald persistence will be skipped"
+            logging_enable_shell || return 1
+            logging_enable_auditd || return 1
+            logging_enable_sudo_io || return 1
+            logging_enable_journal || return 1
+            warn "these logs record the operator's own activity and can contain sensitive output; they are mode 0600/0700"
+            info "run '$0 logging verify' to prove the facilities are recording"
+            ;;
+        verify) logging_verify ;;
+        revert) logging_revert ;;
+        *) die "logging takes enable, verify, or revert" ;;
+    esac
+}
+
 main() {
     (( BASH_VERSINFO[0] >= 5 )) || die "Bash 5 or newer is required"
     local subcommand="${1:-help}"
@@ -3493,6 +4040,7 @@ main() {
         help|-h|--help) usage ;;
         install) install_packages "$@" ;;
         doctor) (( $# == 0 )) || die "doctor takes no arguments"; doctor ;;
+        logging) (( $# <= 1 )) || die "logging takes at most one argument"; logging_action "${1:-enable}" ;;
         run)
             set_run_defaults
             parse_run_args "$@"

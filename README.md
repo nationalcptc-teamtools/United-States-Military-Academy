@@ -41,6 +41,8 @@ Reporting/workbench accept synthetic preparation data only. Raw scanner exports 
 
 - `cptc-linux.sh`: Bash 5 runner for Kali, Debian, and Ubuntu.
 - `cptc-windows.ps1`: Windows PowerShell 5.1 runner.
+- `cptc-collect-logs.sh`: end-of-session collector that packages the operator's
+  own activity logs into one zip on the Desktop.
 
 Install the supported assessment suite on Kali Linux x86-64. Setup acquires packages during preparation; the installed workstation can then be checked without Internet. Lab servers are optional and separately documented.
 
@@ -213,13 +215,82 @@ Windows results are written beneath `cptc-results/<UTC timestamp>_<host>_<id>/`:
 
 Verbose command logs are intentionally complete and can grow large during deep scans. Archive the whole run directory so the report, raw evidence, command events, provenance, and checksums stay together.
 
+## Operator activity logging
+
+The runner can switch on the operating system's own auditing so that what the
+operator does on a competition workstation is recorded for the client report
+and for deconfliction. This logs *us*, not a target.
+
+```bash
+sudo ./cptc-linux.sh logging enable    # turn the facilities on
+sudo ./cptc-linux.sh logging verify    # prove they are actually recording
+sudo ./cptc-linux.sh logging revert    # undo every change
+```
+
+`enable` hardens Bash history (timestamps, no silently dropped commands,
+flushed every prompt), installs `script(1)` session transcripts with a timing
+file, loads auditd `execve` rules keyed to the operator's login uid, turns on
+sudo I/O logging through a validated `/etc/sudoers.d` drop-in, and makes
+journald storage persistent. Without root it enables the shell facilities and
+reports what it skipped.
+
+`verify` exists because configuration state lies. On one test box
+`systemctl is-active auditd` reported active and `auditctl -l` listed four
+loaded rules while `auditctl -s` reported `enabled 0`, the audit log was 22
+hours stale, and `ausearch` returned nothing: rules had been loaded into a
+subsystem that was switched off. `verify` therefore emits a marker and reads
+it back rather than trusting any status output.
+
+At the end of your time on a box:
+
+```bash
+sudo ./cptc-collect-logs.sh                        # zip lands on the Desktop
+sudo ./cptc-collect-logs.sh --run-dir ./artifacts/20261014T180000Z-day-1
+```
+
+It gathers shell history, session transcripts, the auditd trail for this
+operator, a journald export, process accounting, sudo I/O logs, and any run
+directories you name. The archive carries a `MANIFEST.txt` with collection
+metadata, a SHA-256 of every file, and an explicit list of everything that was
+skipped or truncated and why. Run it under `sudo` to reach the root-owned
+sources; without root it still produces a usable archive and records the gaps.
+Use `--no-sudo-io` to leave out the privileged-command terminal logs.
+
+These archives are engagement-sensitive. They record your own activity and can
+contain target output and anything typed at a terminal, so the archive is
+written mode 0600 and handed to the invoking operator rather than root.
+
+## Operational technology safety
+
+Ports belonging to industrial control systems are identified but never
+version-probed or NSE-scanned. Measured on a loopback listener with the
+service-phase flags: `-sV --version-all` opened 15162 connections carrying
+15159 distinct probe payloads in under seven seconds, because `--version-all`
+is intensity 9 and walks the whole `nmap-service-probes` database regardless of
+the port's registered service. Identification alone is one connection and zero
+payloads.
+
+Modbus, S7comm, EtherNet/IP, DNP3, BACnet, OPC-UA, Niagara Fox, PROFINET, FINS,
+MELSEC, PCWorx, ProConOS and IEC 60870-5-104 ports are recorded to
+`targets/ot-quarantine.tsv` for manual review. Serial-to-Ethernet device-server
+ranges are genuinely ambiguous, so they get `-sV --version-intensity 0`, which
+sends no application payloads. `2222/udp` is EtherNet/IP cyclic I/O and sits at
+frequency rank 33, so it was inside every `--top-ports` value the UDP phase
+used; it is now excluded explicitly along with PTP.
+
+A safety controller moving people is not something to fingerprint
+automatically. `nmap` itself marks `modbus-discover` and `iec-identify`
+`intrusive`, and neither is in the runner's NSE allowlist.
+
 ## Suggested competition flow
 
 1. Run each installer now, run `doctor`, and keep the resulting tool directories unchanged through the event.
-2. Test both scripts against a small lab scope and review the raw commands and reports.
-3. Start the event with `quick` or `standard` to build the service map.
-4. Use `deep`, UDP, web content discovery, Nuclei, and AD collection on prioritized systems as time and the ROE allow.
-5. Preserve the complete run directory when handing evidence to the reporting team.
+2. Run `logging enable` then `logging verify` on every box you will work from.
+3. Test both scripts against a small lab scope and review the raw commands and reports.
+4. Start the event with `quick` or `standard` to build the service map.
+5. Use `deep`, UDP, web content discovery, Nuclei, and AD collection on prioritized systems as time and the ROE allow.
+6. Preserve the complete run directory when handing evidence to the reporting team.
+7. Before leaving a box, run `cptc-collect-logs.sh` and keep the archive with the evidence.
 
 Enumeration output can contain sensitive network and domain data. Generated results and downloaded tool directories are excluded by `.gitignore`.
 
