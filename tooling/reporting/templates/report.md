@@ -3,7 +3,7 @@
 Client: [client name]
 Engagement ID: [stable ID]
 Assessment window and timezone: [supplied start and end]
-Data marking: [inherited marking]
+Data marking: [ORCON plus all inherited PROPIN / PII / PII Red / FI restrictions; repeat the combined marking on every page]
 Document version and status: [version; draft or reviewed under the agreed process]
 Prepared by and reviewed by: [names, dates and review record]
 
@@ -29,6 +29,10 @@ Prepared by and reviewed by: [names, dates and review record]
 
 [Record time/access/sampling limits, unavailable tools, failed/partial/not-run activities and untested controls. Absence of a finding is not proof of security.]
 
+### Data handling
+
+[All encountered data and analysis are ORCON. Preserve PROPIN for internal systems/methods/procedures, PII for employee/customer information, PII Red for identity-theft-sensitive PII, and FI for finances. Derived analysis inherits all source restrictions; combine categories and retain PII Red over PII. Do not invent a ranking between PROPIN, FI and PII or downgrade without authorized disposition.]
+
 ## 2 High-Level Summary and Recommendations
 
 [Describe demonstrated results and business implications for client leadership. Separate confirmed findings, candidate observations, possible consequences and positive observations. Do not claim access, exploitation or coverage not established by evidence.]
@@ -52,6 +56,8 @@ Prepared by and reviewed by: [names, dates and review record]
 ## 3 Methodology
 
 ### Assessment approach and rating method
+
+[Identify the actual client severity matrix, its version/source and likelihood/impact rationale if available. Otherwise state supplied business severity, matrix not configured; do not claim a client-matrix mapping or replace it with CVSS.]
 
 [Explain the actual approach, constraints and business-severity method. Imported CVSS severity, applicability, validation status and client risk are separate. Preserve version/vector/source/date for supplied scores.]
 

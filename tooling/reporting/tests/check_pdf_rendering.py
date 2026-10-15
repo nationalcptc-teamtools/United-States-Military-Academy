@@ -32,6 +32,10 @@ def main():
     for name, digest in manifest["artifacts"].items():
         assert hashlib.sha256((args.output_dir / name).read_bytes()).hexdigest() == digest
     assert not manifest["evidence_files_opened"] and not manifest["cvss_recalculated"]
+    controls = reportgen.handling(data)
+    assert manifest["effective_markings"] == controls["report"]
+    assert manifest["marking_policy"] == reportgen.MARKING_POLICY
+    assert manifest["classification_inheritance"] == controls["status"]
     reader = PdfReader(args.output_dir / "report.pdf")
     assert len(reader.pages) >= 7
     texts = [page.extract_text() for page in reader.pages]
@@ -41,6 +45,9 @@ def main():
     for i, (page, text) in enumerate(zip(reader.pages, texts), 1):
         assert f"Page {i}" in text
         assert "SYNTHETIC" in text
+        assert controls["report"] in text, "missing inherited page marking"
+        if controls["status"] == "legacy_unverified":
+            assert "LEGACY MARKINGS UNVERIFIED" in text
         assert not page.get("/Annots"), "unexpected PDF annotations"
         body.extend(line for line in text.splitlines()
                     if line not in frame_lines and line != f"Page {i}")
@@ -59,6 +66,7 @@ def main():
         actual_pages[chapter] = page_number
     print(json.dumps({"pages": len(reader.pages), "source_text_preserved": True,
                       "manifest_hashes_verified": True, "contents_pages": actual_pages,
+                      "every_page_marked": controls["report"],
                       "no_pdf_active_content": True}))
 
 

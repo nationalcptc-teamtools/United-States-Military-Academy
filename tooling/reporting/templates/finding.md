@@ -1,8 +1,9 @@
 # Finding [stable ID]: [title]
 
-Data marking: [inherit source marking]
+Data marking: [ORCON plus the union of source and parent restrictions: PROPIN / PII / PII Red / FI; retain PII Red over PII]
 Status: [candidate / confirmed]
 Business severity and rationale: [critical / high / medium / low / info; analyst rationale]
+Severity method: [actual client matrix/source and likelihood/impact basis, or supplied severity; matrix not configured]
 Affected assets: [in-scope assets and service/context]
 
 ## Observation and validation

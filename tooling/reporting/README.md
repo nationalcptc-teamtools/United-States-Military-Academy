@@ -1,6 +1,6 @@
 # Offline reporting starter
 
-Version 0.2.0. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF, and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
+Version 0.3.0. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF, and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
 
 The original report format loosely follows a conventional assessment/exam-report structure: cover, contents, numbered introduction, high-level summary/recommendations, methodology, detailed findings and evidence/review appendices. PDF contents include actual page numbers. Source text and review status are retained; section headings do not assert that any activity occurred.
 
@@ -13,14 +13,14 @@ Requires Python 3.10+. Markdown uses only the standard library. PDF uses ReportL
 From the project root:
 
 ~~~powershell
-python tooling/reporting/reportgen.py tooling/reporting/examples/report.json --output-dir output/pdf/sample-report --pdf
+python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/pdf/sample-report --pdf
 python -m unittest discover -s tooling/reporting/tests -v
 ~~~
 
 Optional development QA checks complete reports through an available Marked parser. Node and Marked are preparation-only tools; the generator and Python unit tests do not require them. With those tools already available, run:
 
 ~~~powershell
-python -B tooling/reporting/tests/check_markdown_rendering.py --node node --marked-module /path/to/marked/lib/marked.esm.js
+python -B tooling/reporting/tests/check_markdown_rendering.py --node node --marked-module /path/to/marked/lib/marked.esm.js --fixture tooling/reporting/examples/report-marked.json
 ~~~
 
 This checks literal text and report structure across indented text, equals-sign lines, HTML, links, code-looking text and multiline source fields, without writing reports or retrieving remote content.
@@ -28,7 +28,7 @@ This checks literal text and report structure across indented text, equals-sign 
 Optional PDF QA uses preparation-only pypdf to check source-text preservation, actual contents page numbers, hashes and inactive output. Visual page inspection is still required:
 
 ~~~powershell
-python -B tooling/reporting/tests/check_pdf_rendering.py tooling/reporting/examples/report.json output/pdf/sample-report
+python -B tooling/reporting/tests/check_pdf_rendering.py tooling/reporting/examples/report-marked.json output/pdf/sample-report
 ~~~
 
 Choose a **new output directory** each time. Existing destinations are refused. Outputs are report.md, report.pdf (when requested), and manifest.json. The editable JSON is the source of truth; editing report.md does not update report.pdf. Revise JSON and regenerate to synchronize outputs.
@@ -37,7 +37,7 @@ Use - as input to consume a future adapter's JSON from stdin. --release changes 
 
 Client-derived inputs are rejected by this starter. A future approved handling extension and actual-script integration are required before event use. Do not label real data synthetic to bypass this boundary. This current preparation workspace may be synced and cloud assisted.
 
-## Normalized contract (schemas 1.0 and 1.1)
+## Normalized contract (schemas 1.0, 1.1 and 1.2)
 
 The included example is a complete contract fixture. Unknown fields are rejected so misspelled evidence does not disappear.
 
@@ -53,7 +53,13 @@ The included example is a complete contract fixture. Unknown fields are rejected
 
 Schema 1.0 remains accepted with the same fields and review rules. Schema 1.1 additionally allows optional engagement objective (text up to 10,000 characters), recommendations (1–20 strings up to 2,000 characters each), and methodology_sections (a nonempty object containing only information_gathering, service_enumeration, validation and/or cleanup, each text up to 10,000 characters). These extra keys require schema 1.1; unknown fields and malformed/empty supplied sections fail.
 
-The synthetic example uses 1.1. Missing objective/recommendations are identified as not supplied; omitted methodology activities do not appear. The reporter does not infer exploitation, persistence, cleanup, successful remediation or client priorities.
+The original report.json remains a 1.1 compatibility fixture. The recommended report-marked.json uses 1.2 and invented handling tags, with no actual personal or financial information. Missing objective/recommendations are identified as not supplied; omitted methodology activities do not appear. The reporter does not infer exploitation, persistence, cleanup, successful remediation or client priorities.
+
+Schema 1.2 adds required report markings[] and optional finding/evidence markings[]. Allowed tags are ORCON, PROPIN, PII, PII Red and FI. The report must include ORCON. Children inherit ancestor restrictions and can add tags; evidence restrictions roll into derived findings and the whole report. Combined categories are retained, while PII Red supersedes ordinary PII. Unknown/duplicate/empty/malformed tags fail. For example, mixed internal-system, financial and high-sensitivity personal sources produce ORCON//PROPIN//PII Red//FI. This marking appears on every PDF page, Markdown and the manifest, even if only one source carries a restriction.
+
+ORCON is originator/client control; PROPIN covers internal systems/methods/procedures, PII employee/customer information, PII Red identity-theft-sensitive PII and FI financial information. No total ranking between these categories is assumed. The free-text classification field is a supplied document label, not a downgrade override. Legacy 1.0/1.1 output retains recognized explicit tags and ORCON but is visibly flagged as unverified for structured inheritance. Labels must be supplied accurately; the generator does not inspect prose for sensitive data, grant disclosure permission or allow real client inputs.
+
+Business severity is analyst-supplied and the report explicitly says “matrix not configured.” No likelihood/impact scoring or client-matrix mapping is implemented. Supply the actual matrix and its interpretation before implementing that mapping; CVSS does not substitute for it.
 
 IDs are up to 64 letters/numbers/underscores/hyphens. Titles are up to 180 characters; narratives up to 10,000 each; input is at most 2 MB and findings at most 200. Required lists must contain at least one entry, except findings may be empty with explicit limitations. See validator for per-list limits.
 

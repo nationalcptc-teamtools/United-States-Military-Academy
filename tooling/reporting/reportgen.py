@@ -14,9 +14,11 @@ from datetime import date, datetime
 from pathlib import Path, PurePosixPath
 from xml.sax.saxutils import escape
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 MAX_INPUT_BYTES = 2_000_000
 SEVERITIES = ("critical", "high", "medium", "low", "info")
+MARKINGS = ("ORCON", "PROPIN", "PII", "PII Red", "FI")
+MARKING_POLICY = "cptc.handling/1.0"
 CHAPTERS = ("1 Introduction", "2 High-Level Summary and Recommendations",
             "3 Methodology", "4 Detailed Findings", "5 Appendices")
 METHOD_SECTIONS = (("information_gathering", "Information gathering"),
@@ -93,13 +95,19 @@ def artifact_path(value, location):
 
 def validate(data, release=False):
     obj(data, "report", ("schema_version", "data_category", "classification",
-                        "engagement", "findings"), ("review",))
-    require(data["schema_version"] in ("1.0", "1.1"), "report.schema_version", "unsupported schema")
+        "engagement", "findings"), ("review", "markings"))
+    require(data["schema_version"] in ("1.0", "1.1", "1.2"), "report.schema_version", "unsupported schema")
     require(data["data_category"] == "synthetic", "report.data_category",
             "this preparation starter accepts synthetic data only")
     text(data["classification"], "report.classification", 100, True)
     e = data["engagement"]
-    optional = ("objective", "recommendations", "methodology_sections") if data["schema_version"] == "1.1" else ()
+    structured = data["schema_version"] == "1.2"
+    require(structured or "markings" not in data, "report.markings", "requires schema 1.2")
+    if structured:
+        require("markings" in data, "report.markings", "structured markings required")
+        validate_markings(data["markings"], "report.markings")
+        require("ORCON" in data["markings"], "report.markings", "ORCON baseline required")
+    optional = ("objective", "recommendations", "methodology_sections") if data["schema_version"] != "1.0" else ()
     obj(e, "engagement", ("id", "client", "team", "report_date", "scope", "methodology",
                          "executive_summary", "limitations"), optional)
     identifier(e["id"], "engagement.id")
@@ -132,7 +140,9 @@ def validate(data, release=False):
         at = f"findings[{i}]"
         obj(f, at, ("id", "title", "severity", "severity_rationale", "status", "assets",
                     "description", "validation_steps", "business_impact", "remediation",
-                    "retest_steps", "evidence"), ("cves", "cvss"))
+                    "retest_steps", "evidence"), ("cves", "cvss", "markings") if structured else ("cves", "cvss"))
+        if "markings" in f:
+            validate_markings(f["markings"], f"{at}.markings")
         identifier(f["id"], f"{at}.id")
         require(f["id"] not in seen_findings, f"{at}.id", "duplicate finding ID")
         seen_findings.add(f["id"])
@@ -150,7 +160,9 @@ def validate(data, release=False):
         for j, evidence in enumerate(f["evidence"]):
             loc = f"{at}.evidence[{j}]"
             obj(evidence, loc, ("id", "observed_at", "collector", "tool", "tool_version", "summary"),
-                ("artifact", "sha256"))
+                ("artifact", "sha256", "markings") if structured else ("artifact", "sha256"))
+            if "markings" in evidence:
+                validate_markings(evidence["markings"], f"{loc}.markings")
             identifier(evidence["id"], f"{loc}.id")
             require(evidence["id"] not in seen_evidence, f"{loc}.id", "duplicate evidence ID")
             seen_evidence.add(evidence["id"])
@@ -229,10 +241,60 @@ def md(value):
     return value.replace("\n", "  \n")
 
 
+def validate_markings(value, location):
+    items(value, location, maximum=len(MARKINGS))
+    require(all(isinstance(tag, str) and tag in MARKINGS for tag in value),
+            location, "unknown handling marking")
+    require(len(set(value)) == len(value), location, "duplicate handling marking")
+
+
+def marking_label(tags):
+    tags = set(tags) | {"ORCON"}
+    if "PII Red" in tags:
+        tags.discard("PII")
+    return "//".join(tag for tag in MARKINGS if tag in tags)
+
+
+def handling(data):
+    """Compute restrictions without mutating input or inferring sensitivity from prose."""
+    structured = data["schema_version"] == "1.2"
+    baseline = {"ORCON"}
+    # Known explicit labels can only add restrictions, including during schema migration.
+    baseline.update(tag.strip() for tag in data["classification"].split("//")
+                    if tag.strip() in MARKINGS)
+    if structured:
+        baseline.update(data["markings"])
+    overall, findings, evidence = set(baseline), {}, {}
+    for finding in data["findings"]:
+        own = baseline | set(finding.get("markings", []))
+        derived = set(own)
+        for source in finding["evidence"]:
+            source_tags = own | set(source.get("markings", []))
+            evidence[source["id"]] = marking_label(source_tags)
+            derived.update(source_tags)
+        findings[finding["id"]] = marking_label(derived)
+        overall.update(derived)
+    return {"report": marking_label(overall), "findings": findings, "evidence": evidence,
+            "status": "structured" if structured else "legacy_unverified"}
+
+
+def handling_notice(data):
+    if data["schema_version"] != "1.2":
+        return ("Legacy input: structured source markings are unavailable; classification inheritance "
+                "is not verified. ORCON and recognized supplied legacy tags are retained. "
+                "Use schema 1.2 to record source restrictions.")
+    return ("ORCON applies to all data and derived analysis. PROPIN marks internal systems, methods "
+            "and procedures; PII marks employee/customer information; PII Red marks identity-theft-sensitive "
+            "PII; FI marks financial information. Combined analysis retains all applicable restrictions; "
+            "PII Red supersedes PII. Markings do not authorize disclosure or determine sensitivity from prose.")
+
+
 def sections(data):
     """Shared fact sections keep Markdown and PDF aligned."""
+    controls = handling(data)
     for f in data["findings"]:
         parts = [
+            ("Handling marking", [controls["findings"][f["id"]]]),
             ("Business severity", [f"{f['severity'].upper()} - {f['severity_rationale']}"]),
             ("Validation status", [f["status"].upper()]),
             ("Affected assets", f["assets"]),
@@ -244,6 +306,7 @@ def sections(data):
         ]
         for e in f["evidence"]:
             lines = [
+                f"Handling marking: {controls['evidence'][e['id']]}",
                 f"Observed: {e['observed_at']} | Collector: {e['collector']}",
                 f"Source: {e['tool']} {e['tool_version']}",
                 f"Normalized evidence summary: {e['summary']}",
@@ -278,6 +341,9 @@ def document_blocks(data):
     yield "list", (e["scope"], False)
     yield "heading", (2, "Limitations")
     yield "list", (e["limitations"], False)
+    yield "heading", (2, "Data handling")
+    yield "paragraph", f"Report handling marking: {handling(data)['report']}"
+    yield "paragraph", handling_notice(data)
     yield "heading", (1, CHAPTERS[1])
     yield "paragraph", e["executive_summary"]
     counts = Counter(f["severity"] for f in data["findings"])
@@ -286,6 +352,9 @@ def document_blocks(data):
     yield "paragraph", (f"Total: {len(data['findings'])} | Confirmed: {statuses['confirmed']} | "
                         f"Candidate: {statuses['candidate']}")
     yield "paragraph", " | ".join(f"{s.title()}: {counts[s]}" for s in SEVERITIES)
+    yield "heading", (2, "Severity method")
+    yield "paragraph", ("Supplied business severity; matrix not configured. No likelihood/impact "
+                        "scoring is performed. CVSS, when supplied, is separate severity metadata.")
     yield "heading", (2, "Recommendations")
     if "recommendations" in e:
         yield "list", (e["recommendations"], False)
@@ -341,7 +410,8 @@ def render_markdown(data, release=False):
     lines = ["# Penetration Testing Report", "", f"**{label} | SYNTHETIC DATA**", "",
              f"Client: {md(e['client'])}  \nTeam: {md(e['team'])}  \n"
              f"Engagement: {md(e['id'])}  \nReport date: {md(e['report_date'])}  \n"
-             f"Data marking: {md(data['classification'])}", "",
+             f"Supplied document label: {md(data['classification'])}  \n"
+             f"Handling marking: {handling(data)['report']}", "",
              "Training demonstration only. No real assessment, event permission, or submission is established.",
              "", "## Contents", ""]
     for chapter in CHAPTERS:
@@ -444,13 +514,15 @@ def render_pdf(data, destination, release=False):
 
     e = data["engagement"]
     label = "REVIEWED TRAINING COPY" if release else "DRAFT"
+    report_controls = handling(data)
     story = [Spacer(1, 42), p(f"{label} | SYNTHETIC DATA", "small"), Spacer(1, 20),
              p("Penetration Testing Report", "title"), p(e["client"], "h1"), Spacer(1, 18)]
     metadata = [
         ["Engagement", e["id"]],
         ["Team", e["team"]],
         ["Report date", e["report_date"]],
-        ["Data marking", data["classification"]],
+        ["Document label", data["classification"]],
+        ["Handling marking", report_controls["report"]],
     ]
     table = Table([[p(key, "small"), p(value)] for key, value in metadata], colWidths=[108, 360])
     table.setStyle(TableStyle([
@@ -505,6 +577,9 @@ def render_pdf(data, destination, release=False):
         c.setFillColor(muted)
         c.drawString(72, 38, "Synthetic training artifact | Human review required")
         c.drawRightString(540, 38, f"Page {doc.page}")
+        c.setFont(bold, 8)
+        legacy = " | LEGACY MARKINGS UNVERIFIED" if data["schema_version"] != "1.2" else ""
+        c.drawString(72, 24, report_controls["report"] + legacy)
         c.restoreState()
 
     class StableCanvas(canvas.Canvas):
@@ -548,6 +623,8 @@ def generate(raw, output_dir, pdf=False, release=False):
             "review_label": "reviewed_training_copy" if release else "draft",
             "input_sha256": sha256(raw), "artifacts": artifact_hashes,
             "evidence_files_opened": False, "cvss_recalculated": False,
+            "marking_policy": MARKING_POLICY, "effective_markings": handling(data)["report"],
+            "classification_inheritance": handling(data)["status"],
         }
         (stage / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         # Refuse a destination that appeared while rendering; never intentionally overwrite it.

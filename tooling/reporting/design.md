@@ -1,6 +1,6 @@
 # Reporting format and direct tool output design
 
-Design version: 2026-10-14. Current format target: generator 0.2.0, report schemas 1.0 and 1.1. **Native tool adapters and the tool-run contract below are planned interfaces, not implemented import commands.**
+Design version: 2026-10-15. Current format target: generator 0.3.0, report schemas 1.0, 1.1 and 1.2. **Native tool adapters and the tool-run contract below are planned interfaces, not implemented import commands.**
 
 ## Report structure
 
@@ -21,6 +21,18 @@ Schema 1.0 is retained. Schema 1.1 adds three optional engagement fields:
 Old 1.0 documents reject these new keys instead of silently changing their contract. Both versions retain synthetic-only input and the same review gate. The input hash covers exact bytes; edited Markdown and PDF must be regenerated from the same source to remain synchronized.
 
 ## Intended ingestion flow
+
+### Handling restrictions and severity method
+
+Schema 1.2 requires report markings[] and allows additional finding/evidence markings[]. The closed labels are ORCON, PROPIN, PII, PII Red and FI; empty/duplicate/unknown/non-string tags fail. The report baseline must include ORCON. A child inherits ancestor tags and may add restrictions; evidence tags roll into the derived finding and all findings roll into the report. This applies to summaries and other synthesized analysis as well as detailed evidence.
+
+ORCON denotes originator/client control. PROPIN covers internal systems, methods and procedures; PII covers employee/customer information; PII Red covers identity-theft-sensitive personal information; FI covers finances. These are overlapping categories, not a supplied total hierarchy. Retain their union, with PII Red replacing ordinary PII in the displayed label. For example, PROPIN plus FI yields ORCON//PROPIN//FI; adding PII Red yields ORCON//PROPIN//PII Red//FI. No automatic downgrade or declassification path exists.
+
+Computed labels appear on every PDF page, Markdown, finding/evidence sections and manifest. Original input is not mutated. The old classification text is a supplied document label and cannot lower computed restrictions; recognized exact tags in it add restrictions in every schema, including migration to 1.2. Legacy 1.0/1.1 inputs are visibly flagged as unverified for structured inheritance. Current source labels are analyst assertions; the code does not detect sensitive prose, authorize storage/disclosure, or enable client inputs. Every example remains synthetic.
+
+Business severity remains supplied by an analyst, with a visible “matrix not configured” method statement. No likelihood/impact matrix has been supplied for this implementation, and no scoring/mapping is invented. CVSS remains separate metadata. A later matrix needs exact axes, cells, boundary rules, provenance and fixtures before implementation.
+
+Future producer/native adapters must preserve source markings and attach them to observations and derived analysis, inheriting ORCON and retaining combined restrictions through run-aware reports. Classification omission cannot be used as declassification. Define these fields in a versioned adapter contract before deployment; the planned envelope below still has no implemented importer.
 
 Approved external tool or team helper → explicitly selected local export/stdin → passive adapter → validated run and metadata observations → human finding curation → report view → Markdown/PDF/manifest.
 

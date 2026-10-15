@@ -1,6 +1,6 @@
 # Engagement incident [stable ID]
 
-Data marking: [inherit source marking]
+Data marking: [ORCON plus all source/parent PROPIN / PII / PII Red / FI restrictions; synthesized analysis retains the combined restrictions, with PII Red over PII]
 Detected at: [timestamp with timezone]
 Reporter: [team operator]
 Client / Operations Team notified at: [timestamp and approved channel/reference]

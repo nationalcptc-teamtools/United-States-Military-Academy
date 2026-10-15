@@ -51,8 +51,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--node", required=True, help="available Node executable")
     parser.add_argument("--marked-module", required=True, help="available marked.esm.js file")
+    parser.add_argument("--fixture", type=Path, default=MODULE_PATH.parent / "examples/report.json",
+                        help="synthetic report fixture for the schema under test")
     args = parser.parse_args()
-    fixture = json.loads((MODULE_PATH.parent / "examples/report.json").read_bytes())
+    fixture = json.loads(args.fixture.read_bytes())
     cases = [
         "R-02 literal heading\n=====",
         "    R-02 *indented* [x](url) <img src=\"https://example.test/\">",

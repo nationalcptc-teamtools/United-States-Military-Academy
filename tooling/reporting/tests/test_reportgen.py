@@ -47,6 +47,102 @@ class ReportTests(unittest.TestCase):
         reportgen.validate(self.data)
         self.assertIn("Total: 0", reportgen.render_markdown(self.data))
 
+    def marked_data(self):
+        data = copy.deepcopy(self.data)
+        data["schema_version"] = "1.2"
+        data["markings"] = ["ORCON"]
+        return data
+
+    def test_mixed_source_markings_roll_into_analysis_without_mutation(self):
+        data = self.marked_data()
+        data["findings"][0]["markings"] = ["PROPIN"]
+        data["findings"][0]["evidence"][0]["markings"] = ["FI"]
+        data["findings"][1]["markings"] = ["PII"]
+        data["findings"][1]["evidence"][0]["markings"] = ["PII Red"]
+        original = copy.deepcopy(data)
+        controls = reportgen.handling(reportgen.validate(data))
+        self.assertEqual(controls["report"], "ORCON//PROPIN//PII Red//FI")
+        self.assertEqual(controls["findings"]["F-001"], "ORCON//PROPIN//FI")
+        self.assertEqual(controls["evidence"]["E-002"], "ORCON//PII Red")
+        self.assertIn("ORCON//PROPIN//PII Red//FI", reportgen.render_markdown(data))
+        self.assertEqual(data, original)
+
+    def test_descendants_cannot_remove_ancestor_restrictions(self):
+        data = self.marked_data()
+        data["markings"] = ["ORCON", "PII Red", "FI"]
+        data["findings"][0]["markings"] = ["PROPIN"]
+        data["findings"][0]["evidence"][0]["markings"] = ["PII"]
+        controls = reportgen.handling(reportgen.validate(data))
+        self.assertEqual(controls["evidence"]["E-001"], "ORCON//PROPIN//PII Red//FI")
+        self.assertEqual(controls["findings"]["F-002"], "ORCON//PII Red//FI")
+
+    def test_explicit_document_label_cannot_lose_known_restrictions(self):
+        data = self.marked_data()
+        data["classification"] = "ORCON//PII Red//FI"
+        controls = reportgen.handling(reportgen.validate(data))
+        self.assertEqual(controls["report"], "ORCON//PII Red//FI")
+        self.assertEqual(controls["evidence"]["E-001"], "ORCON//PII Red//FI")
+
+    def test_invalid_markings_reject_without_output_or_value_echo(self):
+        bad_values = [[], "ORCON", ["PUBLIC-SENTINEL"], ["ORCON", "ORCON"],
+                      [None], [["ORCON"]], ["PII Red"] * 6]
+        with self.tmpdir() as tmp:
+            for level in ("report", "finding", "evidence"):
+                for i, value in enumerate(bad_values):
+                    data = self.marked_data()
+                    target = data if level == "report" else data["findings"][0]
+                    if level == "evidence":
+                        target = target["evidence"][0]
+                    target["markings"] = value
+                    with self.subTest(level=level, case=i):
+                        with self.assertRaises(reportgen.ContractError) as error:
+                            reportgen.generate(self.raw_for(data), Path(tmp) / f"{level}-{i}")
+                        self.assertNotIn("PUBLIC-SENTINEL", str(error.exception))
+            self.assertEqual(list(Path(tmp).iterdir()), [])
+        for value in (None, ["PROPIN"]):
+            data = self.marked_data()
+            if value is None:
+                del data["markings"]
+            else:
+                data["markings"] = value
+            with self.assertRaises(reportgen.ContractError):
+                reportgen.validate(data)
+
+    def test_structured_markings_require_new_schema(self):
+        for schema in ("1.0", "1.1"):
+            for level in ("report", "finding", "evidence"):
+                data = self.legacy_data() if schema == "1.0" else copy.deepcopy(self.data)
+                target = data if level == "report" else data["findings"][0]
+                if level == "evidence":
+                    target = target["evidence"][0]
+                target["markings"] = ["ORCON"]
+                with self.subTest(schema=schema, level=level):
+                    with self.assertRaises(reportgen.ContractError):
+                        reportgen.validate(data)
+
+    def test_legacy_marking_limits_and_severity_method_are_visible(self):
+        data = self.legacy_data()
+        data["classification"] = "PROPIN//FI"
+        controls = reportgen.handling(reportgen.validate(data))
+        self.assertEqual(controls["report"], "ORCON//PROPIN//FI")
+        self.assertEqual(controls["status"], "legacy_unverified")
+        rendered = reportgen.render_markdown(data)
+        self.assertIn("classification inheritance is not verified", rendered)
+        self.assertIn("matrix not configured", rendered)
+        self.assertIn("No likelihood/impact scoring", rendered)
+
+    def test_manifest_records_handling_even_for_reviewed_training_copy(self):
+        data = self.marked_data()
+        data["markings"].append("PII Red")
+        data["review"] = {"reviewer": "Synthetic Reviewer", "reviewed_at": "2026-10-15"}
+        for finding in data["findings"]:
+            finding["status"] = "confirmed"
+        with self.tmpdir() as tmp:
+            manifest = reportgen.generate(self.raw_for(data), Path(tmp) / "out", release=True)
+            self.assertEqual(manifest["effective_markings"], "ORCON//PII Red")
+            self.assertEqual(manifest["classification_inheritance"], "structured")
+            self.assertEqual(manifest["marking_policy"], "cptc.handling/1.0")
+
     def legacy_data(self):
         data = copy.deepcopy(self.data)
         data["schema_version"] = "1.0"
