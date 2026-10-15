@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.2",
+  "data_category": "synthetic",
+  "classification": "SYNTHETIC TRAINING DATA",
+  "engagement": {
+    "id": "TRAINING-001",
+    "client": "Synthetic Training Organization",
+    "team": "Training assessment team",
+    "report_date": "2026-10-14",
+    "objective": "Demonstrate a structured assessment report using invented observations. No actual client, host, or network was assessed.",
+    "recommendations": [
+      "In the synthetic scenario, keep detailed diagnostics in protected logs and return a generic public error with a correlation ID.",
+      "Validate the complete session flow before deciding whether the candidate cookie configuration needs remediation."
+    ],
+    "methodology_sections": {
+      "information_gathering": "The fixture author defined a synthetic web application and two invented response examples. No customer inventory or scope was inferred.",
+      "service_enumeration": "Only synthetic response metadata was reviewed. No port scan, active request, or service discovery was performed.",
+      "validation": "The training analyst reviewed each fixture and retained the supplied confirmed or candidate status. No exploitation or access gain is claimed.",
+      "cleanup": "No target state was changed in this exercise. Remediation and retest actions below are proposed checks for an authorized environment, not completed work."
+    },
+    "scope": [
+      "Synthetic web application at training.example.test",
+      "Demonstration observations only; no network actions were performed"
+    ],
+    "methodology": "This report demonstrates importing structured findings from future team-script adapters. The observations and evidence below are invented training data. Analysts would verify actual findings against authorized evidence before submission.",
+    "executive_summary": "Two synthetic observations demonstrate the workflow: one confirmed training finding about unnecessary information exposure and one candidate requiring validation. The generator carries supplied evidence and remediation into a draft report; it makes no independent vulnerability judgments.",
+    "limitations": [
+      "No real systems, credentials, client data, or actual CPTC environment were tested.",
+      "Candidate observations require human validation; this report is not an event submission.",
+      "CVE/CVSS values are intentionally omitted because no public vulnerability match was established.",
+      "Handling tags in this invented fixture demonstrate inheritance only; no actual personal or financial information is included."
+    ]
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "title": "Unnecessary internal details in a public error response",
+      "severity": "medium",
+      "severity_rationale": "In the training scenario, internal paths and component details are exposed without authentication; no sensitive records or access gain were demonstrated.",
+      "status": "confirmed",
+      "assets": [
+        "training.example.test / application error handler"
+      ],
+      "description": "A synthetic error-response fixture includes an internal path and application component names. The training analyst marked this finding confirmed after reviewing the fixture. This status describes the exercise only.",
+      "validation_steps": [
+        "2026-10-14T14:00:00-04:00: reviewed the synthetic application response fixture.",
+        "Compared the response against the training requirement that public errors contain only a correlation ID."
+      ],
+      "business_impact": "In an actual deployment, unnecessary implementation details could aid reconnaissance. The demonstration does not establish access to client records or an exploitation chain.",
+      "remediation": "Configure the application error handler to return a generic message and correlation ID. Keep diagnostic paths and stack traces in access-controlled application logs. Add regression coverage for unauthenticated error responses.",
+      "retest_steps": [
+        "In an authorized test environment, trigger the same error and verify the response contains only the generic message and correlation ID.",
+        "Confirm authorized operators can still correlate the ID with protected diagnostic logs."
+      ],
+      "evidence": [
+        {
+          "id": "E-001",
+          "observed_at": "2026-10-14T14:00:00-04:00",
+          "collector": "Training analyst",
+          "tool": "synthetic-response-fixture",
+          "tool_version": "1.0",
+          "summary": "Invented response excerpt: error at /opt/training/app/handler.py. No actual host or file was accessed.",
+          "artifact": "evidence/synthetic-error-response.txt",
+          "markings": [
+            "FI"
+          ]
+        }
+      ],
+      "markings": [
+        "PROPIN"
+      ]
+    },
+    {
+      "id": "F-002",
+      "title": "Candidate: incomplete session-cookie configuration",
+      "severity": "low",
+      "severity_rationale": "A synthetic header suggests a missing attribute, but the full session flow and compensating controls have not been validated.",
+      "status": "candidate",
+      "assets": [
+        "training.example.test / session creation"
+      ],
+      "description": "A training fixture suggests that one session-cookie attribute may be missing. The excerpt alone does not prove a vulnerability or an exploitable session flow.",
+      "validation_steps": [
+        "2026-10-14T14:10:00-04:00: reviewed only the synthetic header excerpt.",
+        "Full session behavior, transport settings, and compensating controls remain untested."
+      ],
+      "business_impact": "If confirmed in context, weaker cookie handling could reduce protection against certain session attacks. No session compromise is claimed.",
+      "remediation": "First validate the complete session flow and identify the intended browser security controls. If a required cookie attribute is missing, configure it in the session middleware and verify application compatibility.",
+      "retest_steps": [
+        "Review session creation and renewal responses in the authorized environment.",
+        "Verify the intended attributes persist throughout the flow and document any compensating controls."
+      ],
+      "evidence": [
+        {
+          "id": "E-002",
+          "observed_at": "2026-10-14T14:10:00-04:00",
+          "collector": "Training analyst",
+          "tool": "synthetic-header-fixture",
+          "tool_version": "1.0",
+          "summary": "Invented header excerpt: Set-Cookie: training_session=[REDACTED]; Path=/. This is a fabricated value, not a credential.",
+          "markings": [
+            "PII Red"
+          ]
+        }
+      ],
+      "markings": [
+        "PII"
+      ]
+    }
+  ],
+  "markings": [
+    "ORCON"
+  ]
+}

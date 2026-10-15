@@ -32,6 +32,23 @@ Keep exclusions in a separate file:
 10.10.10.128/27
 ```
 
+
+# Offline report generator (tooling/reporting)
+
+The [reporting starter](tooling/reporting/README.md) converts synthetic normalized finding JSON into editable Markdown, optional PDF, and a provenance hash manifest. It supplements the Nmap scan exports with structured observations, business impact, remediation, retest steps, and explicit candidate/review status.
+
+It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.3.0 accepts synthetic inputs only, with a cover, contents, numbered sections and evidence/review appendices. Schemas 1.0/1.1 remain supported; schema 1.2 adds structured ORCON/PROPIN/PII/PII Red/FI inheritance and combined markings on every PDF page. Business severity remains supplied, with no severity matrix configured. Existing scanner/configuration tools and their installation remain unchanged.
+
+The [intake design](tooling/reporting/design.md) maps forty proposed farm-toolkit candidates and Nmap XML to future native adapters, helper output contracts or held/reference-only routes. Direct tool imports and approved client-data handling remain future work; current commands accept completed report JSON.
+
+Requires Python 3.10+; PDF additionally uses the dependency declared in tooling/reporting/requirements.txt. See the module README for optional PDF installation, full input contract, and rendering QA.
+
+```sh
+python3 tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/report-demo
+python3 -m unittest discover -s tooling/reporting/tests -v
+```
+
+Use a new output directory for every export. Generated reports and engagement evidence belong outside public source control.
 Copy the scope from the event documentation. Do not derive it from the local default route.
 
 Hostnames are resolved once when a run starts. Both runners preserve each frozen hostname-to-IP mapping for virtual-host probes, setting HTTP Host and TLS SNI while pinning the connection to the authorized IP. Windows currently expands IPv4 addresses only; Linux supports IPv4 and IPv6.
