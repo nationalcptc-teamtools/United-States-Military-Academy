@@ -1,0 +1,6 @@
+/install.sh text eol=lf
+/tooling/farmkit/*.py text eol=lf
+/tooling/farmkit/*.json text eol=lf
+/tooling/farmkit/*.md text eol=lf
+/tooling/farmkit/tests/*.py text eol=lf
+/tooling/farmkit/examples/** text eol=lf
