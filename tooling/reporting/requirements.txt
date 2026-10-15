@@ -1,3 +1,4 @@
-# Exact ReportLab version exercised for the starter PDF.
+# Versions exercised for optional PDF and Word exports.
 # Install only through an event-approved dependency route.
 reportlab==4.4.9
+python-docx==1.2.0

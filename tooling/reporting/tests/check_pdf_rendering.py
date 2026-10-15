@@ -28,7 +28,10 @@ def main():
     assert manifest["generator_version"] == reportgen.VERSION
     assert manifest["schema_version"] == data["schema_version"]
     assert manifest["input_sha256"] == hashlib.sha256(raw).hexdigest()
-    assert set(manifest["artifacts"]) == {"report.md", "report.pdf"}
+    expected = {"report.md", "report.pdf"}
+    if (args.output_dir / "report.docx").is_file():
+        expected.add("report.docx")
+    assert set(manifest["artifacts"]) == expected
     for name, digest in manifest["artifacts"].items():
         assert hashlib.sha256((args.output_dir / name).read_bytes()).hexdigest() == digest
     assert not manifest["evidence_files_opened"] and not manifest["cvss_recalculated"]

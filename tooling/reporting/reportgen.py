@@ -14,7 +14,7 @@ from datetime import date, datetime
 from pathlib import Path, PurePosixPath
 from xml.sax.saxutils import escape
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 MAX_INPUT_BYTES = 2_000_000
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MARKINGS = ("ORCON", "PROPIN", "PII", "PII Red", "FI")
@@ -599,11 +599,180 @@ def render_pdf(data, destination, release=False):
                         canvasmaker=StableCanvas, maxPasses=5)
 
 
+def render_docx(data, destination, release=False):
+    """Editable Word export; source strings are never interpreted as OOXML or fields."""
+    try:
+        from docx import Document
+        from docx.oxml import OxmlElement
+        from docx.oxml.ns import qn
+        from docx.shared import Inches, Pt, RGBColor
+        from lxml import etree
+    except ImportError:
+        raise ContractError("Word: install the declared python-docx dependency in an approved environment") from None
+    from datetime import timezone
+    from io import BytesIO
+    from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
+
+    require(all(ord(char) not in (0xFFFE, 0xFFFF) for value in all_strings(data) for char in value),
+            "Word", "input contains characters unavailable in XML documents")
+    doc = Document()
+    section = doc.sections[0]
+    section.different_first_page_header_footer = False
+    doc.settings.odd_and_even_pages_header_footer = False
+    section.page_width, section.page_height = Inches(8.5), Inches(11)
+    section.top_margin = section.bottom_margin = Inches(1)
+    section.left_margin = section.right_margin = Inches(1)
+    section.header_distance = section.footer_distance = Inches(0.35)
+    for name, size in (("Normal", 10.5), ("Title", 26), ("Subtitle", 16),
+                       ("Heading 1", 17), ("Heading 2", 13), ("Heading 3", 10.5),
+                       ("Header", 8), ("Footer", 8), ("List Paragraph", 10.5)):
+        style = doc.styles[name]
+        style.font.name, style.font.size = "Arial", Pt(size)
+        style.font.color.rgb = RGBColor(0, 0, 0)
+        style.paragraph_format.space_after = Pt(6)
+        style.paragraph_format.line_spacing = 1.15
+    for name in ("Heading 1", "Heading 2", "Heading 3"):
+        doc.styles[name].paragraph_format.keep_with_next = True
+        doc.styles[name].paragraph_format.space_before = Pt(8)
+    doc.styles["Normal"].paragraph_format.widow_control = True
+    controls = handling(data)
+    label = "REVIEWED TRAINING COPY" if release else "DRAFT"
+    header = section.header.paragraphs[0]
+    header.add_run(f"{label} | SYNTHETIC DATA").bold = True
+    header.add_run("\n" + controls["report"]).bold = True
+    if controls["status"] == "legacy_unverified":
+        header.add_run(" | LEGACY MARKINGS UNVERIFIED")
+    footer = section.footer.paragraphs[0]
+    footer.add_run("Synthetic training artifact | Human review required | Page ")
+    field = OxmlElement("w:fldSimple")
+    field.set(qn("w:instr"), "PAGE")
+    footer._p.append(field)
+
+    def paragraph(value, style=None):
+        result = doc.add_paragraph(style=style)
+        result.add_run(str(value))
+        result.paragraph_format.keep_together = False
+        return result
+
+    e = data["engagement"]
+    paragraph("Penetration Testing Report", "Title")
+    paragraph(e["client"], "Subtitle")
+    for key, value in (("Engagement", e["id"]), ("Team", e["team"]),
+                       ("Report date", e["report_date"]), ("Document label", data["classification"]),
+                       ("Handling marking", controls["report"])):
+        row = doc.add_paragraph()
+        row.add_run(key + ": ").bold = True
+        row.add_run(value)
+    paragraph("Training demonstration only. No real assessment, event permission, or submission is established.")
+    doc.add_page_break()
+    paragraph("Contents", "Heading 1")
+    for index, chapter in enumerate(CHAPTERS, 1):
+        row = doc.add_paragraph()
+        link = OxmlElement("w:hyperlink")
+        link.set(qn("w:anchor"), f"chapter_{index}")
+        run, properties, value = OxmlElement("w:r"), OxmlElement("w:rPr"), OxmlElement("w:t")
+        underline = OxmlElement("w:u")
+        underline.set(qn("w:val"), "single")
+        properties.append(underline)
+        value.text = chapter
+        run.extend((properties, value))
+        link.append(run)
+        row._p.append(link)
+
+    numbering = doc.part.numbering_part.element
+    next_abstract = 1 + max(int(node.get(qn("w:abstractNumId"))) for node in numbering.findall(qn("w:abstractNum")))
+    next_number = 1 + max(int(node.get(qn("w:numId"))) for node in numbering.findall(qn("w:num")))
+
+    def list_number(numbered):
+        nonlocal next_abstract, next_number
+        abstract = OxmlElement("w:abstractNum")
+        abstract.set(qn("w:abstractNumId"), str(next_abstract))
+        level = OxmlElement("w:lvl")
+        level.set(qn("w:ilvl"), "0")
+        for tag, value in (("start", "1"), ("numFmt", "decimal" if numbered else "bullet"),
+                           ("suff", "space"), ("lvlText", "%1." if numbered else "-")):
+            node = OxmlElement("w:" + tag)
+            node.set(qn("w:val"), value)
+            level.append(node)
+        abstract.append(level)
+        position = next((i for i, node in enumerate(numbering) if node.tag == qn("w:num")), len(numbering))
+        numbering.insert(position, abstract)
+        number = OxmlElement("w:num")
+        number.set(qn("w:numId"), str(next_number))
+        reference = OxmlElement("w:abstractNumId")
+        reference.set(qn("w:val"), str(next_abstract))
+        number.append(reference)
+        numbering.append(number)
+        result = next_number
+        next_abstract += 1
+        next_number += 1
+        return result
+
+    first_finding = True
+    for kind, value in document_blocks(data):
+        if kind == "heading":
+            level, title = value
+            row = paragraph(title, f"Heading {level}")
+            if level == 1:
+                row.paragraph_format.page_break_before = True
+                index = CHAPTERS.index(title) + 1
+                start, end = OxmlElement("w:bookmarkStart"), OxmlElement("w:bookmarkEnd")
+                start.set(qn("w:id"), str(index))
+                start.set(qn("w:name"), f"chapter_{index}")
+                end.set(qn("w:id"), str(index))
+                row._p.insert(1, start)
+                row._p.append(end)
+        elif kind == "finding":
+            row = paragraph(value, "Heading 2")
+            row.paragraph_format.page_break_before = not first_finding
+            first_finding = False
+        elif kind == "list":
+            values, numbered = value
+            number_id = list_number(numbered)
+            for item in values:
+                row = paragraph(item, "List Paragraph")
+                row.paragraph_format.left_indent = Inches(0.25)
+                row.paragraph_format.first_line_indent = Inches(-0.15)
+                properties = row._p.get_or_add_pPr().get_or_add_numPr()
+                properties.get_or_add_ilvl().val = 0
+                properties.get_or_add_numId().val = number_id
+        else:
+            paragraph(value)
+    properties = doc.core_properties
+    properties.title, properties.author = "Synthetic penetration testing report", "CPTC reporting starter"
+    properties.last_modified_by = properties.comments = properties.keywords = ""
+    properties.created = properties.modified = datetime(2000, 1, 1, tzinfo=timezone.utc)
+    properties.revision = 1
+    original, canonical = BytesIO(), BytesIO()
+    doc.save(original)
+    with ZipFile(original) as source, ZipFile(canonical, "w", compression=ZIP_DEFLATED) as target:
+        for name in sorted(source.namelist()):
+            if name.startswith("customXml/") or name == "docProps/thumbnail.jpeg":
+                continue
+            raw = source.read(name)
+            if name.endswith((".xml", ".rels")):
+                root = etree.fromstring(raw, etree.XMLParser(resolve_entities=False, no_network=True))
+                for node in root.iter():
+                    for key in list(node.attrib):
+                        if etree.QName(key).localname.startswith("rsid"):
+                            del node.attrib[key]
+                    for child in list(node):
+                        relation = child.get("Type", "")
+                        part = child.get("PartName", "")
+                        if relation.endswith(("/customXml", "/metadata/thumbnail")) or part.startswith("/customXml/"):
+                            node.remove(child)
+                raw = etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True)
+            info = ZipInfo(name, date_time=(2000, 1, 1, 0, 0, 0))
+            info.compress_type, info.create_system = ZIP_DEFLATED, 0
+            target.writestr(info, raw)
+    Path(destination).write_bytes(canonical.getvalue())
+
+
 def sha256(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def generate(raw, output_dir, pdf=False, release=False):
+def generate(raw, output_dir, pdf=False, release=False, *, docx=False):
     data = validate(load(raw), release)
     output_dir = Path(output_dir).resolve()
     require(not any(output_dir == blocked or blocked in output_dir.parents
@@ -616,6 +785,8 @@ def generate(raw, output_dir, pdf=False, release=False):
         (stage / "report.md").write_text(render_markdown(data, release), encoding="utf-8")
         if pdf:
             render_pdf(data, stage / "report.pdf", release)
+        if docx:
+            render_docx(data, stage / "report.docx", release)
         artifact_hashes = {p.name: sha256(p.read_bytes()) for p in sorted(stage.iterdir())}
         manifest = {
             "generator_version": VERSION, "schema_version": data["schema_version"],
@@ -638,6 +809,7 @@ def main(argv=None):
     parser.add_argument("input", help="UTF-8 normalized JSON file, or - for stdin")
     parser.add_argument("--output-dir", required=True, help="new private output directory; never overwritten")
     parser.add_argument("--pdf", action="store_true", help="also render PDF using locally installed ReportLab")
+    parser.add_argument("--docx", action="store_true", help="also render editable Word using locally installed python-docx")
     parser.add_argument("--release", action="store_true", help="reviewed training label; enforce review metadata")
     args = parser.parse_args(argv)
     try:
@@ -646,7 +818,7 @@ def main(argv=None):
         else:
             with Path(args.input).open("rb") as stream:
                 raw = stream.read(MAX_INPUT_BYTES + 1)
-        manifest = generate(raw, args.output_dir, args.pdf, args.release)
+        manifest = generate(raw, args.output_dir, args.pdf, args.release, docx=args.docx)
     except ContractError as exc:
         print(f"Report rejected: {exc}", file=sys.stderr)
         return 2
@@ -655,7 +827,8 @@ def main(argv=None):
         print("Report failed: could not read input or render/publish artifacts; check local dependencies "
               "and filesystem permissions. No report destination was intentionally overwritten.", file=sys.stderr)
         return 1
-    print(f"Generated {'Markdown + PDF' if args.pdf else 'Markdown'}; "
+    formats = "Markdown" + (" + PDF" if args.pdf else "") + (" + Word" if args.docx else "")
+    print(f"Generated {formats}; "
           f"label={manifest['review_label']}; input_sha256={manifest['input_sha256']}")
     return 0
 

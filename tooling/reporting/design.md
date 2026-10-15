@@ -1,6 +1,6 @@
 # Reporting format and direct tool output design
 
-Design version: 2026-10-15. Current format target: generator 0.3.0, report schemas 1.0, 1.1 and 1.2. **Native tool adapters and the tool-run contract below are planned interfaces, not implemented import commands.**
+Design version: 2026-10-15. Current format target: generator 0.4.0, report schemas 1.0, 1.1 and 1.2. **Native tool adapters and the tool-run contract below are planned interfaces, not implemented import commands.**
 
 ## Report structure
 
@@ -21,6 +21,14 @@ Schema 1.0 is retained. Schema 1.1 adds three optional engagement fields:
 Old 1.0 documents reject these new keys instead of silently changing their contract. Both versions retain synthetic-only input and the same review gate. The input hash covers exact bytes; edited Markdown and PDF must be regenerated from the same source to remain synchronized.
 
 ## Intended ingestion flow
+
+### Editable Word output
+
+The optional --docx flag adds report.docx to the existing export transaction; --pdf remains independently optional. The local generate API adds keyword-only docx=False, preserving existing positional calls. Word uses the same document_blocks and computed handling view as Markdown/PDF, with native paragraphs, heading styles, real list numbering and chapter bookmarks. Static internal contents links avoid stale fields or incorrectly reused PDF page numbers. The only generated Word field is the trusted PAGE field; source text never becomes OOXML, fields or external links.
+
+Use Letter pages, one-inch margins, black heading styles and repeated default headers containing draft/training status and the overall inherited marking. Default footers include review notice/page field. Keep the source template and evidence files out of the package. Remove default thumbnail/custom-XML parts and session IDs; use fixed generic core metadata and canonical ZIP entry order/timestamps for same-runtime deterministic bytes. Reject XML-incompatible characters before publishing. This is metadata hygiene, not content redaction.
+
+python-docx 1.2.0 is lazy-loaded only for Word. Any missing dependency or rendering failure removes staged Markdown/PDF/Word together. Markdown-only operation keeps its standard-library path. Native Word/LibreOffice is not needed to generate the document; visual layout QA is separate. The preparation bundle lacks LibreOffice, so native rendering was attempted but visual validation is unavailable rather than claimed from XML checks.
 
 ### Handling restrictions and severity method
 

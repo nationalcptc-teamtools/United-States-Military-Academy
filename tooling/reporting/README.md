@@ -1,6 +1,6 @@
 # Offline reporting starter
 
-Version 0.3.0. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF, and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
+Version 0.4.0. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
 
 The original report format loosely follows a conventional assessment/exam-report structure: cover, contents, numbered introduction, high-level summary/recommendations, methodology, detailed findings and evidence/review appendices. PDF contents include actual page numbers. Source text and review status are retained; section headings do not assert that any activity occurred.
 
@@ -8,12 +8,12 @@ Use [the report-authoring template](templates/report.md) for additional rating e
 
 ## Run
 
-Requires Python 3.10+. Markdown uses only the standard library. PDF uses ReportLab 4.4.9, declared in requirements.txt. In an approved development environment, install with your normal Python package-management process; reconfirm public availability/licensing and event installation rules before competition.
+Requires Python 3.10+. Markdown uses only the standard library. PDF uses ReportLab 4.4.9; Word uses python-docx 1.2.0. Both are declared in requirements.txt and loaded only when their format is requested. In an approved development environment, install with your normal Python package-management process; reconfirm public availability/licensing and event installation rules before competition.
 
 From the project root:
 
 ~~~powershell
-python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/pdf/sample-report --pdf
+python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/pdf/sample-report --pdf --docx
 python -m unittest discover -s tooling/reporting/tests -v
 ~~~
 
@@ -31,7 +31,11 @@ Optional PDF QA uses preparation-only pypdf to check source-text preservation, a
 python -B tooling/reporting/tests/check_pdf_rendering.py tooling/reporting/examples/report-marked.json output/pdf/sample-report
 ~~~
 
-Choose a **new output directory** each time. Existing destinations are refused. Outputs are report.md, report.pdf (when requested), and manifest.json. The editable JSON is the source of truth; editing report.md does not update report.pdf. Revise JSON and regenerate to synchronize outputs.
+Choose a **new output directory** each time. Existing destinations are refused. Outputs are report.md, report.pdf with --pdf, report.docx with --docx, and manifest.json with the hash of every requested report. Either optional format can be used independently. All requested outputs publish together after successful rendering.
+
+Word contains native editable paragraphs, heading styles and lists, with internal contents links, repeated handling/draft markings and a page-number field. Its contents do not reuse PDF page numbers, since Word pagination can differ. Source markup stays plain text; there are no macros, external links or evidence attachments. Word generation needs neither Word nor LibreOffice installed. Native layout QA requires a separate approved document renderer; the preparation environment lacked bundled LibreOffice, so Word visual layout has not been certified there.
+
+The editable JSON is the source of truth. Editing Markdown or Word does not update the other outputs and changes the edited file's manifest identity. Revise JSON and regenerate to synchronize outputs, or record manual amendments under the review process.
 
 Use - as input to consume a future adapter's JSON from stdin. --release changes the training label only when a reviewer/date and fully confirmed findings/verified CVE applicability are supplied. It neither validates evidence nor approves event submission. The sample includes a candidate, so its release request is deliberately rejected.
 

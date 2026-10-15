@@ -199,3 +199,13 @@ Enumeration output can contain sensitive network and domain data. Generated resu
 - `install.sh` is the original minimal Kali installer.
 
 The consolidated Linux and Windows runners are the recommended entrypoints.
+
+## Offline report generation
+
+The [reporting module](tooling/reporting/README.md) exports structured synthetic findings as Markdown, optional PDF and editable Word, with inherited handling markings and a hash manifest. Use a new output directory for each export:
+
+```sh
+python3 tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/report-demo --pdf --docx
+```
+
+PDF and Word dependencies are declared in tooling/reporting/requirements.txt. The reporting module does not run the enumeration tools or open evidence references.
