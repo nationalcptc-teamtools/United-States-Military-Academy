@@ -5,6 +5,16 @@ __pycache__/
 
 vulscan/
 
+# CPTC runtime output and downloaded tool bundles
+artifacts/
+results/
+.tools/
+cptc-results/
+.cptc-tools/
+/scope.txt
+/exclude.txt
+/snmp-communities.txt
+
 # C extensions
 *.so
 
