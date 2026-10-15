@@ -25,12 +25,15 @@ class VisibleReport(HTMLParser):
         self.text = []
         self.headings = []
         self.unexpected_tags = []
+        self.links = []
 
     def handle_starttag(self, tag, attrs):
         if tag in ("h1", "h2", "h3"):
             self.headings.append(tag)
-        if tag in ("pre", "code", "img", "a", "em", "script"):
+        if tag in ("pre", "code", "img", "em", "script"):
             self.unexpected_tags.append(tag)
+        if tag == "a":
+            self.links.append(dict(attrs).get("href"))
         if tag == "br":
             self.text.append("\n")
 
@@ -75,6 +78,12 @@ def main():
         ("limitations", lambda d, v: d["engagement"].update(limitations=[v])),
         ("validation_steps", lambda d, v: d["findings"][0].update(validation_steps=[v])),
         ("evidence_summary", lambda d, v: d["findings"][0]["evidence"][0].update(summary=v)),
+        ("objective", lambda d, v: d["engagement"].update(objective=v)),
+        ("recommendations", lambda d, v: d["engagement"].update(recommendations=[v])),
+        ("methodology_information_gathering", lambda d, v: d["engagement"]["methodology_sections"].update(information_gathering=v)),
+        ("methodology_service_enumeration", lambda d, v: d["engagement"]["methodology_sections"].update(service_enumeration=v)),
+        ("methodology_validation", lambda d, v: d["engagement"]["methodology_sections"].update(validation=v)),
+        ("methodology_cleanup", lambda d, v: d["engagement"]["methodology_sections"].update(cleanup=v)),
     ]
     markdown = [reportgen.render_markdown(reportgen.validate(copy.deepcopy(fixture)))]
     expected = []
@@ -102,7 +111,7 @@ process.stdout.write(JSON.stringify(inputs.map(text => marked.parse(text, {gfm: 
     for (name, value), html in zip(expected, rendered[1:]):
         report = VisibleReport()
         report.feed(html)
-        if report.headings != baseline.headings or report.unexpected_tags:
+        if report.headings != baseline.headings or report.unexpected_tags or report.links != baseline.links:
             failures.append((name, cases.index(value), "source changed report structure"))
         if compact(value) not in compact("".join(report.text)):
             failures.append((name, cases.index(value), "literal source text changed"))

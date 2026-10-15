@@ -47,6 +47,75 @@ class ReportTests(unittest.TestCase):
         reportgen.validate(self.data)
         self.assertIn("Total: 0", reportgen.render_markdown(self.data))
 
+    def legacy_data(self):
+        data = copy.deepcopy(self.data)
+        data["schema_version"] = "1.0"
+        for key in ("objective", "recommendations", "methodology_sections"):
+            data["engagement"].pop(key, None)
+        return data
+
+    def test_legacy_report_preserves_facts_under_new_layout(self):
+        data = self.legacy_data()
+        original = copy.deepcopy(data)
+        rendered = reportgen.render_markdown(reportgen.validate(data))
+        self.assertEqual(data, original)
+        self.assertIn("Candidate: 1", rendered)
+        self.assertIn("## 1 Introduction", rendered)
+        self.assertIn("## 3 Methodology", rendered)
+        self.assertIn("## 4 Detailed Findings", rendered)
+        self.assertIn("## 5 Appendices", rendered)
+        self.assertIn("An assessment objective was not supplied", rendered)
+        self.assertIn("recommendations were not supplied", rendered)
+        self.assertNotIn("Cleanup and retest", rendered)
+        self.assertIn("Human review pending", rendered)
+
+    def test_supplied_authoring_sections_and_chapter_order(self):
+        data = copy.deepcopy(self.data)
+        data["schema_version"] = "1.1"
+        data["engagement"]["objective"] = "OBJECTIVESENTINEL"
+        data["engagement"]["recommendations"] = ["RECOMMENDATIONSENTINEL"]
+        data["engagement"]["methodology_sections"] = {"cleanup": "CLEANUPSENTINEL"}
+        rendered = reportgen.render_markdown(reportgen.validate(data))
+        for value in ("OBJECTIVESENTINEL", "RECOMMENDATIONSENTINEL", "CLEANUPSENTINEL"):
+            self.assertIn(value, rendered)
+        positions = [rendered.index("## " + str(i) + " ") for i in range(1, 6)]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("## Contents", rendered)
+        self.assertIn("(#4-detailed-findings)", rendered)
+        self.assertIn("### Cleanup and retest", rendered)
+        self.assertNotIn("### Service enumeration", rendered)
+
+    def test_authoring_extension_rejects_unknown_or_malformed_fields(self):
+        mutations = [
+            lambda e: e.update(objective=""),
+            lambda e: e.update(objective=["SECRET-SENTINEL"]),
+            lambda e: e.update(recommendations=[]),
+            lambda e: e.update(recommendations=["a"] * 21),
+            lambda e: e.update(recommendations=["a" * 2001]),
+            lambda e: e.update(methodology_sections={}),
+            lambda e: e.update(methodology_sections={"untrusted": "SECRET-SENTINEL"}),
+            lambda e: e.update(methodology_sections={"cleanup": []}),
+        ]
+        with self.tmpdir() as tmp:
+            for i, mutate in enumerate(mutations):
+                data = copy.deepcopy(self.data)
+                data["schema_version"] = "1.1"
+                mutate(data["engagement"])
+                with self.subTest(i=i):
+                    with self.assertRaises(reportgen.ContractError) as error:
+                        reportgen.generate(self.raw_for(data), Path(tmp) / str(i))
+                    self.assertNotIn("SECRET-SENTINEL", str(error.exception))
+            self.assertEqual(list(Path(tmp).iterdir()), [])
+        data = self.legacy_data()
+        data["engagement"]["objective"] = "New keys require an explicit schema change."
+        with self.assertRaises(reportgen.ContractError):
+            reportgen.validate(data)
+
+    def test_design_envelope_is_not_accepted_as_report_input(self):
+        envelope = json.loads((FIXTURE.parent / "tool-run.json").read_bytes())
+        with self.assertRaises(reportgen.ContractError):
+            reportgen.validate(envelope)
+
     def test_invalid_contracts_fail_without_destination(self):
         mutations = [
             lambda d: d.update(schema_version="9.0"),

@@ -1,89 +1,110 @@
-# [Consulting team] — Penetration testing report
+# Penetration Testing Report
 
 Client: [client name]
 Engagement ID: [stable ID]
-Assessment window / timezone: [start–end and timezone]
+Assessment window and timezone: [supplied start and end]
 Data marking: [inherited marking]
-Document version: [version]
-Status: [draft / reviewed under the agreed process]
-Prepared by / reviewed by: [names, dates and review record]
+Document version and status: [version; draft or reviewed under the agreed process]
+Prepared by and reviewed by: [names, dates and review record]
 
-## Executive summary
+## Contents
 
-[State assessment purpose, scope and main result in language suitable for client leadership. Separate demonstrated access/impact from plausible consequences and unvalidated candidates.]
+1. Introduction
+2. High-Level Summary and Recommendations
+3. Methodology
+4. Detailed Findings
+5. Appendices
 
-[Describe the few most important business risks, affected operations, and the actions that reduce them. Include useful positive observations without treating untested systems as secure.]
+## 1 Introduction
 
-### Immediate priorities
+### Objective
 
-| Priority | Finding IDs | Client action / owner | Proposed timing / dependencies |
-| --- | --- | --- | --- |
-| [priority] | [IDs] | [concrete mitigation and responsible role] | [client-agreed or explicitly proposed] |
-
-### Assessment limits
-
-[Time, scope, access, tool failures, sampling and untested controls. A partial or failed run is a limitation, not a clean result.]
-
-## Engagement overview
+[State the assessment purpose and intended decisions. Use supplied objectives; do not infer scope or authority from this template.]
 
 ### Authorized scope and exclusions
 
-[SOW/ROE reference, authorized assets/services/users/testing methods, exclusions, approved changes and assessment dates. Keep the actual approval record in authorized storage.]
+[Identify the SOW/ROE record, assets/services/users, approved methods, dates and exclusions. Keep approval records in authorized storage. A target name or tool output does not authorize testing.]
 
-### Methodology
+### Limitations
 
-[What was performed, when, and under which constraints. Explain discovery and validation separately. List tools/versions and source references in an appendix; do not claim every planned activity was performed.]
+[Record time/access/sampling limits, unavailable tools, failed/partial/not-run activities and untested controls. Absence of a finding is not proof of security.]
 
-### Risk-rating method
+## 2 High-Level Summary and Recommendations
 
-[Define business severity, evidence/validation status, and prioritization method. Imported CVSS severity and analyst business risk are separate. State CVSS version/source/vector/date when used and explain uncertainty.]
+[Describe demonstrated results and business implications for client leadership. Separate confirmed findings, candidate observations, possible consequences and positive observations. Do not claim access, exploitation or coverage not established by evidence.]
 
-## Findings summary
+### Finding summary
 
 | Finding ID | Title | Business severity | Validation status | Affected assets |
 | --- | --- | --- | --- | --- |
-| [ID] | [title] | [rating] | [candidate / confirmed] | [assets] |
+| [ID] | [title] | [rating and rationale] | [candidate / confirmed] | [assets] |
 
-[Reconcile counts to included findings. Unvalidated candidates remain visible; do not silently mix them with confirmed findings.]
+[Reconcile counts to included findings; keep unvalidated candidates visible.]
 
-## Validated attack narrative (when applicable)
+### Recommendations and priorities
 
-[Explain how verified weaknesses combined to produce an observed outcome, with timeline and finding/evidence IDs. Distinguish each demonstrated step from untested possibilities. Include a diagram only if it clarifies the client's decisions.]
+[Supply a short, decision-focused set of actions. Do not derive client commitments, deadlines or business priorities from a CVSS score alone.]
 
-## Technical findings
+| Priority | Finding IDs | Proposed client action and owner | Timing and dependencies |
+| --- | --- | --- | --- |
+| [priority] | [IDs] | [specific mitigation and responsible role] | [explicitly proposed or agreed] |
 
-[Repeat the finding template for each included finding: affected assets, how/when discovered, source tool/version/operator, observed evidence, validation steps/results, business impact, severity rationale, mitigation and retest. Keep private evidence references intact and exclude unnecessary secrets.]
+## 3 Methodology
 
-## Remediation roadmap
+### Assessment approach and rating method
 
-[Separate immediate containment, near-term fixes and longer-term systemic improvements where useful. Use specific tasks, owners/dependencies and verification criteria. Priorities and dates must be proposed or client-agreed, not invented commitments.]
+[Explain the actual approach, constraints and business-severity method. Imported CVSS severity, applicability, validation status and client risk are separate. Preserve version/vector/source/date for supplied scores.]
 
-## Appendices
+### Information gathering
 
-### Evidence register and source provenance
+[Record supplied asset/scope evidence and its provenance, including what remains unknown. A tool-run ledger distinguishes success, empty, partial, failed and not run.]
 
-| Evidence ID | Finding IDs | Timestamp / timezone | Collector / tool version | Private artifact / hash | Data marking |
+### Service enumeration
+
+[Document only authorized activities already performed, their tools/versions, timestamps, coverage and limits. No scanner is launched by the reporting template or generator.]
+
+### Validation
+
+[Describe observed validation steps/results with evidence IDs. A native-tool assertion or matching CVE is a candidate until an analyst verifies applicability.]
+
+### Cleanup and retest
+
+[Record actual authorized changes, cleanup results and remaining actions, if supplied. Do not add persistence or claim removal/successful remediation from an exam example. Planned retests remain plans.]
+
+## 4 Detailed Findings
+
+[Repeat the finding template for each finding: stable ID/title, affected assets, business severity/rationale, status, observation, how/when discovered, numbered validation steps/results, provenance/evidence, impact, optional CVE/CVSS, mitigation and numbered retest plan.]
+
+### Validated attack narrative when applicable
+
+[Connect only demonstrated steps to observed outcomes through finding/evidence IDs and timestamps. Mark untested possibilities. Include a diagram only when it clarifies a client decision.]
+
+## 5 Appendices
+
+### Evidence register
+
+| Evidence ID | Finding IDs | Timestamp and timezone | Collector and tool version | Private artifact and hash | Marking |
 | --- | --- | --- | --- | --- | --- |
-| [ID] | [IDs] | [time] | [source] | [reference; hash verification status] | [marking] |
+| [ID] | [IDs] | [time] | [source] | [reference and verification status] | [marking] |
 
-[Include approved screenshots/excerpts only when authorized and necessary. A normalized summary is not the raw artifact. Document redaction and limitations without asserting that redaction declassifies the report.]
+[Keep sensitive originals in approved storage. Include screenshots/excerpts only when authorized and necessary; the current generator references files without reading or embedding them. Redaction does not automatically declassify a report.]
 
-### Tested assets, tools and references
+### Tools and coverage
 
-[Asset coverage, tool versions, public vulnerability/advisory references, cache snapshot/date if applicable, and unknown or not-tested areas.]
+[Record selected tool/version/profile, run status, adapter version, input/export hash and known gaps. Proposed farm-toolkit candidates and design-only adapters are not completed assessments.]
 
-### Cleanup and retest record
+### Review and outstanding work
 
-[Changes made, authorized cleanup steps, remaining artifacts/actions, retest results and dates. Do not claim removal or successful remediation without verification.]
-
-### Glossary (if useful)
-
-[Explain terminology that the client audience needs.]
+[Reviewer, date, evidence inspected, corrections, remaining limitations and client-agreed or proposed follow-ups. A generated training/review label is not event submission approval.]
 
 ### Incident records
 
-[Reference separately submitted incident records through the event's approved channel. Use the incident template rather than hiding disruption details inside a finding.]
+[Reference separate incident records through the approved channel. Preserve source/destination, timeline, affected scope, damage, notification, remediation and review using the incident template.]
+
+### Glossary when useful
+
+[Explain terms the client audience needs.]
 
 ---
 
-Authoring guidance: historical CPTC reports are useful examples, not a current rubric or a source of factual findings. Adapt these sections to the event brief and client needs. This full report-authoring template includes optional sections beyond the compact JSON generator's current export; they require analyst authoring until explicitly added to the contract.
+Authoring guidance: this is an original structure loosely informed by a user-provided assessment-report example. It does not reproduce exam instructions, sample exploits, credentials, targets, screenshots, branding or proof values. Adapt it to the actual CPTC brief. The generator implements the five main sections and evidence/review appendices; extra authored tables, diagrams, screenshots, incident records and attack narratives remain manual until explicitly added to the contract.

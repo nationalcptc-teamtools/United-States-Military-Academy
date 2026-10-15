@@ -14,9 +14,14 @@ from datetime import date, datetime
 from pathlib import Path, PurePosixPath
 from xml.sax.saxutils import escape
 
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 MAX_INPUT_BYTES = 2_000_000
 SEVERITIES = ("critical", "high", "medium", "low", "info")
+CHAPTERS = ("1 Introduction", "2 High-Level Summary and Recommendations",
+            "3 Methodology", "4 Detailed Findings", "5 Appendices")
+METHOD_SECTIONS = (("information_gathering", "Information gathering"),
+                   ("service_enumeration", "Service enumeration"),
+                   ("validation", "Validation"), ("cleanup", "Cleanup and retest"))
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -89,13 +94,14 @@ def artifact_path(value, location):
 def validate(data, release=False):
     obj(data, "report", ("schema_version", "data_category", "classification",
                         "engagement", "findings"), ("review",))
-    require(data["schema_version"] == "1.0", "report.schema_version", "unsupported schema")
+    require(data["schema_version"] in ("1.0", "1.1"), "report.schema_version", "unsupported schema")
     require(data["data_category"] == "synthetic", "report.data_category",
             "this preparation starter accepts synthetic data only")
     text(data["classification"], "report.classification", 100, True)
     e = data["engagement"]
+    optional = ("objective", "recommendations", "methodology_sections") if data["schema_version"] == "1.1" else ()
     obj(e, "engagement", ("id", "client", "team", "report_date", "scope", "methodology",
-                         "executive_summary", "limitations"))
+                         "executive_summary", "limitations"), optional)
     identifier(e["id"], "engagement.id")
     for key in ("client", "team"):
         text(e[key], f"engagement.{key}", 120, True)
@@ -104,6 +110,16 @@ def validate(data, release=False):
     text(e["methodology"], "engagement.methodology")
     text(e["executive_summary"], "engagement.executive_summary")
     strings(e["limitations"], "engagement.limitations")
+    if "objective" in e:
+        text(e["objective"], "engagement.objective")
+    if "recommendations" in e:
+        strings(e["recommendations"], "engagement.recommendations", maximum=20)
+    if "methodology_sections" in e:
+        details = e["methodology_sections"]
+        obj(details, "engagement.methodology_sections", (), tuple(key for key, _ in METHOD_SECTIONS))
+        require(bool(details), "engagement.methodology_sections", "at least one supplied section required")
+        for key, value in details.items():
+            text(value, f"engagement.methodology_sections.{key}")
     if "review" in data:
         obj(data["review"], "review", ("reviewer", "reviewed_at"))
         text(data["review"]["reviewer"], "review.reviewer", 120, True)
@@ -252,46 +268,101 @@ def sections(data):
         yield f, parts
 
 
+def document_blocks(data):
+    """One ordered content view for both outputs; no source narrative is inferred."""
+    e = data["engagement"]
+    yield "heading", (1, CHAPTERS[0])
+    yield "heading", (2, "Assessment objective")
+    yield "paragraph", e.get("objective", "An assessment objective was not supplied.")
+    yield "heading", (2, "Scope")
+    yield "list", (e["scope"], False)
+    yield "heading", (2, "Limitations")
+    yield "list", (e["limitations"], False)
+    yield "heading", (1, CHAPTERS[1])
+    yield "paragraph", e["executive_summary"]
+    counts = Counter(f["severity"] for f in data["findings"])
+    statuses = Counter(f["status"] for f in data["findings"])
+    yield "heading", (2, "Finding summary")
+    yield "paragraph", (f"Total: {len(data['findings'])} | Confirmed: {statuses['confirmed']} | "
+                        f"Candidate: {statuses['candidate']}")
+    yield "paragraph", " | ".join(f"{s.title()}: {counts[s]}" for s in SEVERITIES)
+    yield "heading", (2, "Recommendations")
+    if "recommendations" in e:
+        yield "list", (e["recommendations"], False)
+    else:
+        yield "paragraph", ("High-level recommendations were not supplied. Refer to the "
+                            "individual remediation and retest actions in Section 4.")
+    yield "heading", (1, CHAPTERS[2])
+    yield "heading", (2, "Assessment approach")
+    yield "paragraph", e["methodology"]
+    for key, label in METHOD_SECTIONS:
+        if key in e.get("methodology_sections", {}):
+            yield "heading", (2, label)
+            yield "paragraph", e["methodology_sections"][key]
+    yield "heading", (1, CHAPTERS[3])
+    if not data["findings"]:
+        yield "paragraph", ("No findings were supplied. This does not establish that assessed "
+                            "assets are secure; review the stated scope and limitations.")
+    for finding, parts in sections(data):
+        yield "finding", f"{finding['id']}: {finding['title']}"
+        for title, values in parts:
+            yield "heading", (3, title)
+            if title in ("Validation steps and results", "Retest plan"):
+                yield "list", (values, True)
+            elif title == "Affected assets":
+                yield "list", (values, False)
+            else:
+                for value in values:
+                    yield "paragraph", value
+    yield "heading", (1, CHAPTERS[4])
+    yield "heading", (2, "Evidence register")
+    for finding in data["findings"]:
+        for evidence in finding["evidence"]:
+            yield "paragraph", (f"{evidence['id']} | Finding {finding['id']} | "
+                                f"{evidence['observed_at']} | Collector: {evidence['collector']} | "
+                                f"Source: {evidence['tool']} {evidence['tool_version']}")
+    if not data["findings"]:
+        yield "paragraph", "No evidence records were supplied."
+    yield "heading", (2, "Review record")
+    if "review" in data:
+        yield "paragraph", (f"Supplied reviewer: {data['review']['reviewer']} | "
+                            f"Supplied review date: {data['review']['reviewed_at']}")
+    else:
+        yield "paragraph", "Human review pending."
+    yield "paragraph", "Review labels are local metadata. Inspect the actual artifacts before any authorized use."
+    yield "paragraph", ("Evidence files are referenced, never opened. Supplied hashes do not verify "
+                        "the observations; the manifest identifies the input and output files.")
+    yield "paragraph", f"Generator {VERSION} | Input schema {data['schema_version']}"
+
+
 def render_markdown(data, release=False):
     e = data["engagement"]
     label = "REVIEWED TRAINING COPY" if release else "DRAFT"
-    lines = [
-        "# Penetration testing report",
-        "",
-        f"**{label} | SYNTHETIC DATA**",
-        "",
-        f"Client: {md(e['client'])}  \nTeam: {md(e['team'])}  \n"
-        f"Engagement: {md(e['id'])}  \nReport date: {md(e['report_date'])}  \n"
-        f"Data marking: {md(data['classification'])}",
-        "",
-        "Training demonstration only. No real assessment, event permission, or submission is established.",
-        "",
-        "## Executive summary", "", md(e["executive_summary"]), "",
-        "## Scope", "",
-    ]
-    lines += [f"- {md(s)}" for s in e["scope"]]
-    lines += ["", "## Methodology", "", md(e["methodology"]), "", "## Limitations", ""]
-    lines += [f"- {md(s)}" for s in e["limitations"]]
-    counts = Counter(f["severity"] for f in data["findings"])
-    statuses = Counter(f["status"] for f in data["findings"])
-    lines += ["", "## Finding summary", "",
-              f"Total: {len(data['findings'])} | Confirmed: {statuses['confirmed']} | "
-              f"Candidate: {statuses['candidate']}", "",
-              " | ".join(f"{s.title()}: {counts[s]}" for s in SEVERITIES), ""]
-    for f, parts in sections(data):
-        lines += [f"## {md(f['id'])}: {md(f['title'])}", ""]
-        for title, values in parts:
-            lines += [f"### {md(title)}", ""]
-            lines += [md(value) + "\n" for value in values]
-    lines += ["## Review record", ""]
-    if "review" in data:
-        lines += [f"Supplied reviewer: {md(data['review']['reviewer'])}  \n"
-                  f"Supplied review date: {md(data['review']['reviewed_at'])}", ""]
-    else:
-        lines += ["Human review pending.", ""]
-    lines += ["Review labels are local metadata. Inspect the actual artifacts before any authorized use.",
-              "", "Evidence files are referenced, never opened. The manifest identifies the input "
-              "and outputs by hash; it does not verify the observations.", ""]
+    lines = ["# Penetration Testing Report", "", f"**{label} | SYNTHETIC DATA**", "",
+             f"Client: {md(e['client'])}  \nTeam: {md(e['team'])}  \n"
+             f"Engagement: {md(e['id'])}  \nReport date: {md(e['report_date'])}  \n"
+             f"Data marking: {md(data['classification'])}", "",
+             "Training demonstration only. No real assessment, event permission, or submission is established.",
+             "", "## Contents", ""]
+    for chapter in CHAPTERS:
+        anchor = chapter.lower().replace(" ", "-")
+        lines.append(f"- [{chapter}](#{anchor})")
+    lines.append("")
+    for kind, value in document_blocks(data):
+        if kind == "heading":
+            level, title = value
+            lines += ["#" * (level + 1) + " " + md(title), ""]
+        elif kind == "finding":
+            lines += ["### " + md(value), ""]
+        elif kind == "list":
+            values, numbered = value
+            for index, item in enumerate(values, 1):
+                prefix = f"{index}. " if numbered else "- "
+                # Keep all physical lines inside this item without interpreting source indentation.
+                lines.append(prefix + md(item).replace("\n", "\n" + " " * len(prefix)))
+            lines.append("")
+        else:
+            lines += [md(value), ""]
     return "\n".join(lines)
 
 
@@ -316,6 +387,7 @@ def render_pdf(data, destination, release=False):
         from reportlab.pdfbase.ttfonts import TTFont
         from reportlab.pdfgen import canvas
         from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle
+        from reportlab.platypus.tableofcontents import TableOfContents
     except ImportError:
         raise ContractError("PDF: install the declared ReportLab dependency in an approved environment") from None
 
@@ -337,17 +409,19 @@ def render_pdf(data, destination, release=False):
             break
     require(all(ord(char) in glyphs or char == "\n" for s in all_strings(data) for char in s),
             "PDF", "input contains glyphs unavailable in the installed fonts; use Markdown or approved fonts")
-    navy, ink, muted = colors.HexColor("#17324D"), colors.HexColor("#243444"), colors.HexColor("#526575")
-    body = ParagraphStyle("Body", fontName=normal, fontSize=10, leading=14, textColor=ink,
-                          spaceAfter=7, alignment=TA_LEFT, splitLongWords=True)
+    navy, ink, muted = colors.HexColor("#17365D"), colors.HexColor("#222222"), colors.HexColor("#526575")
+    body = ParagraphStyle("Body", fontName=normal, fontSize=10.5, leading=14.5, textColor=ink,
+                          spaceAfter=6, alignment=TA_LEFT, splitLongWords=True)
     styles = {
         "body": body,
-        "title": ParagraphStyle("Title", parent=body, fontName=bold, fontSize=25, leading=30,
-                                textColor=navy, spaceAfter=14),
+        "title": ParagraphStyle("Title", parent=body, fontName=bold, fontSize=26, leading=32,
+                                textColor=navy, spaceAfter=18),
         "h1": ParagraphStyle("H1", parent=body, fontName=bold, fontSize=17, leading=22,
                              textColor=navy, spaceAfter=12, keepWithNext=True),
-        "h2": ParagraphStyle("H2", parent=body, fontName=bold, fontSize=11, leading=15,
-                             textColor=navy, spaceBefore=8, spaceAfter=5, keepWithNext=True),
+        "h2": ParagraphStyle("H2", parent=body, fontName=bold, fontSize=13, leading=18,
+                             textColor=navy, spaceBefore=10, spaceAfter=6, keepWithNext=True),
+        "h3": ParagraphStyle("H3", parent=body, fontName=bold, fontSize=10.5, leading=14.5,
+                             textColor=ink, spaceBefore=5, spaceAfter=3, keepWithNext=True),
         "small": ParagraphStyle("Small", parent=body, fontSize=8.5, leading=12, textColor=muted),
     }
 
@@ -370,15 +444,15 @@ def render_pdf(data, destination, release=False):
 
     e = data["engagement"]
     label = "REVIEWED TRAINING COPY" if release else "DRAFT"
-    story = [p(f"{label} | SYNTHETIC DATA", "small"), Spacer(1, 8),
-             p("Penetration testing report", "title"), p(e["client"], "h1")]
+    story = [Spacer(1, 42), p(f"{label} | SYNTHETIC DATA", "small"), Spacer(1, 20),
+             p("Penetration Testing Report", "title"), p(e["client"], "h1"), Spacer(1, 18)]
     metadata = [
         ["Engagement", e["id"]],
         ["Team", e["team"]],
         ["Report date", e["report_date"]],
         ["Data marking", data["classification"]],
     ]
-    table = Table([[p(key, "small"), p(value)] for key, value in metadata], colWidths=[102, 366])
+    table = Table([[p(key, "small"), p(value)] for key, value in metadata], colWidths=[108, 360])
     table.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#EDF2F6")),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -386,51 +460,51 @@ def render_pdf(data, destination, release=False):
         ("TOPPADDING", (0, 0), (-1, -1), 7),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
     ]))
-    story += [table, Spacer(1, 12),
+    story += [table, Spacer(1, 18),
               p("Training demonstration only. No real assessment, event permission, or submission is established.",
-                "small"), p("Executive summary", "h2")]
-    story += prose(e["executive_summary"])
-    counts = Counter(f["severity"] for f in data["findings"])
-    statuses = Counter(f["status"] for f in data["findings"])
-    story += [p("Finding summary", "h2"),
-              p(f"Total {len(data['findings'])} | Confirmed {statuses['confirmed']} | Candidate {statuses['candidate']}"),
-              p(" | ".join(f"{s.title()} {counts[s]}" for s in SEVERITIES)),
-              p("Scope", "h2")]
-    for s in e["scope"]:
-        story += prose("- " + s)
-    story += [p("Methodology", "h2")]
-    story += prose(e["methodology"])
-    story += [p("Limitations", "h2")]
-    for s in e["limitations"]:
-        story += prose("- " + s)
-    for f, parts in sections(data):
-        story += [PageBreak(), p(f"{f['id']}: {f['title']}", "h1")]
-        for title, values in parts:
-            story.append(p(title, "h2"))
-            for value in values:
-                story += prose(value)
-    story += [Spacer(1, 12), p("Review record", "h2")]
-    if "review" in data:
-        story.append(p(f"Supplied reviewer: {data['review']['reviewer']} | "
-                       f"Date: {data['review']['reviewed_at']}"))
-    else:
-        story.append(p("Human review pending."))
-    story.append(p("Review labels are local metadata. Evidence files are never opened; supplied "
-                   "hashes and observations are not independently verified.", "small"))
+                "small"), PageBreak(), p("Contents", "title")]
+    toc = TableOfContents()
+    toc.levelStyles = [ParagraphStyle("ContentsEntry", parent=body, fontSize=11,
+                                      leading=20, rightIndent=20, spaceBefore=5)]
+    toc.dotsMinLevel = 0
+    story.append(toc)
+    first_finding = True
+    for kind, value in document_blocks(data):
+        if kind == "heading":
+            level, title = value
+            if level == 1:
+                story.append(PageBreak())
+            heading = p(title, f"h{level}")
+            if level == 1:
+                # Chapter labels are trusted constants. No source markup enters TOC parsing.
+                heading._toc_entry = title
+            story.append(heading)
+        elif kind == "finding":
+            if not first_finding:
+                story.append(PageBreak())
+            first_finding = False
+            story.append(p(value, "h2"))
+        elif kind == "list":
+            values, numbered = value
+            for index, item in enumerate(values, 1):
+                prefix = f"{index}. " if numbered else "- "
+                story += prose(prefix + item)
+        else:
+            story += prose(value)
 
     def page_frame(c, doc):
         c.saveState()
         c.setStrokeColor(colors.HexColor("#B6C5D1"))
-        c.line(54, 750, 558, 750)
+        c.line(72, 741, 540, 741)
         c.setFont(bold, 8)
         c.setFillColor(navy)
-        c.drawString(54, 760, f"{label} | SYNTHETIC")
+        c.drawString(72, 754, f"{label} | SYNTHETIC")
         c.setFont(normal, 8)
-        c.drawRightString(558, 760, "CPTC reporting starter")
-        c.line(54, 42, 558, 42)
+        c.drawRightString(540, 754, "CPTC reporting")
+        c.line(72, 54, 540, 54)
         c.setFillColor(muted)
-        c.drawString(54, 29, "Synthetic training artifact | Human artifact review required")
-        c.drawRightString(558, 29, f"Page {doc.page}")
+        c.drawString(72, 38, "Synthetic training artifact | Human review required")
+        c.drawRightString(540, 38, f"Page {doc.page}")
         c.restoreState()
 
     class StableCanvas(canvas.Canvas):
@@ -438,10 +512,16 @@ def render_pdf(data, destination, release=False):
             kwargs["invariant"] = 1
             super().__init__(*args, **kwargs)
 
-    document = SimpleDocTemplate(str(destination), pagesize=letter, rightMargin=54, leftMargin=54,
-                                 topMargin=58, bottomMargin=58, title="Synthetic penetration testing report",
+    class ReportingDocTemplate(SimpleDocTemplate):
+        def afterFlowable(self, flowable):
+            if hasattr(flowable, "_toc_entry"):
+                self.notify("TOCEntry", (0, flowable._toc_entry, self.page))
+
+    document = ReportingDocTemplate(str(destination), pagesize=letter, rightMargin=72, leftMargin=72,
+                                 topMargin=72, bottomMargin=72, title="Synthetic penetration testing report",
                                  author="CPTC reporting starter", pageCompression=1)
-    document.build(story, onFirstPage=page_frame, onLaterPages=page_frame, canvasmaker=StableCanvas)
+    document.multiBuild(story, onFirstPage=page_frame, onLaterPages=page_frame,
+                        canvasmaker=StableCanvas, maxPasses=5)
 
 
 def sha256(raw):

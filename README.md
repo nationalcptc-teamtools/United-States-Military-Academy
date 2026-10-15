@@ -45,7 +45,9 @@ options:
 
 The [reporting starter](tooling/reporting/README.md) converts synthetic normalized finding JSON into editable Markdown, optional PDF, and a provenance hash manifest. It supplements the Nmap scan exports with structured observations, business impact, remediation, retest steps, and explicit candidate/review status.
 
-It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.1.1 accepts synthetic inputs only; actual-script adapters and approved client-data handling remain future work. Existing scanner/configuration tools and their installation remain unchanged.
+It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.2.0 accepts synthetic inputs only and adds a cover, contents, numbered report sections and evidence/review appendices. Report schema 1.0 remains supported; schema 1.1 adds optional authoring sections. Existing scanner/configuration tools and their installation remain unchanged.
+
+The [intake design](tooling/reporting/design.md) maps forty proposed farm-toolkit candidates and Nmap XML to future native adapters, helper output contracts or held/reference-only routes. Direct tool imports and approved client-data handling remain future work; current commands accept completed report JSON.
 
 Requires Python 3.10+; PDF additionally uses the dependency declared in tooling/reporting/requirements.txt. See the module README for optional PDF installation, full input contract, and rendering QA.
 
