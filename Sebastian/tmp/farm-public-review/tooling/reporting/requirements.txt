@@ -1,3 +1,0 @@
-# Exact ReportLab version exercised for the starter PDF.
-# Install only through an event-approved dependency route.
-reportlab==4.4.9

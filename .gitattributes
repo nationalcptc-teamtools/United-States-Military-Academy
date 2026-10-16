@@ -7,6 +7,3 @@
 
 # Preserve archived project bytes, including generated artifacts.
 /Sebastian/** -text
-
-# Preserve archived project bytes, including generated artifacts.
-/Sebastian/** -text

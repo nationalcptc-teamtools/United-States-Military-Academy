@@ -53,7 +53,7 @@ All examples are synthetic. Local record/review strings and checksums do not aut
 | Developer | [Workbench source/usage](../../../../tooling/workbench/README.md), [contracts](../../../../tooling/workbench/CONTRACTS.md), additive reporter API |
 | Tester | [Verification](verification.md), eighteen meaningful workbench tests and existing reporter regressions, real CLI/PDF/package checks |
 | Independent Reviewer | [Review](review.md), six findings resolved and independently rechecked; final document status check recorded separately |
-| Delivery | [Source preparation package](../../../output/workbench/release-1.0.0-settled/workbench-1.0.0.zip), [manifest](../../../output/workbench/release-1.0.0-settled/MANIFEST.json), [review packet](../../../output/workbench/review-packet-settled/review.json), [synthetic handoff](../../../output/workbench/cloud-handoff/handoff.md), [PDF example](../../../output/pdf/workbench-demo/report.pdf) |
+| Delivery | Source preparation package `output/workbench/release-1.0.0-settled/workbench-1.0.0.zip`, manifest `output/workbench/release-1.0.0-settled/MANIFEST.json`, review packet `output/workbench/review-packet-settled/review.json`, synthetic handoff `output/workbench/cloud-handoff/handoff.md`, PDF example `output/pdf/workbench-demo/report.pdf` |
 | Project history | [Journal](../../journal.md), [workflow](../../workflow.md), [profile](../../project-profile.md), [policy](../../policies/competition-and-data.md) |
 
 ## Ownership and baseline

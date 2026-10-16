@@ -1,2 +1,0 @@
-SYNTHETIC preparation integrity fixture.
-No upstream software.

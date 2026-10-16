@@ -1,6 +1,6 @@
 # User guide
 
-Run examples from the repository root. Use root products and `tooling/`; copies under `Sebastian/integrations/` are historical. Python commands require Python 3.10+; substitute `python3` for `python` on Linux. On Windows, use **PowerShell**, not Command Prompt, for PowerShell examples. Run each command separately and wait for the prompt to return.
+Run examples from the repository root. Use the root products and `tooling/`. Python commands require Python 3.10+; substitute `python3` for `python` on Linux. On Windows, use **PowerShell**, not Command Prompt, for PowerShell examples. Run each command separately and wait for the prompt to return.
 
 ## Choose a tool
 
@@ -8,6 +8,8 @@ Run examples from the repository root. Use root products and `tooling/`; copies 
 | --- | --- | --- |
 | Enumerate authorized scope from Linux | `cptc-linux.sh` | Evidence directory and Markdown/HTML/CSV/JSON; [Linux](#linux-runner) |
 | Enumerate authorized scope from Windows | `cptc-windows.ps1` | Evidence directory and HTML; [Windows](#windows-runner) |
+| Record your own activity on a box | `cptc-linux.sh logging enable` | Shell history, session transcripts, auditd and sudo I/O; `logging verify` proves events are recorded |
+| Collect your activity logs before leaving a box | `cptc-collect-logs.sh` | One hashed zip on the Desktop with a manifest of what was skipped or truncated |
 | Prepare the Kali assessment suite | `install.sh`, `tooling/farmkit/install.py` | Installed suite and inventory; [installation](#assessment-suite-installation) |
 | Inspect metadata, integrity and readiness | `tooling/farmkit/kit.py` | Local results and status; [farmkit](#farmkit-metadata-and-packaging) |
 | Package farmkit source | `tooling/farmkit/build.py` | Source-only ZIP; [packaging](#farmkit-metadata-and-packaging) |

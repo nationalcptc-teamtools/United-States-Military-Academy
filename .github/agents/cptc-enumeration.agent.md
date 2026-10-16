@@ -147,7 +147,7 @@ Do not merge into master automatically.
 
 # Competition Deadlines
 
-The current README identifies October 16 as the team's last-commit deadline.
+The current README identifies 19 October as the team's last-commit deadline.
 
 Verify the latest team instructions and the official rulebook's repository freeze requirements before modifying the repository.
 

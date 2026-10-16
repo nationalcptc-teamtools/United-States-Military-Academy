@@ -30,10 +30,7 @@ FARM_FILES = ("catalog.json", "LICENSE", "NOTICES.md", "RUNBOOKS.md", "CATALOG.m
 
 def package(destination):
     files = {}
-    inherited_license = ROOT / "LICENSE"
-    if not inherited_license.is_file():
-        inherited_license = ROOT / "integrations/United-States-Military-Academy/LICENSE"
-    files["LICENSE"] = read(inherited_license)
+    files["LICENSE"] = read(ROOT / "LICENSE")
     for name in GUIDE_FILES:
         files[name] = read(ROOT / name)
     for folder, names in (("workbench", MODULE_FILES), ("reporting", REPORT_FILES), ("farmkit", FARM_FILES)):

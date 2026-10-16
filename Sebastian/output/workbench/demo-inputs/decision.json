@@ -1,9 +1,0 @@
-{
-  "topic": "Synthetic tool choice",
-  "owner": "Exercise owner",
-  "choice": "accepted",
-  "reason": "Existing capability covers invented task",
-  "alternatives": [
-    "duplicate wrapper"
-  ]
-}

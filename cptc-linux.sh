@@ -145,6 +145,7 @@ Usage:
   cptc-linux.sh run --target IP_OR_CIDR --authorized [options]
   cptc-linux.sh resume RUN_DIR --authorized [options]
   cptc-linux.sh report RUN_DIR
+  cptc-linux.sh logging enable|verify|revert
   cptc-linux.sh help
 
 Run options:
@@ -188,6 +189,22 @@ Examples:
     --authorized --profile standard --udp --domain corp.example
 
   ./cptc-linux.sh resume artifacts/20261014T140000Z-team-a --authorized
+
+  sudo ./cptc-linux.sh logging enable     # turn on the host's own audit trail
+  sudo ./cptc-linux.sh logging verify     # prove events are actually recorded
+  sudo ./cptc-linux.sh logging revert     # undo what enable installed
+
+Logging actions:
+  enable   Timestamped shell history, script(1) session transcripts, auditd
+           execve rules keyed to the real login uid, sudo I/O capture, and
+           persistent journald. Without root only the shell facilities are
+           enabled, and the rest are reported as skipped.
+  verify   Writes a marker and reads it back, because configuration state can
+           report healthy while nothing is being recorded.
+  revert   Removes the drop-in, the audit rules and the shell block, leaving
+           pre-existing operator content untouched.
+
+Collect the resulting logs at the end of a session with ./cptc-collect-logs.sh.
 EOF
 }
 

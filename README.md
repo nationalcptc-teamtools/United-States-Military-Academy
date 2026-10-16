@@ -58,6 +58,7 @@ bash install.sh --check --profile full
 Includes protocol/IT clients, isolated Python libraries, source-built OT clients/SDKs, reporting dependencies and hash-checked LinPEAS/WinPEAS downloads. Setup never runs payloads, assessment tools or lab servers. Use `--profile core` for the smaller selected-protocol profile; Prowler and legacy wkhtmltopdf are explicit options. All forty candidates have installation or held/lab dispositions.
 
 Read [installation and offline-use guidance](tooling/farmkit/INSTALL.md), [the catalog](tooling/farmkit/CATALOG.md) and [actual checks and limitations](tooling/farmkit/VERIFICATION.md). No full offline reinstallation cache or operational/event approval is claimed. The [proposal/spec/design](tooling/farmkit/proposal.md) record requirements, source evidence and unresolved gates. Existing scanner/configuration behavior is preserved; its general Nmap defaults are not approved OT profiles.
+
 Both scripts install or locate tools, check the workstation, enumerate a supplied scope, retain raw evidence, and build a report. The older `config.py` and `super_nmap.py` remain available for compatibility; `install.sh` now prepares the broader assessment suite.
 
 [Nmap searches per-user directories when a requested data file is absent](https://nmap.org/book/data-files-replacing-data-files.html). The runners bind Nmap to a hashed, complete data tree and refuse nonempty per-user Nmap override directories such as `~/.nmap` or `%APPDATA%\nmap`; move intentional overrides aside before a competition run.
@@ -328,6 +329,6 @@ Use [incremental report updates](docs/REPORT-UPDATES.md) to add evidence or amen
 
 ## Sebastian project files
 
-[Project documentation and working records](Sebastian/README.md) are collected under `Sebastian/`. The runnable products remain at the repository root: `cptc-linux.sh`, `cptc-windows.ps1`, `install.sh`, and `tooling/`.
+[Project documentation and working records](Sebastian/README.md) are collected under `Sebastian/`. The runnable products remain at the repository root: `cptc-linux.sh`, `cptc-windows.ps1`, `cptc-collect-logs.sh`, `install.sh`, and `tooling/`.
 
-`Sebastian/integrations/`, `Sebastian/tmp/`, and `Sebastian/output/` preserve project snapshots and preparation artifacts; use the root products for current code. [The file manifest](Sebastian/PROJECT-FILES.json) records source and destination hashes. Git metadata and caches are excluded.
+The historical integration checkouts and the generated `tmp/` and `output/` trees are no longer tracked; the project's own ignore rules exclude that preparation material from public contents, and it stayed tracked only because those rules were added after the fact. It remains recoverable from Git history, and [the file manifest](Sebastian/PROJECT-FILES.json) still records its source and destination hashes. Use the root products for current code.
