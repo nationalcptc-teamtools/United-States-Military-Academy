@@ -1,0 +1,29 @@
+{
+  "actor": "Training analyst",
+  "base_sha256": "81327f9d1b8bd1adabf3b4ca5a5b822b6aa8caa353737e979df714479e3e6b2a",
+  "contract_version": "cptc.report-update/1.0",
+  "data_category": "synthetic",
+  "engagement_id": "TRAINING-001",
+  "id": "U-001",
+  "operations": [
+    {
+      "evidence": [
+        {
+          "artifact": "evidence/synthetic-followup-response.txt",
+          "collector": "Training analyst",
+          "id": "E-003",
+          "markings": [
+            "PROPIN"
+          ],
+          "observed_at": "2026-10-16T09:00:00-04:00",
+          "summary": "Invented follow-up response again contains the internal handler path. No request, scan or file access occurred.",
+          "tool": "synthetic-response-fixture",
+          "tool_version": "1.0"
+        }
+      ],
+      "finding_id": "F-001",
+      "op": "append_evidence"
+    }
+  ],
+  "reason": "Add a second invented error response without replacing the original evidence."
+}

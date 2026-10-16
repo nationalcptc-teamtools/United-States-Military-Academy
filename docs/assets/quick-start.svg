@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="420" viewBox="0 0 1120 420" role="img" aria-labelledby="title desc">
+<title id="title">CPTC tools: choose a workflow</title>
+<desc id="desc">Prepare and check tools, then choose authorized enumeration or an offline synthetic report. Curate results, preview changes and review each new report revision.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#68849e" stroke-width="1.5"/></marker></defs>
+<rect width="1120" height="420" rx="20" fill="#0e1c2b"/>
+<g font-family="Segoe UI,Arial,sans-serif">
+<text x="36" y="45" fill="#f5f8fc" font-size="26" font-weight="700">From preparation to a reviewed report</text>
+<text x="36" y="73" fill="#b8ccdf" font-size="15">Choose the path that matches your task. Keep the source, evidence and every export.</text>
+<g stroke="#68849e" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M268 164H304"/><path d="M268 164H286V296H304"/><path d="M556 164H592"/><path d="M556 296H574V164H592"/><path d="M822 164H858"/></g>
+<rect x="36" y="112" width="232" height="104" rx="12" fill="#1b3147" stroke="#49667f"/>
+<text x="54" y="141" fill="#8ddacb" font-size="13" font-weight="700">01 / PREPARE</text>
+<text x="54" y="169" fill="#fff" font-size="20" font-weight="600">Install and check</text>
+<text x="54" y="194" fill="#c4d4e4" font-size="14">Runtime, tools, local templates</text>
+<rect x="304" y="112" width="252" height="104" rx="12" fill="#1b3147" stroke="#49667f"/>
+<text x="322" y="141" fill="#a5cbff" font-size="13" font-weight="700">02A / ENUMERATE</text>
+<text x="322" y="169" fill="#fff" font-size="20" font-weight="600">Explicit authorized scope</text>
+<text x="322" y="194" fill="#c4d4e4" font-size="14">Linux / Windows runners</text>
+<rect x="304" y="244" width="252" height="104" rx="12" fill="#173a3d" stroke="#4b918a"/>
+<text x="322" y="273" fill="#8ddacb" font-size="13" font-weight="700">02B / OFFLINE DEMO</text>
+<text x="322" y="301" fill="#fff" font-size="20" font-weight="600">Start with synthetic JSON</text>
+<text x="322" y="326" fill="#c4d4e4" font-size="14">Python + included sample</text>
+<rect x="592" y="112" width="230" height="104" rx="12" fill="#1b3147" stroke="#49667f"/>
+<text x="610" y="141" fill="#a5cbff" font-size="13" font-weight="700">03 / CURATE</text>
+<text x="610" y="169" fill="#fff" font-size="20" font-weight="600">Author and preview</text>
+<text x="610" y="194" fill="#c4d4e4" font-size="14">Stable IDs + retained evidence</text>
+<rect x="858" y="112" width="226" height="104" rx="12" fill="#173a3d" stroke="#4b918a"/>
+<text x="876" y="141" fill="#8ddacb" font-size="13" font-weight="700">04 / REVIEW</text>
+<text x="876" y="169" fill="#fff" font-size="20" font-weight="600">Export a new revision</text>
+<text x="876" y="194" fill="#c4d4e4" font-size="14">JSON / Markdown / PDF / Word</text>
+<text x="610" y="279" fill="#b8ccdf" font-size="15">New output? Add evidence, preview changes,</text>
+<text x="610" y="304" fill="#b8ccdf" font-size="15">then review only the affected findings.</text>
+<path d="M36 371H1084" stroke="#354a60"/>
+<text x="36" y="397" fill="#a8bed2" font-size="14">Reporting and workbench currently accept synthetic preparation data only. Native scanner imports require future adapters.</text>
+</g></svg>

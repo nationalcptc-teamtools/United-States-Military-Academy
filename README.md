@@ -4,6 +4,39 @@ Competition enumeration runners for Linux and Windows. **The last commit to this
 
 These scripts are for systems listed in the competition ROE. They require explicit scope, cap target expansion, keep follow-up checks tied to discovered in-scope addresses, and do not automate exploitation, password spraying, or credential brute force.
 
+## Quick start
+
+![Choose a workflow: prepare tools, use authorized enumeration or synthetic JSON, curate evidence, and export a new report revision.](docs/assets/quick-start.svg)
+
+Try the offline reporting demo. Requires Python 3.10+ and performs no network or target activity. From the repository root in **PowerShell** on Windows (substitute `python3` on Linux):
+
+```powershell
+python --version
+python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/report-v1
+python tooling/reporting/reportgen.py output/report-v1/input.json --update tooling/reporting/examples/update-evidence.json --preview
+python tooling/reporting/reportgen.py output/report-v1/input.json --update tooling/reporting/examples/update-evidence.json --output-dir output/report-v2
+```
+
+Version 1 contains JSON, Markdown and a hash manifest. Preview shows E-003 added to F-001; version 2 retains the original evidence and returns F-001 to candidate review. Existing exports are never overwritten. Use fresh directories when repeating the demo.
+
+Prepare optional dependencies for PDF and editable Word, then add `--pdf --docx`:
+
+```powershell
+python -m pip install -r tooling/reporting/requirements.txt
+python tooling/reporting/reportgen.py output/report-v2/input.json --output-dir output/report-v2-all-formats --pdf --docx
+```
+
+| What you need | Guide |
+| --- | --- |
+| Every human-facing tool, flags, outputs and recovery | [User guide](docs/USER-GUIDE.md) |
+| New tool output added to an existing report | [Report updates](docs/REPORT-UPDATES.md) |
+| Linux / Windows enumeration | [Linux](#linux) / [Windows](#windows) |
+| Kali suite setup and offline checks | [Installation](tooling/farmkit/INSTALL.md) |
+| Forty upstream tools and their limits | [Individual tool guides](docs/TOOL-GUIDES.md) / [Catalog](tooling/farmkit/CATALOG.md) / [Runbooks](tooling/farmkit/RUNBOOKS.md) |
+| Synthetic preparation, review and handoff | [Workbench](tooling/workbench/README.md) |
+
+Reporting/workbench accept synthetic preparation data only. Raw scanner exports require curation into the report/update contract; native import adapters remain future work.
+
 ## Entrypoints
 
 - `cptc-linux.sh`: Bash 5 runner for Kali, Debian, and Ubuntu.
@@ -23,7 +56,7 @@ bash install.sh --check --profile full
 Includes protocol/IT clients, isolated Python libraries, source-built OT clients/SDKs, reporting dependencies and hash-checked LinPEAS/WinPEAS downloads. Setup never runs payloads, assessment tools or lab servers. Use `--profile core` for the smaller selected-protocol profile; Prowler and legacy wkhtmltopdf are explicit options. All forty candidates have installation or held/lab dispositions.
 
 Read [installation and offline-use guidance](tooling/farmkit/INSTALL.md), [the catalog](tooling/farmkit/CATALOG.md) and [actual checks and limitations](tooling/farmkit/VERIFICATION.md). No full offline reinstallation cache or operational/event approval is claimed. The [proposal/spec/design](tooling/farmkit/proposal.md) record requirements, source evidence and unresolved gates. Existing scanner/configuration behavior is preserved; its general Nmap defaults are not approved OT profiles.
-Both scripts install or locate tools, check the workstation, enumerate a supplied scope, retain raw evidence, and build a report. The older `config.py`, `install.sh`, and `super_nmap.py` remain available for compatibility.
+Both scripts install or locate tools, check the workstation, enumerate a supplied scope, retain raw evidence, and build a report. The older `config.py` and `super_nmap.py` remain available for compatibility; `install.sh` now prepares the broader assessment suite.
 
 [Nmap searches per-user directories when a requested data file is absent](https://nmap.org/book/data-files-replacing-data-files.html). The runners bind Nmap to a hashed, complete data tree and refuse nonempty per-user Nmap override directories such as `~/.nmap` or `%APPDATA%\nmap`; move intentional overrides aside before a competition run.
 
@@ -47,22 +80,6 @@ Keep exclusions in a separate file:
 ```
 
 
-# Offline report generator (tooling/reporting)
-
-The [reporting starter](tooling/reporting/README.md) converts synthetic normalized finding JSON into editable Markdown, optional PDF, and a provenance hash manifest. It supplements the Nmap scan exports with structured observations, business impact, remediation, retest steps, and explicit candidate/review status.
-
-It is passive and offline: no scanning, evidence-file access, CVE lookup, AI, or publication. Version 0.3.1 accepts synthetic inputs only, with a cover, contents, numbered sections and evidence/review appendices. Schemas 1.0/1.1 remain supported; schema 1.2 adds structured ORCON/PROPIN/PII/PII Red/FI inheritance and combined markings on every PDF page. Business severity remains supplied, with no severity matrix configured. Existing scanner/configuration tools and their installation remain unchanged.
-
-The [intake design](tooling/reporting/design.md) maps forty proposed farm-toolkit candidates and Nmap XML to future native adapters, helper output contracts or held/reference-only routes. Direct tool imports and approved client-data handling remain future work; current commands accept completed report JSON.
-
-Requires Python 3.10+; PDF additionally uses the dependency declared in tooling/reporting/requirements.txt. See the module README for optional PDF installation, full input contract, and rendering QA.
-
-```sh
-python3 tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --output-dir output/report-demo
-python3 -m unittest discover -s tooling/reporting/tests -v
-```
-
-Use a new output directory for every export. Generated reports and engagement evidence belong outside public source control.
 Copy the scope from the event documentation. Do not derive it from the local default route.
 
 Hostnames are resolved once when a run starts. Both runners preserve each frozen hostname-to-IP mapping for virtual-host probes, setting HTTP Host and TLS SNI while pinning the connection to the authorized IP. Windows currently expands IPv4 addresses only; Linux supports IPv4 and IPv6.
@@ -208,7 +225,7 @@ Enumeration output can contain sensitive network and domain data. Generated resu
 
 ## Development workbench
 
-The [offline workbench](tooling/workbench/README.md) provides one place to find cataloged tools, compare prerequisites and holds, record capability requests, create tool starters, and manage synthetic preparation records. It reuses the farm catalog and existing report schemas, with human finding review, immutable Markdown/PDF/Word snapshots and separate tool/import/render outcomes. Version 1.0.1 keeps existing workspace format 1.0.0 readable and editable.
+The [offline workbench](tooling/workbench/README.md) provides one place to find cataloged tools, compare prerequisites and holds, record capability requests, create tool starters, and manage synthetic preparation records. It reuses the farm catalog and existing report schemas, with human finding review, immutable Markdown/PDF/Word snapshots and separate tool/import/render outcomes. Version 1.1.0 keeps existing workspace format 1.0.0 readable and editable.
 
 ```sh
 python3 tooling/workbench/workbench.py search modbus --protocol modbus
@@ -222,7 +239,7 @@ Requires Python 3.10+; optional PDF/Word use the existing reporting dependencies
 
 - `config.py` interactively writes the original `{"ranges": [], "hosts": []}` JSON format.
 - `super_nmap.py` is the original Nmap wrapper.
-- `install.sh` is the original minimal Kali installer.
+- `install.sh` is the current assessment-suite installer; see [installation](tooling/farmkit/INSTALL.md).
 
 The consolidated Linux and Windows runners are the recommended entrypoints.
 
@@ -235,6 +252,8 @@ python3 tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.
 ```
 
 PDF and Word dependencies are declared in tooling/reporting/requirements.txt. The reporting module does not run the enumeration tools or open evidence references.
+
+Use [incremental report updates](docs/REPORT-UPDATES.md) to add evidence or amend selected authored fields. The shared update engine preserves prior evidence, rejects stale edits and emits finding/evidence differences. The workbench adds locked revisions and review history.
 
 ## Sebastian project files
 

@@ -45,7 +45,10 @@ def change(directory, action, expected=None):
     with locked(directory):
         value = state(directory)
         need(expected is None or value["revision"] == expected, "revision_conflict")
+        before = encoded(value)
         result = action(value)
+        if encoded(value) == before:
+            return result
         value["revision"] += 1
         atomic(directory / "state.json", value)
         return result

@@ -137,6 +137,7 @@ def parser():
     p.add_argument("--decision", choices=("accept", "reject"), required=True)
     p.add_argument("--reason", required=True)
     p.add_argument("--reviewer", required=True)
+    p.add_argument("--base", type=int, help="refuse accepting a finding after its import revision changed")
     for command, help_text in (("prefill", "Return finding template with author verification fields"),
                                ("author", "Replace a finding using existing report schema; preserves conflicts")):
         p = commands.add_parser(command, help=help_text)
@@ -146,6 +147,15 @@ def parser():
         if command == "author":
             p.add_argument("input")
             p.add_argument("--base", type=int, required=True)
+    p = commands.add_parser("report-state", help="Show current report fingerprint, revision and stable IDs")
+    p.add_argument("workspace")
+    p.add_argument("import_id")
+    p = commands.add_parser("update-report", help="Preview or apply curated report updates; preserve previous evidence")
+    p.add_argument("workspace")
+    p.add_argument("import_id")
+    p.add_argument("input")
+    p.add_argument("--base", type=int, required=True, help="current import revision from report-state")
+    p.add_argument("--preview", action="store_true", help="validate changes without writing")
     for command, help_text in (("duplicates", "Suggest explainable duplicates without merging"),
                                ("complete", "Check report author/reviewer/rubric gaps")):
         p = commands.add_parser(command, help=help_text)
@@ -252,7 +262,9 @@ def dispatch(a):
     if command == "resume": return operations.resume(a.workspace, a.id, a.disposition, a.actor)
     if command == "preview-import": return reports.preview(a.input)
     if command == "import-report": return reports.import_report(a.workspace, a.input)
-    if command == "review": return reports.review(a.workspace, a.import_id, a.finding, a.decision, a.reason, a.reviewer)
+    if command == "review": return reports.review(a.workspace, a.import_id, a.finding, a.decision, a.reason, a.reviewer, a.base)
+    if command == "report-state": return reports.report_state(a.workspace, a.import_id)
+    if command == "update-report": return reports.update_report(a.workspace, a.import_id, a.input, a.base, a.preview)
     if command == "prefill": return reports.prefill(a.workspace, a.import_id, a.finding)
     if command == "author": return reports.author(a.workspace, a.import_id, a.finding, load(a.input), a.base)
     if command == "duplicates": return reports.duplicates(a.workspace, a.import_id)

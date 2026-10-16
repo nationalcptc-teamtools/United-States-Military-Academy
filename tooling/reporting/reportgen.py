@@ -14,7 +14,7 @@ from datetime import date, datetime
 from pathlib import Path, PurePosixPath
 from xml.sax.saxutils import escape
 
-VERSION = "0.4.1"
+VERSION = "0.5.0"
 MAX_INPUT_BYTES = 2_000_000
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MARKINGS = ("ORCON", "PROPIN", "PII", "PII Red", "FI")
@@ -789,8 +789,37 @@ def sha256(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appendix_markings=None, *, docx=False):
-    data = validate(load(raw), release)
+def update_engine():
+    """Load the sibling pure module for CLI and file-based embedding alike."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("cptc_report_updates", Path(__file__).with_name("updates.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def describe(data):
+    return update_engine().describe(validate(data))
+
+
+def update_contract():
+    from types import SimpleNamespace
+    return SimpleNamespace(**{name: globals()[name] for name in
+        ("validate", "obj", "require", "identifier", "text", "items", "handling", "MAX_INPUT_BYTES")})
+
+
+def apply_update(data, patch):
+    # The contract is injected, keeping update policy independent of rendering and persistence.
+    return update_engine().apply(data, patch, update_contract())
+
+
+def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appendix_markings=None, *, docx=False, update_raw=None):
+    data = validate(load(raw))
+    receipt = None
+    base_input_sha256 = sha256(raw)
+    if update_raw is not None:
+        data, receipt = apply_update(data, load(update_raw))
+    validate(data, release)
     validate_appendix(appendix_blocks)
     appendix_raw = None
     if appendix_blocks:
@@ -813,6 +842,10 @@ def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appe
     output_dir.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".report-staging-", dir=output_dir.parent) as staging:
         stage = Path(staging)
+        (stage / "input.json").write_bytes(update_engine().encoded(data))
+        if receipt is not None:
+            (stage / "changes.json").write_bytes(update_engine().encoded(receipt))
+            (stage / "update.json").write_bytes(update_raw)
         (stage / "report.md").write_text(render_markdown(data, release, appendix_blocks), encoding="utf-8")
         if pdf:
             render_pdf(data, stage / "report.pdf", release, appendix_blocks)
@@ -832,6 +865,12 @@ def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appe
             manifest["appendix_sha256"] = sha256(appendix_raw)
             manifest["source_schema_version"] = load(raw)["schema_version"]
             manifest["appendix_api"] = "cptc.appendix/1.0"
+        manifest["report_sha256"] = update_engine().fingerprint(data)
+        manifest["rendered_input_sha256"] = artifact_hashes["input.json"]
+        if receipt is not None:
+            manifest["update"] = {key: receipt[key] for key in
+                ("id", "update_sha256", "base_sha256", "result_sha256", "affected_findings", "modified")}
+            manifest["base_input_sha256"] = base_input_sha256
         (stage / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         # Refuse a destination that appeared while rendering; never intentionally overwrite it.
         require(not output_dir.exists(), "destination", "appeared during generation; choose a new directory")
@@ -842,18 +881,36 @@ def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appe
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", help="UTF-8 normalized JSON file, or - for stdin")
-    parser.add_argument("--output-dir", required=True, help="new private output directory; never overwritten")
+    parser.add_argument("--output-dir", help="new private output directory; required except for preview")
+    parser.add_argument("--update", help="curated cptc.report-update/1.0 JSON; native scanner exports are not supported")
+    parser.add_argument("--preview", action="store_true", help="validate and print report identity or proposed changes without writing")
+    parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--pdf", action="store_true", help="also render PDF using locally installed ReportLab")
     parser.add_argument("--docx", action="store_true", help="also render editable Word using locally installed python-docx")
     parser.add_argument("--release", action="store_true", help="reviewed training label; enforce review metadata")
     args = parser.parse_args(argv)
+    if not args.preview and not args.output_dir:
+        parser.error("--output-dir is required unless --preview is used")
     try:
         if args.input == "-":
             raw = sys.stdin.buffer.read(MAX_INPUT_BYTES + 1)
         else:
             with Path(args.input).open("rb") as stream:
                 raw = stream.read(MAX_INPUT_BYTES + 1)
-        manifest = generate(raw, args.output_dir, args.pdf, args.release, docx=args.docx)
+        update_raw = None
+        if args.update:
+            with Path(args.update).open("rb") as stream:
+                update_raw = stream.read(MAX_INPUT_BYTES + 1)
+        if args.preview:
+            data = validate(load(raw))
+            if update_raw is not None:
+                data, details = apply_update(data, load(update_raw))
+            else:
+                details = describe(data)
+            validate(data, args.release)
+            print(json.dumps(dict(details, preview=True, written=False), sort_keys=True, indent=2))
+            return 0
+        manifest = generate(raw, args.output_dir, args.pdf, args.release, docx=args.docx, update_raw=update_raw)
     except ContractError as exc:
         print(f"Report rejected: {exc}", file=sys.stderr)
         return 2

@@ -1,6 +1,18 @@
 # CPTC development workbench
 
-Version 1.0.1. Offline Python 3.10+ command-line tools for **synthetic preparation**. Uses the sibling farm catalog and report generator 0.4.1+. PDF requires ReportLab and Word requires python-docx from the existing [reporting dependencies](../reporting/requirements.txt); each is loaded only for its requested format. The full source package preserves that sibling layout and includes the public specification, verification notes and Word regression tests.
+Version 1.1.0. Offline Python 3.10+ command-line tools for **synthetic preparation**. Uses the sibling farm catalog and report generator 0.5.0+. PDF requires ReportLab and Word requires python-docx from the existing [reporting dependencies](../reporting/requirements.txt); each is loaded only for its requested format. The full source package preserves that sibling layout and includes the public specification, verification notes and Word regression tests.
+
+See the [complete human command guide](../../docs/USER-GUIDE.md#workbench) and [report-update walkthrough](../../docs/REPORT-UPDATES.md#update-a-workbench-report).
+
+## Incremental report updates
+
+Use `report-state WORKSPACE IMPORT_ID` to read the working report's canonical fingerprint, import revision and IDs. Prepare a curated `cptc.report-update/1.0` envelope using that fingerprint. `update-report WORKSPACE IMPORT_ID UPDATE.json --base REV --preview` validates without writing; omit `--preview` to apply under the workspace lock. The base is the import record's revision. Raw scanner exports remain unsupported.
+
+The shared reporting engine adds findings, appends evidence and amends explicit authored fields. Existing evidence and effective restrictions remain; affected findings return to candidate and lose their review disposition. Unaffected reviews, original sources and older snapshots remain. A reused evidence/finding ID with conflicting content/ownership fails. Replaying an applied update ID with identical payload leaves workspace revision and reviews unchanged; different content with the same update ID fails. No-op envelopes are not added to the effective-update ledger.
+
+Snapshots include evidence-level differences and update receipt differences; `updates.json` retains applied receipts. Use `review ... --base REV` to refuse an acceptance after its import changed. Existing review calls without that optional guard remain compatible. The prior full `author` operation remains available; prefer incremental updates for preserving evidence while adding results.
+
+## Find tools and start a workspace
 
 Run from the repository root:
 
@@ -98,7 +110,7 @@ Duplicate suggestions explain title similarity/shared assets and never merge aut
 
 Snapshots contain authoritative `input.json`, synchronized Markdown/optional PDF/optional editable Word, changes and a hash manifest. Use `--docx` alone or with `--pdf`; a new output directory is required each time. Run outcomes and supplied limitations, incident actions and retest states appear in the same shared appendix in all requested formats. Source and workspace/incident/retest markings are conservatively inherited; PII Red dominates PII and other categories remain combined. Imported legacy data derives a visibly versioned schema 1.2 snapshot; original source/schema/hash remain identified. `changes.json` lists finding and run/incident/retest differences. Editing Markdown or Word alone does not update the other formats or authoritative input and changes the edited file's hash. All requested formats must render before the complete bundle and snapshot record publish. Word uses the reporter's native editable content and handling labels; native Word pagination/layout remains subject to separate renderer QA.
 
-Application updates preserve workspace format 1.0.0. Existing workspaces need no migration or relabeling for this release; unknown workspace formats still reject. Source-package names and manifests use application version 1.0.1 separately from the workspace format.
+Application updates preserve workspace format 1.0.0. Existing workspaces need no migration or relabeling for this release; unknown workspace formats still reject. Source-package names and manifests use application version 1.1.0 separately from the workspace format.
 
 `retest WORKSPACE FILE` records finding, actor, summary, status (recommended/applied/verified), evidence[]; verified needs supplied evidence references. References are not automatic proof that a fix worked. `incident WORKSPACE FILE` records run, actor, summary and optional stop/containment/notification/cleanup text and markings; missing actions remain pending, no message is sent. `integrity FILE SHA256` explicitly checks selected bytes outside rendering; matching bytes do not prove authenticity. `handling WORKSPACE FILE` records custodian and retention/export/deletion decision references; it transfers/deletes nothing.
 

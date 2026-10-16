@@ -39,7 +39,7 @@ class WordTests(unittest.TestCase):
               patch.object(socket.socket, "connect_ex", side_effect=AssertionError("network")),
               patch.object(socket, "create_connection", side_effect=AssertionError("network"))):
             manifest = reportgen.generate(raw, self.root / "out", pdf=True, docx=True)
-        self.assertEqual(set(manifest["artifacts"]), {"report.md", "report.pdf", "report.docx"})
+        self.assertEqual(set(manifest["artifacts"]), {"input.json", "report.md", "report.pdf", "report.docx"})
         for name, expected in manifest["artifacts"].items():
             self.assertEqual(hashlib.sha256((self.root / "out" / name).read_bytes()).hexdigest(), expected)
         self.assertEqual(manifest["input_sha256"], hashlib.sha256(raw).hexdigest())
@@ -86,7 +86,7 @@ class WordTests(unittest.TestCase):
         second = reportgen.generate(raw, self.root / "two", docx=True)
         self.assertEqual(first, second)
         self.assertEqual((self.root / "one/report.docx").read_bytes(), (self.root / "two/report.docx").read_bytes())
-        self.assertEqual(set(first["artifacts"]), {"report.md", "report.docx"})
+        self.assertEqual(set(first["artifacts"]), {"input.json", "report.md", "report.docx"})
         with ZipFile(self.root / "one/report.docx") as package:
             self.assertIn(b"LEGACY MARKINGS UNVERIFIED", package.read("word/header1.xml"))
         old = json.loads(raw)

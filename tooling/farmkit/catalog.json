@@ -327,7 +327,7 @@
       ],
       "owner": "Eligible student maintainer (unassigned)",
       "checked_at": "2026-10-15",
-      "runbook": "RUNBOOKS.md#host-enumeration",
+      "runbook": "RUNBOOKS.md#remote-host-and-directory-clients",
       "acquisition_status": "not_acquired",
       "runtime_status": "not_run",
       "runtime_evidence": null
@@ -375,7 +375,7 @@
       ],
       "owner": "Eligible student maintainer (unassigned)",
       "checked_at": "2026-10-15",
-      "runbook": "RUNBOOKS.md#host-enumeration",
+      "runbook": "RUNBOOKS.md#remote-host-and-directory-clients",
       "acquisition_status": "not_acquired",
       "runtime_status": "not_run",
       "runtime_evidence": null
@@ -424,7 +424,7 @@
       ],
       "owner": "Eligible student maintainer (unassigned)",
       "checked_at": "2026-10-15",
-      "runbook": "RUNBOOKS.md#host-enumeration",
+      "runbook": "RUNBOOKS.md#remote-host-and-directory-clients",
       "acquisition_status": "not_acquired",
       "runtime_status": "not_run",
       "runtime_evidence": null
@@ -469,7 +469,7 @@
       ],
       "owner": "Eligible student maintainer (unassigned)",
       "checked_at": "2026-10-15",
-      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "runbook": "RUNBOOKS.md#tls-and-web-clients",
       "acquisition_status": "not_acquired",
       "runtime_status": "not_run",
       "runtime_evidence": null
@@ -514,7 +514,7 @@
       ],
       "owner": "Eligible student maintainer (unassigned)",
       "checked_at": "2026-10-15",
-      "runbook": "RUNBOOKS.md#lab-and-conditional",
+      "runbook": "RUNBOOKS.md#tls-and-web-clients",
       "acquisition_status": "not_acquired",
       "runtime_status": "not_run",
       "runtime_evidence": null
@@ -561,7 +561,7 @@
       ],
       "owner": "Eligible student maintainer (unassigned)",
       "checked_at": "2026-10-15",
-      "runbook": "RUNBOOKS.md#host-enumeration",
+      "runbook": "RUNBOOKS.md#remote-host-and-directory-clients",
       "acquisition_status": "not_acquired",
       "runtime_status": "not_run",
       "runtime_evidence": null

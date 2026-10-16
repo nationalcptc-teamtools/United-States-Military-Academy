@@ -1,6 +1,8 @@
 # Offline reporting starter
 
-Version 0.4.1. Preparation prototype using **synthetic input only**. It generates editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
+Version 0.5.0. Preparation prototype using **synthetic input only**. It generates authoritative JSON, editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
+
+Start with the [human user guide](../../docs/USER-GUIDE.md#report-generator) or the [illustrated update walkthrough](../../docs/REPORT-UPDATES.md), including a complete demo for new evidence supporting an existing finding.
 
 The original report format loosely follows a conventional assessment/exam-report structure: cover, contents, numbered introduction, high-level summary/recommendations, methodology, detailed findings and evidence/review appendices. PDF contents include actual page numbers. Source text and review status are retained; section headings do not assert that any activity occurred.
 
@@ -31,13 +33,27 @@ Optional PDF QA uses preparation-only pypdf to check source-text preservation, a
 python -B tooling/reporting/tests/check_pdf_rendering.py tooling/reporting/examples/report-marked.json output/pdf/sample-report
 ~~~
 
-Choose a **new output directory** each time. Existing destinations are refused. Outputs are report.md, report.pdf with --pdf, report.docx with --docx, and manifest.json with the hash of every requested report. Either optional format can be used independently. All requested outputs publish together after successful rendering.
+Choose a **new output directory** each time. Existing destinations are refused. Outputs are input.json, report.md, report.pdf with --pdf, report.docx with --docx, and manifest.json with all artifact hashes. Either optional format can be used independently. All requested outputs publish together after successful rendering. input.json contains the actual normalized rendered report; use it as the next revision's source. The manifest retains the supplied-byte input hash and separately records the rendered input hash and canonical report identity.
 
 Word contains native editable paragraphs, heading styles and lists, with internal contents links, repeated handling/draft markings and a page-number field. Its contents do not reuse PDF page numbers, since Word pagination can differ. Source markup stays plain text; there are no macros, external links or evidence attachments. Word generation needs neither Word nor LibreOffice installed. Native layout QA requires a separate approved document renderer; the preparation environment lacked bundled LibreOffice, so Word visual layout has not been certified there.
 
-The editable JSON is the source of truth. Editing Markdown or Word does not update the other outputs and changes the edited file's manifest identity. Revise JSON and regenerate to synchronize outputs, or record manual amendments under the review process.
+The editable JSON is the source of truth. Editing Markdown or Word does not update the other outputs and changes the edited file's manifest identity. Revise JSON or use explicit incremental updates, then regenerate to synchronize outputs. Copy manual amendments into source fields before regenerating.
 
-The optional Python `generate` API also accepts `appendix_blocks` and `appendix_markings` for the [development workbench](../workbench/README.md). This additive `cptc.appendix/1.0` interface accepts only paragraphs and level-2/3 headings (maximum 200 blocks, 10,000 characters per paragraph, 180 per heading). Explicit inherited markings are required; restrictions are combined before the same blocks render in Markdown and PDF. The manifest records the appendix hash and source schema. Ordinary report schemas and CLI inputs remain unchanged; this API does not accept native scanner exports.
+## Incremental revisions
+
+```powershell
+python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --preview
+python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --update tooling/reporting/examples/update-evidence.json --preview
+python tooling/reporting/reportgen.py tooling/reporting/examples/report-marked.json --update tooling/reporting/examples/update-evidence.json --output-dir output/report-revised --pdf --docx
+```
+
+`--preview` validates and prints identity/proposed changes without writing. `--output-dir` is required for an actual export. `--update` accepts a curated `cptc.report-update/1.0` envelope with engagement ID, canonical base fingerprint, actor, reason and explicit operations. Operations add findings, append evidence, amend selected authored fields or amend selected engagement prose/date. All succeed together or fail without changing the base. See the walkthrough for closed field lists, limits and conflict rules.
+
+Prior evidence and restrictions remain. Changed findings become candidates and report review is cleared; exact no-op changes preserve review. Reused evidence IDs with different content/ownership fail. Standalone stale replay is rejected by fingerprint; the workbench additionally recognizes applied update IDs. Update exports include exact update.json and a changes.json receipt with finding/evidence differences and base/result/update hashes. Raw scanner exports remain unsupported.
+
+The pure `updates.py` module owns identity, revision policy and differences. Parsing/validation and shared renderers remain in `reportgen.py`; workbench persistence stays in `tooling/workbench/reports.py`. Existing `generate` calls remain compatible, with optional keyword `update_raw` for bounded update JSON bytes. `describe(data)` exposes identity; `apply_update(data, patch)` returns a new validated report and receipt without mutating the base or touching files. `--version` prints the generator version.
+
+The optional Python `generate` API also accepts `appendix_blocks` and `appendix_markings` for the [development workbench](../workbench/README.md). This additive `cptc.appendix/1.0` interface accepts only paragraphs and level-2/3 headings (maximum 200 blocks, 10,000 characters per paragraph, 180 per heading). Explicit inherited markings are required; restrictions are combined before the same blocks render in Markdown, PDF and Word. The manifest records the appendix hash and source schema. Ordinary report-input schemas and positional input remain compatible; this API does not accept native scanner exports.
 
 Use - as input to consume a future adapter's JSON from stdin. --release changes the training label only when a reviewer/date and fully confirmed findings/verified CVE applicability are supplied. It neither validates evidence nor approves event submission. The sample includes a candidate, so its release request is deliberately rejected.
 

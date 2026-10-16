@@ -35,3 +35,12 @@ python -B tooling/workbench/workbench.py check-links tooling/workbench/README.md
 ```
 
 The process test supervises and stops only its own fixed synthetic worker tree; on Windows the environment must permit that local cleanup. No scanners, installs, actual targets, client data, model calls or cloud transfers are used. Imported report data remains synthetic; supplied review strings, evidence references and hashes do not authenticate claims. Actual tools/hosts, licensing closure, storage/retention, event rules/rubric/deadlines and cloud permissions remain external acceptance gates. The repository's existing Linux/Windows runners and installer are preserved.
+
+
+## Incremental reports and guides — 16 October 2026
+
+Workbench 1.1.0 and reporter 0.5.0 were checked on Windows Python 3.12, including a freshly extracted source package with exact current-file hash comparisons. Reporter: 58 tests passed. Workbench: 28 tests passed. Farmkit: 39 tests ran successfully with one platform-specific skip. The workbench supervisor test required permission to stop its own fixed synthetic process tree; no scanner or installer was launched.
+
+The README's create/preview/update/all-format workflow was exercised with the supplied synthetic update fixture. Updated PDF QA verified all nine pages, literal source text, actual contents page numbers, every-page markings, hashes and inactive content. Markdown QA passed 196 complete-report cases. Word package tests confirm evidence and markings in native editable content; native Word pagination/layout remains unverified here. Both SVG guide graphics were rendered and visually inspected. Documentation review confirmed all 48 workbench commands and all 40 catalog entries covered with valid local procedure links.
+
+Independent source review repaired cross-import ID collisions and canonical numeric-change accounting; dedicated regressions cover both. Preview, stale fingerprint/revision/review, idempotent duplicate/no-op state, batch rollback, preservation and source-package completeness passed. Workspace format remains 1.0.0; no migration is required. User/event acceptance and real-data/native-import support remain outside these checks.

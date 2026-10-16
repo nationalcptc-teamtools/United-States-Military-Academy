@@ -13,11 +13,14 @@ import workspace as ws
 
 MODULE_FILES = ("common.py", "catalog.py", "workspace.py", "operations.py", "reports.py", "delivery.py",
                 "workbench.py", "README.md", "CONTRACTS.md", "HANDOVER.md", "UI-EVALUATION.md", "SPEC.md", "VERIFICATION.md", "LICENSE",
-                "tests/test_workbench.py")
-REPORT_FILES = ("reportgen.py", "requirements.txt", "README.md", "design.md", "examples/report.json",
+                "tests/test_workbench.py", "tests/test_report_updates.py")
+REPORT_FILES = ("reportgen.py", "updates.py", "requirements.txt", "README.md", "design.md", "examples/report.json",
                 "examples/report-marked.json", "examples/tool-run.json", "templates/report.md",
                 "templates/finding.md", "templates/incident.md", "tests/test_reportgen.py", "tests/test_docx.py",
-                "tests/check_pdf_rendering.py", "tests/check_markdown_rendering.py")
+                "tests/check_pdf_rendering.py", "tests/check_markdown_rendering.py", "tests/test_updates.py",
+                "examples/update-evidence.json")
+GUIDE_FILES = ("docs/USER-GUIDE.md", "docs/REPORT-UPDATES.md", "docs/TOOL-GUIDES.md",
+               "docs/assets/quick-start.svg", "docs/assets/report-update.svg")
 FARM_FILES = ("catalog.json", "LICENSE", "NOTICES.md", "RUNBOOKS.md", "CATALOG.md", "README.md",
               "kit.py", "sources.json", "artifact-lock.json", "readiness.json", "INSTALL.md",
               "VERIFICATION.md", "install.py", "install-manifest.json", "spec.md", "design.md",
@@ -31,6 +34,8 @@ def package(destination):
     if not inherited_license.is_file():
         inherited_license = ROOT / "integrations/United-States-Military-Academy/LICENSE"
     files["LICENSE"] = read(inherited_license)
+    for name in GUIDE_FILES:
+        files[name] = read(ROOT / name)
     for folder, names in (("workbench", MODULE_FILES), ("reporting", REPORT_FILES), ("farmkit", FARM_FILES)):
         for name in names:
             path = ROOT / "tooling" / folder / name

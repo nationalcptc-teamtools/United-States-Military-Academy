@@ -1,6 +1,6 @@
 # Tool selection catalog
 
-Generated from catalog.json; checked 2026-10-15. Selected means selected for evaluation. No upstream tool is acquired or runtime verified. Farm scenarios are hypotheses.
+Evaluation snapshot from catalog.json; checked 2026-10-15. Selected means selected for evaluation. Acquisition/runtime fields are planning-baseline records, not the actual installer inventory. Check install-state.json and the installation checker for local staging; installation does not resolve operational, license or event holds. Farm scenarios are hypotheses.
 
 ## Selection
 
@@ -150,7 +150,7 @@ Use only when authorized technology evidence justifies this capability; avoid re
 - Evidence: [upstream 1](https://github.com/cddmp/enum4linux-ng)
 - Maintenance: Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.
 - Owner: Eligible student maintainer (unassigned); runtime: not run; acquisition: not acquired.
-- [Runbook](RUNBOOKS.md#host-enumeration).
+- [Runbook](RUNBOOKS.md#remote-host-and-directory-clients).
 
 ## TOOL-008 NetExec
 
@@ -165,7 +165,7 @@ Use only when authorized technology evidence justifies this capability; avoid re
 - Evidence: [upstream 1](https://github.com/Pennyw0rth/NetExec)
 - Maintenance: Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.
 - Owner: Eligible student maintainer (unassigned); runtime: not run; acquisition: not acquired.
-- [Runbook](RUNBOOKS.md#host-enumeration).
+- [Runbook](RUNBOOKS.md#remote-host-and-directory-clients).
 
 ## TOOL-009 Impacket
 
@@ -180,7 +180,7 @@ Held for the license/module/maintenance issue below; no default staging.
 - Evidence: [upstream 1](https://github.com/fortra/impacket/blob/master/LICENSE)
 - Maintenance: Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.
 - Owner: Eligible student maintainer (unassigned); runtime: not run; acquisition: not acquired.
-- [Runbook](RUNBOOKS.md#host-enumeration).
+- [Runbook](RUNBOOKS.md#remote-host-and-directory-clients).
 
 ## TOOL-010 testssl.sh
 
@@ -195,7 +195,7 @@ Use only when authorized technology evidence justifies this capability; avoid re
 - Evidence: [upstream 1](https://github.com/testssl/testssl.sh)
 - Maintenance: Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.
 - Owner: Eligible student maintainer (unassigned); runtime: not run; acquisition: not acquired.
-- [Runbook](RUNBOOKS.md#lab-and-conditional).
+- [Runbook](RUNBOOKS.md#tls-and-web-clients).
 
 ## TOOL-011 ffuf
 
@@ -210,7 +210,7 @@ Use only when authorized technology evidence justifies this capability; avoid re
 - Evidence: [upstream 1](https://github.com/ffuf/ffuf)
 - Maintenance: Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.
 - Owner: Eligible student maintainer (unassigned); runtime: not run; acquisition: not acquired.
-- [Runbook](RUNBOOKS.md#lab-and-conditional).
+- [Runbook](RUNBOOKS.md#tls-and-web-clients).
 
 ## TOOL-012 Metasploit Framework
 
@@ -225,7 +225,7 @@ Held for the license/module/maintenance issue below; no default staging.
 - Evidence: [upstream 1](https://github.com/rapid7/metasploit-framework/blob/master/LICENSE)
 - Maintenance: Upstream declaration reviewed; no independent security/dependency audit or maintenance assurance.
 - Owner: Eligible student maintainer (unassigned); runtime: not run; acquisition: not acquired.
-- [Runbook](RUNBOOKS.md#host-enumeration).
+- [Runbook](RUNBOOKS.md#remote-host-and-directory-clients).
 
 ## TOOL-013 PyModbus
 

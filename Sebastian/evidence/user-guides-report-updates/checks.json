@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-16",
+  "data_category": "synthetic",
+  "platform": "Windows",
+  "python": "3.12",
+  "baseline": "09099c61c4ffa852baec6c5e2c2f7520ddff497e",
+  "versions": {
+    "reporter": "0.5.0",
+    "workbench": "1.1.0",
+    "workspace": "1.0.0"
+  },
+  "tests": {
+    "reporter": {
+      "run": 58,
+      "passed": 58
+    },
+    "workbench": {
+      "run": 28,
+      "passed": 28
+    },
+    "farmkit": {
+      "run": 39,
+      "passed": 38,
+      "skipped": 1
+    }
+  },
+  "markdown_rendering_cases": 196,
+  "updated_pdf": {
+    "pages": 9,
+    "source_text": true,
+    "contents_page_numbers": true,
+    "all_pages_marked": true,
+    "artifact_hashes": true,
+    "no_active_content": true
+  },
+  "guide_coverage": {
+    "workbench_commands": 48,
+    "catalog_tools": 40
+  },
+  "source_package": {
+    "entries_including_manifest": 63,
+    "sha256": "9603e68eb515bc879d5f74e2f7786e46760f0344995d3fed233e7943dac5dc62",
+    "all_current_source_hashes_verified": true,
+    "extracted_tests_passed": true,
+    "post_extraction_changes": [
+      "tooling/workbench/README.md",
+      "tooling/workbench/VERIFICATION.md"
+    ]
+  },
+  "independent_review": "no remaining material findings",
+  "acceptance": {
+    "user": "pending",
+    "event": "pending"
+  },
+  "limitations": [
+    "Synthetic data only; no native tool adapters",
+    "No new Linux runtime validation",
+    "Native Word layout not certified",
+    "Windows worker cleanup test needs process permission"
+  ]
+}

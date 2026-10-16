@@ -26,9 +26,17 @@ def main():
     manifest = json.loads((args.output_dir / "manifest.json").read_text(encoding="utf-8"))
     data = reportgen.validate(reportgen.load(raw), manifest["review_label"] == "reviewed_training_copy")
     assert manifest["generator_version"] == reportgen.VERSION
-    assert manifest["schema_version"] == data["schema_version"]
     assert manifest["input_sha256"] == hashlib.sha256(raw).hexdigest()
-    expected = {"report.md", "report.pdf"}
+    if "update" in manifest:
+        update_raw = (args.output_dir / "update.json").read_bytes()
+        data, receipt = reportgen.apply_update(data, reportgen.load(update_raw))
+        for key, value in manifest["update"].items():
+            assert receipt[key] == value
+        assert manifest["report_sha256"] == reportgen.describe(data)["report_sha256"]
+    assert manifest["schema_version"] == data["schema_version"]
+    expected = {"input.json", "report.md", "report.pdf"}
+    if "update" in manifest:
+        expected.update(("changes.json", "update.json"))
     if (args.output_dir / "report.docx").is_file():
         expected.add("report.docx")
     assert set(manifest["artifacts"]) == expected

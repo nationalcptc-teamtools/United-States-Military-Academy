@@ -65,13 +65,14 @@ def find(item, identifier):
     return rows[0]
 
 
-def review(directory, import_id, finding_id, decision, reason, reviewer_name):
+def review(directory, import_id, finding_id, decision, reason, reviewer_name, base_revision=None):
     need(decision in ("accept", "reject"), "invalid_review_decision")
     text(reason, 2000)
     text(reviewer_name, 120)
     def action(value):
         need(import_id in value["imports"], "import_missing")
         item = value["imports"][import_id]
+        need(base_revision is None or item["revision"] == base_revision, "revision_conflict")
         finding = find(item, finding_id)
         finding["status"] = "confirmed" if decision == "accept" else "candidate"
         item["dispositions"][finding_id] = decision
@@ -104,9 +105,60 @@ def author(directory, import_id, finding_id, replacement, base_revision):
 
 
 def prefill(directory, import_id, finding_id):
-    finding = deepcopy(find(ws.get(directory, "imports", import_id), finding_id))
-    return {"finding": finding, "author_must_verify": ["business_impact", "severity", "remediation", "retest_steps"],
+    item = ws.get(directory, "imports", import_id)
+    finding = deepcopy(find(item, finding_id))
+    return {"finding": finding, "revision": item["revision"], **reporter().describe(item["report"]),
+            "author_must_verify": ["business_impact", "severity", "remediation", "retest_steps"],
             "confirmed_by_template": False}
+
+
+def report_state(directory, import_id):
+    item = ws.get(directory, "imports", import_id)
+    return {"revision": item["revision"], **reporter().describe(item["report"])}
+
+
+def update_report(directory, import_id, path, base_revision, preview_only=False):
+    """Apply the same pure update policy under the workspace transaction lock."""
+    module = reporter()
+    need(type(base_revision) is int and base_revision >= 1, "invalid_base_revision")
+    try:
+        patch = module.load(read(path))
+        need(isinstance(patch, dict), "invalid_report_update")
+        module.update_engine().validate_update(patch, module.update_contract())
+        update_hash = module.update_engine().fingerprint(patch)
+
+        def action(value):
+            need(import_id in value["imports"], "import_missing")
+            item = value["imports"][import_id]
+            previous = item.get("updates", {}).get(patch.get("id"))
+            if previous is not None:
+                need(previous["update_sha256"] == update_hash, "update_id_conflict")
+                return {"duplicate": True, "modified": False, "revision": item["revision"],
+                        "preview": preview_only, "written": False}
+            need(item["revision"] == base_revision, "revision_conflict")
+            revised, receipt = module.apply_update(item["report"], patch)
+            other_ids = {f["id"] for key, other in value["imports"].items() if key != import_id
+                         for f in other["report"]["findings"]}
+            need(not other_ids.intersection(f["id"] for f in revised["findings"]), "conflicting_finding_ids")
+            result = dict(receipt, revision=item["revision"], preview=preview_only, written=False)
+            if preview_only or not receipt["modified"]:
+                return result
+            item["report"] = revised
+            for identifier in receipt["affected_findings"]:
+                item["dispositions"].pop(identifier, None)
+            item["revision"] += 1
+            item["updated_at"] = now()
+            item.setdefault("updates", {})[patch["id"]] = dict(receipt, applied_at=now())
+            ws.inherit(value, module.handling(revised)["report"].split("//"))
+            ws.event(value, "report_update", "recorded", patch["id"])
+            return dict(result, revision=item["revision"], written=True)
+
+        if preview_only:
+            return action(ws.state(directory))
+        return ws.change(directory, action)
+    except module.ContractError as exc:
+        from common import Error
+        raise Error("report_update_rejected: " + str(exc)) from None
 
 
 def duplicates(directory, import_id):
@@ -248,11 +300,7 @@ def appendix(value):
 
 
 def changed(previous, current):
-    before = {f["id"]: f for f in previous["findings"]} if previous else {}
-    after = {f["id"]: f for f in current["findings"]}
-    return {"added": sorted(after.keys() - before.keys()), "removed": sorted(before.keys() - after.keys()),
-            "changed": sorted(k for k in before.keys() & after.keys() if before[k] != after[k]),
-            "engagement_changed": previous is not None and previous["engagement"] != current["engagement"]}
+    return reporter().update_engine().changes(previous, current)
 
 
 def snapshot(directory, import_id, destination, pdf=False, reviewer_name=None, rubric=(), *, docx=False):
@@ -286,6 +334,7 @@ def snapshot(directory, import_id, destination, pdf=False, reviewer_name=None, r
     delta = changed(previous, report)
     context = {key: {identifier: digest(encoded(row)) for identifier, row in value[key].items()}
                for key in ("runs", "retests", "incidents")}
+    context["updates"] = {identifier: digest(encoded(row)) for identifier, row in item.get("updates", {}).items()}
     previous_context = latest.get("context", {}) if latest else {}
     for key, current_records in context.items():
         old_records = previous_context.get(key, {})
@@ -301,6 +350,8 @@ def snapshot(directory, import_id, destination, pdf=False, reviewer_name=None, r
         manifest = module.generate(encoded(report), rendered, pdf, bool(reviewer_name), appendix(value), markings, docx=docx)
         files = {path.name: path.read_bytes() for path in rendered.iterdir() if path.name != "manifest.json"}
     files.update({"input.json": encoded(report), "changes.json": encoded(delta)})
+    if item.get("updates"):
+        files["updates.json"] = encoded(item["updates"])
     manifest.update(workbench_version=VERSION, workspace_revision=value["revision"],
                     imported_export_sha256=item["source_sha256"],
                     source_schema_version=item["source_report"]["schema_version"],
