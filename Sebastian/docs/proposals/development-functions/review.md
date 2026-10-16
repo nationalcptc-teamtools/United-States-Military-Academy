@@ -1,5 +1,22 @@
 # Independent workbench review
 
+## Integration continuation — 2026-10-15
+
+Independent read-only continuation review by /root/continuation_audit: **positive specification/code-quality verdict for the bounded integration; no material new finding and no R-DF-07 allocated.** The reviewer did not implement or write files, launch processes, use network, or run root's render/process suites. Root alone edited. Separate publication audit confirmed all31 local docs were already in the original snapshot and recommended incremental records rather than overwriting newer published work.
+
+Reviewer checked the actual diff from6c8ec1d: prior positional snapshot arguments keep their meaning; optional Word passes by keyword to unchanged reporter0.4.1; complete-format staging precedes snapshot mutation; workspace format1.0.0 remains independent of app1.0.1; public scope/verification and Word tests are explicitly packaged. In-memory AST/CLI/API/workspace/package checks passed. All original idea choices and operational boundaries remain intact.
+
+| Changed workbench file | Independently reviewed SHA-256 |
+| --- | --- |
+| common.py | 825c8c13164220cf0e80cd7d20791f09106e07708e8d287ada2d1abdb621abd7 |
+| workspace.py | 9a8393ab7cd15db89b8a40015427c321719deb88fbc941d07a467f450f1a26da |
+| reports.py | 4c2683e2613ff4aa2920e4dbb4381966501d837e187dea159ef0621c93698827 |
+| workbench.py | d6706a53b5df94b783816ead68b8b547ffe44b21afb4deb9dc2606df7e1b71c6 |
+| delivery.py | 7ac80ee1cec55dd0fccbca08aa7040f4fbe1fdb982220896328029b055904f43 |
+| tests/test_workbench.py | 0a1ec4915b53b01d961b533742f7853e14502d15bca0cb3df1dc31e1b66405a6 |
+
+Root validated exact current hashes against this table. Actual20+43 Windows and extracted20+43 checks, Linux18/two optional skips, release member/hash results and layout limits are separately recorded in verification.md. Final independent publication review by /root/publication_audit was positive with no material finding. The reviewer verified all 27 increment entries against staged Git bytes/hashes/sizes, the preserved original 615-entry manifest and archive, all 197 references in its checked set, and all 54 safe release members/current source hashes. Root checked a wider 201-reference set. Both package manifests agree; release SHA-256 is cb356c58e9d0fd1b473ff4261dc3e0be0da2d8af4adfa0496adecf9dcf0f47a5. All 120 choices/44 requirements remain intact, with no new private-path or operational-acceptance claim. This summary is recorded by root from returned evidence; the incremental manifest is regenerated afterward to capture the summary itself. Existing R-DF-01–06 closures remain historical and are not reopened by the added format.
+
 2026-10-15. User explicitly authorized a separate read-only reviewer. `/root/workbench_review` did not implement or edit any file; root retained the sole editing slot and performed all corrections/file-writing/process/PDF tests. This record is written by root from the reviewer's returned evidence.
 
 **Specification conclusion:** scoped positive for the reconciled local synthetic workbench, subject to the exact user choices/boundaries and final role-document status check. Native tool execution/adapters, client data, actual cloud transfer, event/runtime approval and user acceptance are outside the verdict.

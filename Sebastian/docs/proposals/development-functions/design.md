@@ -1,5 +1,13 @@
 # Development workbench design
 
+## Integration continuation — 2026-10-15
+
+Reuse reporter 0.4.1 unchanged. Add optional `snapshot --docx`, pass it through keyword-only `reports.snapshot(..., docx=False)` to the existing `generate(..., docx=...)`. Preserve existing positional arguments, authoritative input and shared appendix/handling inheritance. The renderer stages every requested format; the workbench then publishes the complete bundle and ledger record. A renderer exception occurs before snapshot mutation. Manual Markdown/Word edits change their hashes and do not update other formats.
+
+Separate application VERSION=1.0.1 from WORKSPACE_VERSION=1.0.0. State creation/validation use the latter; CLI/status/release identity uses the former. No workspace content migration is required. Explicit source members now include workbench SPEC.md/VERIFICATION.md and reporting tests/test_docx.py, yielding 54 ZIP members including manifest. Keep sibling tooling paths so catalog/renderer/package resolvers remain valid.
+
+Repository publication is incremental from 6c8ec1d: active role records and a small evidence/release/continuation manifest go in Sebastian/; code remains root tooling/. Preserve the original 615-file manifest and historic archive. Do not run broad recursive copying scripts or overwrite reporter 0.4.1 from older local mirrors. All 44 original requirement dispositions and all 120 idea choices remain intact.
+
 Architect: root, 2026-10-15. Editing: root only. User decisions: [decisions.md](decisions.md). All 120 decisions explicit: 70 Include, 6 Defer, 44 Exclude. Subsequent user correction replaces local AI/correction with a manual cloud-system handoff. No local model, remote API or automatic upload is part of this implementation. Independent read-only reviewer authorized by user.
 
 ## Scope and reuse

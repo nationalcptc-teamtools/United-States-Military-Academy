@@ -14,3 +14,12 @@ Verification on Windows with Python 3.12:
 - Changed product files pass the whitespace check. Archived generated Markdown retains its original formatting.
 
 These checks use synthetic fixtures and do not establish event deployment or operational acceptance.
+
+
+## Workbench integration continuation — 15 October 2026
+
+User explicitly selected finishing integration and publishing the full records. Base6c8ec1d already published the complete original snapshot, so no documentation backlog was recopied. Root tooling now carries workbench1.0.1; reporter0.4.1 and workspace format1.0.0 are preserved separately. Snapshots can request the existing Word renderer, and source packages retain its regression tests/public records.
+
+Active role records are in [development-functions](docs/proposals/development-functions/proposal.md). New [machine evidence](evidence/development-functions/continuation-checks.json), [source release](releases/workbench-1.0.1/workbench-1.0.1.zip) and [incremental manifest](CONTINUATION-FILES.json) record this continuation. PROJECT-FILES.json remains the original615-entry snapshot; apply the incremental manifest for current modified/added files. Existing historical integrations/output/tmp files are preserved. New machine scratch/checkouts/caches were not recursively recopied.
+
+Windows workbench20 and reporter43 checks passed; Linux workbench18 passed/two optional dependencies skipped, with actual PDF generation successful. Independent code review was positive. Standalone release identities, exact procedures/limits and final publication checks are recorded in verification.md and machine evidence. These remain synthetic preparation checks, separate from actual tool/client/cloud/event acceptance.

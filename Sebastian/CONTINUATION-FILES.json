@@ -1,0 +1,245 @@
+{
+  "format": "cptc.project-increment/1.0",
+  "date": "2026-10-15",
+  "timezone": "America/New_York",
+  "base_commit": "6c8ec1d2b0f7bc13b62452fafdac45e1cb92e031",
+  "branch": "codex/development-workbench",
+  "user_scope": "Finish integration and publish full records in Sebastian/; relevant changes in root tools",
+  "original_snapshot": {
+    "path": "Sebastian/PROJECT-FILES.json",
+    "sha256": "7f7f6e46e1afbfa634afd04c76fe643db6c2220dbe32d621bcd7b80f85164e59",
+    "entries": 615,
+    "preserved": true
+  },
+  "files": [
+    {
+      "destination": "README.md",
+      "action": "modified",
+      "base_sha256": "84531f3203453e132fa65774fd9805edb075e6cbe9907cf9e655377797691e30",
+      "committed_bytes_sha256": "af070d938f827e3cfe95444e2d50bca7c082441052871e8fed6ed79ec8ded9ac",
+      "bytes": 15196
+    },
+    {
+      "destination": "Sebastian/PUBLISHING.md",
+      "action": "modified",
+      "base_sha256": "d5c4a21c7caec98cd323f9a00406965518f9e6fcf26aaf9254a294fd9f2a10cc",
+      "committed_bytes_sha256": "4f2ebcf31d6f8b993c0c1acab7ea7364010f1aab54aaf3a39c091b54418f300e",
+      "bytes": 2882
+    },
+    {
+      "destination": "Sebastian/README.md",
+      "action": "modified",
+      "base_sha256": "45cdf0f4d61b1783f991ec5591ec706c4d7eb438eefd542a4a6c79b56bb363e4",
+      "committed_bytes_sha256": "0c2666d9b39d4cfcbd68217254855c0f24a714acd63f748f4ddd95219d19c20f",
+      "bytes": 4769
+    },
+    {
+      "destination": "Sebastian/docs/journal.md",
+      "action": "modified",
+      "base_sha256": "04f93306db299489e2047ebc01440b5cb3ab76e746cae11dbf1b67823cd2b6cf",
+      "committed_bytes_sha256": "094494e42b429859fc34d0f6f1243d5d4d9dde7088b1a1922b3cc1fa8c4438c6",
+      "bytes": 60287
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/decisions.md",
+      "action": "modified",
+      "base_sha256": "d6a226a1967244b00ed43b933c10592d89a6a69b895ce171a1a93f3a100ee4ad",
+      "committed_bytes_sha256": "5a5bcb5df089b98428c5e1b4cee9aa2b65dedf6232069edfd06adccd35012358",
+      "bytes": 41474
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/design.md",
+      "action": "modified",
+      "base_sha256": "a689239d6f9e0c96656a7a0b94232c5f5bb156dfc0a6bb61e01a7475005c536a",
+      "committed_bytes_sha256": "3816d755eef130164c869ab91823f648131697ae90a292058710019e1d04821c",
+      "bytes": 14969
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/execution-guide.md",
+      "action": "modified",
+      "base_sha256": "280b0cfeb6b4b2c296bbdde0840b42e19034284c46e4b741e3e7ea8f12820f84",
+      "committed_bytes_sha256": "0ee424c5e24ce33700b8793e433e00a52d0b7426c8165991a847b827e30db3aa",
+      "bytes": 3680
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/proposal.md",
+      "action": "modified",
+      "base_sha256": "ea8ef57518eddd9e5f1121ec1b54d49599732687f8ca11a9fb6bbeab0cad433e",
+      "committed_bytes_sha256": "91ef6cacbaca4649145bda5756c2035142ee43ee376d1b00a8d579add8d927cb",
+      "bytes": 11902
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/review.md",
+      "action": "modified",
+      "base_sha256": "52e169870835d6061517d7dd2a4b5997585c09dd70da58dbfe852703af2b209a",
+      "committed_bytes_sha256": "d9191af261c78340739eca5217eedd57aada2017dbae7b2df7f10442466ac79a",
+      "bytes": 9392
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/scope.md",
+      "action": "modified",
+      "base_sha256": "f440ccdef13d06ec4c15a48d05f5364473eb4e500e2c5c0c51760307115750a9",
+      "committed_bytes_sha256": "6a8a2b7219613922b0a3fcf45ecac311805ce882fa429c8dbcef7f235e954cef",
+      "bytes": 29881
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/spec.md",
+      "action": "modified",
+      "base_sha256": "315d8480f0a7ab08313632af910a8899d3f24641e584c90ac0561c3e5936e804",
+      "committed_bytes_sha256": "55aa105b327a89cd111b734660484827bbe08bc3040363b359ce7e2f3853dfe8",
+      "bytes": 52840
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/tasks.md",
+      "action": "modified",
+      "base_sha256": "cfe5adda3b36eaba3f0699425ce6bbda84a8615732bf11dbe8d850dce6d3040a",
+      "committed_bytes_sha256": "a1874f2f1046ae2c7bf31c6691fe1f0962b781dc843941670bef905db75f133a",
+      "bytes": 4051
+    },
+    {
+      "destination": "Sebastian/docs/proposals/development-functions/verification.md",
+      "action": "modified",
+      "base_sha256": "a18d788b03c73373def288a82c3f27334f0ad0a97ef6fc31edd2437b77cc8cfa",
+      "committed_bytes_sha256": "17676e9d5b09e399fdd9cfd0cf4d372a16249d95943827fad9c070ac04828619",
+      "bytes": 13151
+    },
+    {
+      "destination": "Sebastian/evidence/development-functions/continuation-checks.json",
+      "action": "added",
+      "base_sha256": null,
+      "committed_bytes_sha256": "e4b6a3731692b7c80b698d315a96afe2725589c53e1299bbc5e7380469a07a63",
+      "bytes": 3014
+    },
+    {
+      "destination": "Sebastian/releases/workbench-1.0.1/MANIFEST.json",
+      "action": "added",
+      "base_sha256": null,
+      "committed_bytes_sha256": "6b991b5777d3cc6fa0f355c1e244f6180d3fd1593a881c7a6495d8cbdb0b38d0",
+      "bytes": 5899
+    },
+    {
+      "destination": "Sebastian/releases/workbench-1.0.1/workbench-1.0.1.zip",
+      "action": "added",
+      "base_sha256": null,
+      "committed_bytes_sha256": "cb356c58e9d0fd1b473ff4261dc3e0be0da2d8af4adfa0496adecf9dcf0f47a5",
+      "bytes": 187082
+    },
+    {
+      "destination": "Sebastian/releases/workbench-1.0.1/workbench-1.0.1.zip.sha256",
+      "action": "added",
+      "base_sha256": null,
+      "committed_bytes_sha256": "3ab95013306caffa62eac78dd0043d980cb0e3a1c163aad5abffb52b1a40f573",
+      "bytes": 86
+    },
+    {
+      "destination": "tooling/workbench/CONTRACTS.md",
+      "action": "modified",
+      "base_sha256": "b4ae4b2ecf0fd83fddb29ae81118f581d7453cecfeeddeac2d0040ccf60d53dc",
+      "committed_bytes_sha256": "d6231659f16afdb2fc3e118022a90a0d80012ee990c1c1449fef15dc5a06b9b0",
+      "bytes": 4946
+    },
+    {
+      "destination": "tooling/workbench/README.md",
+      "action": "modified",
+      "base_sha256": "15b4271485431a1fb44654890da05e5a89c593e32d48926f3279f288b1b59fe6",
+      "committed_bytes_sha256": "56013ac3e7a1e41a31f2b9bb96ac11af8dc0e2978c5aad0ff05f1f09dafa0677",
+      "bytes": 15458
+    },
+    {
+      "destination": "tooling/workbench/SPEC.md",
+      "action": "modified",
+      "base_sha256": "e39838a7c6bd6ef96c5965b274167035c2090cc67d9891620b697ee79e960c72",
+      "committed_bytes_sha256": "eb501ca56deda64afa28cd129e644bef7cc15cc28bc8ac4715e1add733082075",
+      "bytes": 35623
+    },
+    {
+      "destination": "tooling/workbench/VERIFICATION.md",
+      "action": "modified",
+      "base_sha256": "bdb70e0020b7ebcdd195195db90a2988e70478996aceceb2acc0a4649904555a",
+      "committed_bytes_sha256": "ef0de27534a79ff47f776357112aa0d4c898b66b04bdec9320aa23e0b8ec4813",
+      "bytes": 5801
+    },
+    {
+      "destination": "tooling/workbench/common.py",
+      "action": "modified",
+      "base_sha256": "c46f4463899f8f56f1d1a45a76f6547914968666bd49ae0bf57dcd6d9718c63d",
+      "committed_bytes_sha256": "825c8c13164220cf0e80cd7d20791f09106e07708e8d287ada2d1abdb621abd7",
+      "bytes": 7518
+    },
+    {
+      "destination": "tooling/workbench/delivery.py",
+      "action": "modified",
+      "base_sha256": "884b06503914ae64a383e1ebb856dffb3e6a7119871da52ad381643b8c3272b8",
+      "committed_bytes_sha256": "7ac80ee1cec55dd0fccbca08aa7040f4fbe1fdb982220896328029b055904f43",
+      "bytes": 13625
+    },
+    {
+      "destination": "tooling/workbench/reports.py",
+      "action": "modified",
+      "base_sha256": "c04715a91a3559d1568dca9639127e1dff1b3bbaedff492a2933bee1ef6daad1",
+      "committed_bytes_sha256": "4c2683e2613ff4aa2920e4dbb4381966501d837e187dea159ef0621c93698827",
+      "bytes": 17720
+    },
+    {
+      "destination": "tooling/workbench/tests/test_workbench.py",
+      "action": "modified",
+      "base_sha256": "69b457d76295e6e6e52fe68e58e5751a1ce75e795c1f4db68c28dc44961952a2",
+      "committed_bytes_sha256": "0a1ec4915b53b01d961b533742f7853e14502d15bca0cb3df1dc31e1b66405a6",
+      "bytes": 27596
+    },
+    {
+      "destination": "tooling/workbench/workbench.py",
+      "action": "modified",
+      "base_sha256": "91c0bc2fc538aec0f7a0dd4aa13b2231776a4f47592e1411a915c569656035d0",
+      "committed_bytes_sha256": "d6706a53b5df94b783816ead68b8b547ffe44b21afb4deb9dc2606df7e1b71c6",
+      "bytes": 18642
+    },
+    {
+      "destination": "tooling/workbench/workspace.py",
+      "action": "modified",
+      "base_sha256": "5e02abfdb343aa18a5965b9d9554cdac70f5f74c59a7f29b1fdf887521684d53",
+      "committed_bytes_sha256": "9a8393ab7cd15db89b8a40015427c321719deb88fbc941d07a467f450f1a26da",
+      "bytes": 9032
+    }
+  ],
+  "manifest_self_excluded": true,
+  "versions": {
+    "workbench": "1.0.1",
+    "workspace": "1.0.0",
+    "reporter": "0.4.1"
+  },
+  "scope_checks": {
+    "idea_choices": {
+      "Include": 70,
+      "Exclude": 44,
+      "Defer": 6
+    },
+    "unique_ideas": 120,
+    "requirement_definitions": 44,
+    "design_dispositions": 44
+  },
+  "preservation": {
+    "unchanged_archival_paths": 531,
+    "reporter_farmkit_installer_runners_unchanged": true,
+    "sources_and_agent_instructions_unchanged": true
+  },
+  "local_references_checked": 201,
+  "release": {
+    "path": "Sebastian/releases/workbench-1.0.1/workbench-1.0.1.zip",
+    "members": 54,
+    "sha256": "cb356c58e9d0fd1b473ff4261dc3e0be0da2d8af4adfa0496adecf9dcf0f47a5",
+    "all_members_verified": true,
+    "all_python_compiled": true,
+    "repeated_bytes_identical": true,
+    "matches_current_source_files": true
+  },
+  "verification": "Sebastian/docs/proposals/development-functions/verification.md",
+  "independent_review": "Sebastian/docs/proposals/development-functions/review.md",
+  "machine_evidence": "Sebastian/evidence/development-functions/continuation-checks.json",
+  "notes": [
+    "Destination hashes describe staged Git bytes; archival CRLF remains preserved.",
+    "Release manifest separately hashes exact packaged filesystem bytes; Git may normalize root text line endings.",
+    "Historical snapshots are retained; no recursive copying, target/model/cloud/installer activity.",
+    "Manifest excludes itself to avoid recursive hash identity; commit identifies its bytes."
+  ]
+}

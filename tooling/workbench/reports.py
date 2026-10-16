@@ -255,7 +255,7 @@ def changed(previous, current):
             "engagement_changed": previous is not None and previous["engagement"] != current["engagement"]}
 
 
-def snapshot(directory, import_id, destination, pdf=False, reviewer_name=None, rubric=()):
+def snapshot(directory, import_id, destination, pdf=False, reviewer_name=None, rubric=(), *, docx=False):
     value = ws.state(directory)
     need(import_id in value["imports"], "import_missing")
     item = value["imports"][import_id]
@@ -298,7 +298,7 @@ def snapshot(directory, import_id, destination, pdf=False, reviewer_name=None, r
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".snapshot-", dir=target.parent) as temporary:
         rendered = Path(temporary) / "rendered"
-        manifest = module.generate(encoded(report), rendered, pdf, bool(reviewer_name), appendix(value), markings)
+        manifest = module.generate(encoded(report), rendered, pdf, bool(reviewer_name), appendix(value), markings, docx=docx)
         files = {path.name: path.read_bytes() for path in rendered.iterdir() if path.name != "manifest.json"}
     files.update({"input.json": encoded(report), "changes.json": encoded(delta)})
     manifest.update(workbench_version=VERSION, workspace_revision=value["revision"],

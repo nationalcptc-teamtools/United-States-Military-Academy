@@ -1,5 +1,9 @@
 # Idea decisions
 
+## Integration continuation — 2026-10-15
+
+The user requested all continuation changes under Sebastian/ and relevant changes directly in tools, then clarified: "Finish integration and publish the full records (recommended)." Root treats this as finishing current integration/publication, not adding new capability initiatives. All existing 120 per-idea choices and the manual neutral JSON/Markdown cloud-handoff correction remain unchanged. Existing published project snapshot and reporter Word feature are preserved; current runnable code stays at root tooling/, with new role/evidence/release records in Sebastian/. No new permission question or scope gate is inferred from the role labels.
+
 Updated: 2026-10-15 (America/New_York). Root is sole editor. Linked [proposal](proposal.md), [specification](spec.md) and [full idea register](ideas.md).
 
 ## User instruction

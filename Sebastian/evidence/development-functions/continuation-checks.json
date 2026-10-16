@@ -1,0 +1,93 @@
+{
+  "data_category": "synthetic",
+  "date": "2026-10-15",
+  "timezone": "America/New_York",
+  "base_commit": "6c8ec1d2b0f7bc13b62452fafdac45e1cb92e031",
+  "application_version": "1.0.1",
+  "workspace_format": "1.0.0",
+  "reporter_version": "0.4.1",
+  "windows": {
+    "python": "3.12.14",
+    "reportlab": "4.4.9",
+    "python_docx": "1.2.0",
+    "pypdf": "6.10.0",
+    "workbench": {
+      "tests": 20,
+      "passed": 20,
+      "seconds": 12.167
+    },
+    "reporter": {
+      "tests": 43,
+      "passed": 43,
+      "seconds": 3.127
+    }
+  },
+  "linux": {
+    "python": "3.14.7",
+    "reportlab": "4.4.9",
+    "network": "disabled",
+    "workbench": {
+      "tests": 20,
+      "passed": 18,
+      "skipped": 2,
+      "seconds": 1.29
+    },
+    "skip_reasons": [
+      "optional pypdf extraction unavailable",
+      "optional Word integration dependencies unavailable"
+    ],
+    "pdf_generated": true,
+    "word_verified": false
+  },
+  "standalone": [
+    {
+      "procedure": "python -B -m unittest discover -s tooling/workbench/tests -v",
+      "tests": 20,
+      "seconds": 11.58,
+      "skips": 0,
+      "exit_code": 0
+    },
+    {
+      "procedure": "python -B -m unittest discover -s tooling/reporting/tests -v",
+      "tests": 43,
+      "seconds": 2.503,
+      "skips": 0,
+      "exit_code": 0
+    }
+  ],
+  "release": {
+    "path": "Sebastian/releases/workbench-1.0.1/workbench-1.0.1.zip",
+    "members": 54,
+    "sha256": "cb356c58e9d0fd1b473ff4261dc3e0be0da2d8af4adfa0496adecf9dcf0f47a5",
+    "all_members_verified": true,
+    "all_python_compiled": true,
+    "repeated_bytes_identical": true,
+    "matches_current_source_files": true
+  },
+  "limits": [
+    "Synthetic only; no target, model, installer or cloud transfer",
+    "Word XML/content verified; native Word pagination/layout not certified",
+    "Existing archive preserved; all120 idea choices and44 requirement IDs unchanged"
+  ],
+  "independent_review": {
+    "verdict": "Scoped positive; no material finding",
+    "source_sha256": {
+      "common.py": "825c8c13164220cf0e80cd7d20791f09106e07708e8d287ada2d1abdb621abd7",
+      "workspace.py": "9a8393ab7cd15db89b8a40015427c321719deb88fbc941d07a467f450f1a26da",
+      "reports.py": "4c2683e2613ff4aa2920e4dbb4381966501d837e187dea159ef0621c93698827",
+      "workbench.py": "d6706a53b5df94b783816ead68b8b547ffe44b21afb4deb9dc2606df7e1b71c6",
+      "delivery.py": "7ac80ee1cec55dd0fccbca08aa7040f4fbe1fdb982220896328029b055904f43",
+      "tests/test_workbench.py": "0a1ec4915b53b01d961b533742f7853e14502d15bca0cb3df1dc31e1b66405a6"
+    },
+    "scope": "Read-only/in-memory; no writes, processes or network",
+    "root_tests_separately_attributed": true
+  },
+  "publication_review": {
+    "verdict": "Positive; no material finding",
+    "checked_staged_entries": 27,
+    "checked_local_references": 197,
+    "release_members": 54,
+    "original_615_entry_snapshot_preserved": true,
+    "scope": "Independent read-only inspection; root regenerates increment hashes after recording verdict"
+  }
+}

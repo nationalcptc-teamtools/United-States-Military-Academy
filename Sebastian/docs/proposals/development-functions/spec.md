@@ -1,5 +1,18 @@
 # Development functions specification
 
+## Integration continuation — 2026-10-15
+
+Current application/workspace/reporter versions: 1.0.1 / 1.0.0 / 0.4.1. This additive integration uses existing FR/NFR and idea IDs; all original decisions remain authoritative. User explicitly selected finishing integration/full records, not a new capability initiative.
+
+| Supplemental acceptance | Existing requirement | Observable result |
+| --- | --- | --- |
+| AC-DF-C01 | FR-DF-025; IDEA-DF-102/103 | `snapshot --docx` produces editable Word with the same supplied run/incident/retest appendix and inherited markings as Markdown and requested PDF; every artifact has a verified manifest hash. Word alone does not generate PDF. Existing positional snapshot calls retain meaning. |
+| AC-DF-C02 | FR-DF-019/025/032; NFR-DF-005 | Missing/failed optional renderer leaves no final output directory or snapshot/state mutation; it does not repeat a target action. |
+| AC-DF-C03 | FR-DF-010/032; NFR-DF-006 | Existing workspace format 1.0.0 is readable/editable despite application version changes; no migration/relabeling required. Unknown format 2.0.0 rejects. |
+| AC-DF-C04 | FR-DF-009/015; IDEA-DF-039/046/047/056 | Explicit source bundle includes current public SPEC/VERIFICATION and all seven reporter Word regression tests; member hashes and repeatable bytes verify and extracted suites execute. New role records/verification/release live in Sebastian/, runnable changes in root tooling/. |
+
+Windows Word validation covers native document structure, literal content, labels and hashes, not pagination/layout in Word. Linux image lacks optional Word/pypdf QA dependencies; these skips remain explicit. No source originals, private live records, new native adapter, CI initiative, target runner, AI model/API or automatic transfer is part of this continuation.
+
 Prepared 2026-10-15 (America/New_York); updated after all user choices and implementation. Stable original IDs: 32 FR and 12 NFR. Status/ownership: [proposal](proposal.md). Original breadth: [120 ideas](ideas.md); authoritative choices: [decisions](decisions.md).
 
 ## Current normative scope and acceptance

@@ -1,6 +1,6 @@
 # CPTC development workbench
 
-Version 1.0.0. Offline Python 3.10+ command-line tools for **synthetic preparation**. Uses the sibling farm catalog and report generator. PDF also requires the existing [ReportLab dependency](../reporting/requirements.txt). The full source package preserves that sibling layout.
+Version 1.0.1. Offline Python 3.10+ command-line tools for **synthetic preparation**. Uses the sibling farm catalog and report generator 0.4.1+. PDF requires ReportLab and Word requires python-docx from the existing [reporting dependencies](../reporting/requirements.txt); each is loaded only for its requested format. The full source package preserves that sibling layout and includes the public specification, verification notes and Word regression tests.
 
 Run from the repository root:
 
@@ -91,11 +91,14 @@ python tooling/workbench/workbench.py duplicates WORKSPACE IMPORT_ID
 python tooling/workbench/workbench.py review WORKSPACE IMPORT_ID FINDING_ID --decision accept --reason "Synthetic manual validation" --reviewer Reviewer
 python tooling/workbench/workbench.py complete WORKSPACE IMPORT_ID --rubric objective
 python tooling/workbench/workbench.py snapshot WORKSPACE IMPORT_ID output/workbench/draft-1 --pdf
+python tooling/workbench/workbench.py snapshot WORKSPACE IMPORT_ID output/workbench/draft-2 --pdf --docx
 ```
 
 Duplicate suggestions explain title similarity/shared assets and never merge automatically. `merge` requires actor/reason, preserves originals, retains combined assets/evidence/markings and returns the primary to candidate review. `undo-merge` refuses to overwrite later author changes. Human rejection explicitly omits a finding from the derived report while preserving the original and limitation. No score/impact/CVE applicability is inferred. `complete` checks author/reviewer/rubric gaps. A snapshot `--reviewer NAME` requests the reporter's reviewed-training label only after all checks; this is not official submission.
 
-Snapshots contain authoritative `input.json`, synchronized Markdown/optional PDF, changes and a hash manifest. New output directory each time. Run outcomes and supplied limitations, incident actions and retest states appear in a shared appendix in both formats. Source and workspace/incident/retest markings are conservatively inherited; PII Red dominates PII and other categories remain combined. Imported legacy data derives a visibly versioned schema 1.2 snapshot; original source/schema/hash remain identified. `changes.json` lists finding and run/incident/retest differences. Editing Markdown alone does not update the PDF or authoritative input.
+Snapshots contain authoritative `input.json`, synchronized Markdown/optional PDF/optional editable Word, changes and a hash manifest. Use `--docx` alone or with `--pdf`; a new output directory is required each time. Run outcomes and supplied limitations, incident actions and retest states appear in the same shared appendix in all requested formats. Source and workspace/incident/retest markings are conservatively inherited; PII Red dominates PII and other categories remain combined. Imported legacy data derives a visibly versioned schema 1.2 snapshot; original source/schema/hash remain identified. `changes.json` lists finding and run/incident/retest differences. Editing Markdown or Word alone does not update the other formats or authoritative input and changes the edited file's hash. All requested formats must render before the complete bundle and snapshot record publish. Word uses the reporter's native editable content and handling labels; native Word pagination/layout remains subject to separate renderer QA.
+
+Application updates preserve workspace format 1.0.0. Existing workspaces need no migration or relabeling for this release; unknown workspace formats still reject. Source-package names and manifests use application version 1.0.1 separately from the workspace format.
 
 `retest WORKSPACE FILE` records finding, actor, summary, status (recommended/applied/verified), evidence[]; verified needs supplied evidence references. References are not automatic proof that a fix worked. `incident WORKSPACE FILE` records run, actor, summary and optional stop/containment/notification/cleanup text and markings; missing actions remain pending, no message is sent. `integrity FILE SHA256` explicitly checks selected bytes outside rendering; matching bytes do not prove authenticity. `handling WORKSPACE FILE` records custodian and retention/export/deletion decision references; it transfers/deletes nothing.
 

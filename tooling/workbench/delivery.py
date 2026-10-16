@@ -12,11 +12,11 @@ import reports
 import workspace as ws
 
 MODULE_FILES = ("common.py", "catalog.py", "workspace.py", "operations.py", "reports.py", "delivery.py",
-                "workbench.py", "README.md", "CONTRACTS.md", "HANDOVER.md", "UI-EVALUATION.md", "LICENSE",
+                "workbench.py", "README.md", "CONTRACTS.md", "HANDOVER.md", "UI-EVALUATION.md", "SPEC.md", "VERIFICATION.md", "LICENSE",
                 "tests/test_workbench.py")
 REPORT_FILES = ("reportgen.py", "requirements.txt", "README.md", "design.md", "examples/report.json",
                 "examples/report-marked.json", "examples/tool-run.json", "templates/report.md",
-                "templates/finding.md", "templates/incident.md", "tests/test_reportgen.py",
+                "templates/finding.md", "templates/incident.md", "tests/test_reportgen.py", "tests/test_docx.py",
                 "tests/check_pdf_rendering.py", "tests/check_markdown_rendering.py")
 FARM_FILES = ("catalog.json", "LICENSE", "NOTICES.md", "RUNBOOKS.md", "CATALOG.md", "README.md",
               "kit.py", "sources.json", "artifact-lock.json", "readiness.json", "INSTALL.md",

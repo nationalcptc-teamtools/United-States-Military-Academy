@@ -1,6 +1,18 @@
 # Workbench verification and review
 
-Version 1.0.0; 2026-10-15. This contribution contains reusable source, documentation, notices and synthetic tests. [Scope/acceptance](SPEC.md) preserves 120 explicit idea choices and 44 requirement dispositions; [contracts](CONTRACTS.md) define bounds and failure behavior.
+Version 1.0.1; 2026-10-15. This contribution contains reusable source, documentation, notices and synthetic tests. [Scope/acceptance](SPEC.md) preserves 120 explicit idea choices and 44 requirement dispositions; [contracts](CONTRACTS.md) define bounds and failure behavior.
+
+Current continuation adds the existing reporter's Word format to workbench snapshots, retains its Word regression coverage/public scope in source packages, and separates application/workspace versions. Earlier evidence below describes the prior 1.0.0 release and is preserved as history, including its original package checksum/member count.
+
+## Version 1.0.1 integration results
+
+- Windows CPython 3.12.14, ReportLab 4.4.9, python-docx 1.2.0 and pypdf 6.10.0: all 20 workbench tests passed in 12.167 s and all 43 reporter tests passed in 3.127 s. The added workbench test exercises the actual CLI with Word/PDF together, Word alone, inherited appendix status/markings, every artifact hash and a renderer failure that leaves no output directory or snapshot mutation.
+- Existing workspace format 1.0.0 remains readable/editable despite a changed application version; unsupported format 2.0.0 rejects. Application 1.0.1, workspace 1.0.0 and reporter 0.4.1 are separate identities.
+- Existing no-network Linux preparation image, CPython 3.14.7/ReportLab 4.4.9: 18 workbench tests passed and two optional tests skipped in 1.290 s. pypdf extraction QA and Word integration were unavailable in that image; actual Linux PDF generation succeeded. No dependencies were installed. Windows validates Word structure/content; native Word pagination/layout remains outside these checks.
+- Independent read-only continuation review passed: six changed Python files compile, existing/default CLI argument semantics are preserved, Word is passed by keyword, workspace format stays stable, and the explicit package allowlist retains Word tests/public records. Root's file-writing/render/process suites above are separately attributed.
+- The source package now enumerates 54 members including its manifest, with public scope/verification and all seven existing reporter Word regression tests retained. Final package identity, standalone checks, complete role records and publication manifests are maintained under the repository's `Sebastian/` project records. Historical checkout copies there are not runtime sources.
+
+The reporter, farm toolkit, installer and existing Linux/Windows runners are preserved from the published base. Only workbench integration, compatibility, packaging and related documentation changed. No original idea choice changed.
 
 ## Reviewed source and prior preparation evidence
 

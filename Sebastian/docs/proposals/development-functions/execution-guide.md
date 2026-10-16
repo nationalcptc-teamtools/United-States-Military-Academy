@@ -1,5 +1,11 @@
 # Workbench execution guidance
 
+## Integration continuation — 2026-10-15
+
+Root remains sole editor. User explicitly authorized implementation continuation and push, clarified to integration/full records. Current published checkout is authoritative; the older mirror's reporter/workbench are historical. Independent audits/review are read-only. No separate file/role grants another editing slot.
+
+Implement only accepted-scope integration gaps, preserve reporter 0.4.1/installer/runners/farm files, verify Word/PDF/plain paths and old workspace compatibility, build/check an explicit source release, and publish incremental records in Sebastian/. Keep PROJECT-FILES.json as the original snapshot and record new hashes in CONTINUATION-FILES.json. Do not recursively recopy archived outputs/tmp/integrations, synced sources or machine caches. Tests use synthetic data and harmless owned worker processes; no operational tool or cloud system is invoked. Record optional Linux skips and Word visual-QA limits. Review → corrected checks if needed → exact staging → normal branch push, with no force or inferred merge.
+
 Tech Lead/root, 2026-10-15. Root retains the sole editing slot across code, docs and tests. Authorized separate reviewer operates read-only. User's all-idea decision gate is satisfied; seventy included outcomes control delivery, with later local-AI correction replaced by a manual cloud handoff. Sources and integration checkout remain reference-only.
 
 Implement T-DF-02 → 03 → 04 → 05; validate settled work in 06; independent review/remediation in 07; package/handoff in 08. Run appropriate focused checks after each behavior change, then one complete meaningful final verification. Record actual failures and fix them; do not expand into excluded products to improve test totals.

@@ -15,7 +15,8 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
+WORKSPACE_VERSION = "1.0.0"
 ROOT = Path(__file__).resolve().parents[2]
 MAX_BYTES = 2_000_000
 

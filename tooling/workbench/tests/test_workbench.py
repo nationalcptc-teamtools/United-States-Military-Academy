@@ -16,6 +16,8 @@ import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
+from xml.etree import ElementTree as ET
+from zipfile import ZipFile
 
 MODULE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE))
@@ -287,11 +289,64 @@ class WorkbenchTests(unittest.TestCase):
         first = delivery.package(self.root / "release-1")
         second = delivery.package(self.root / "release-2")
         self.assertEqual(first["zip_sha256"], second["zip_sha256"])
-        difference = delivery.compare_packages(self.root / "release-1/workbench-1.0.0.zip", self.root / "release-2/workbench-1.0.0.zip")
+        filename = f"workbench-{common.VERSION}.zip"
+        difference = delivery.compare_packages(self.root / "release-1" / filename, self.root / "release-2" / filename)
         self.assertEqual(difference["changed"], [])
+        manifest = delivery.inspect_package(self.root / "release-1" / filename)
+        self.assertIn("tooling/reporting/tests/test_docx.py", manifest["files"])
+        self.assertIn("tooling/workbench/SPEC.md", manifest["files"])
+        self.assertIn("tooling/workbench/VERIFICATION.md", manifest["files"])
         evidence = self.file("checks.json", {"data_category": "synthetic", "checks": ["example only, not real verification"]})
         delivery.review_packet(self.directory, self.root / "review", evidence)
         self.assertTrue((self.root / "review/review.json").is_file())
+
+    def test_word_snapshot_cli_and_failed_export(self):
+        try:
+            import docx
+            import reportlab
+        except ImportError:
+            self.skipTest("optional Word/PDF dependencies unavailable")
+        imported, _ = self.imported()
+        run = operations.record_run(self.directory, "synthetic <literal>", "1", "author", "success", 0)
+        operations.stage_event(self.directory, run["id"], "import", "failed", "synthetic_parse_failure", 2)
+        destination = self.root / "word-pdf"
+        with redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(workbench.main(["snapshot", str(self.directory), imported, str(destination), "--pdf", "--docx"]), 0)
+        snapshot = json.loads(output.getvalue())
+        for name, expected in snapshot["manifest"]["artifacts"].items():
+            self.assertEqual(common.digest((destination / name).read_bytes()), expected, name)
+        self.assertTrue({"report.md", "report.pdf", "report.docx", "input.json", "changes.json"} <= snapshot["manifest"]["artifacts"].keys())
+        namespace = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+        with ZipFile(destination / "report.docx") as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+            text = "".join(node.text or "" for node in document.findall(".//w:t", namespace))
+            self.assertIn("stage=import | status=failed | exit=2", text)
+            self.assertIn("synthetic <literal>", text)
+            headers = "".join(archive.read(name).decode() for name in archive.namelist() if name.startswith(("word/header", "word/footer")))
+            self.assertIn("ORCON//PROPIN//PII Red//FI", headers)
+        word_only = self.root / "word-only"
+        reports.snapshot(self.directory, imported, word_only, docx=True)
+        self.assertTrue((word_only / "report.docx").is_file())
+        self.assertFalse((word_only / "report.pdf").exists())
+        before = ws.state(self.directory)
+        module = reports.reporter()
+        with patch.object(reports, "reporter", return_value=module), patch.object(module, "render_docx", side_effect=module.ContractError("synthetic render failure")):
+            with self.assertRaises(module.ContractError):
+                reports.snapshot(self.directory, imported, self.root / "failed-word", pdf=True, docx=True)
+        self.assertFalse((self.root / "failed-word").exists())
+        self.assertEqual(ws.state(self.directory), before)
+
+    def test_workspace_format_survives_application_upgrade(self):
+        legacy = ws.state(self.directory)
+        self.assertEqual(legacy["version"], "1.0.0")
+        with patch.object(ws, "VERSION", "99.0.0"):
+            self.assertEqual(ws.status(self.directory)["version"], "99.0.0")
+            ws.add(self.directory, "notes", {"body": "Existing workspace remains editable", "actor": "Author"})
+        self.assertEqual(ws.state(self.directory)["version"], "1.0.0")
+        unsupported = dict(ws.state(self.directory), version="2.0.0")
+        (self.directory / "state.json").write_bytes(common.encoded(unsupported))
+        with self.assertRaises(common.Error):
+            ws.state(self.directory)
 
     def test_cli_and_metrics(self):
         output = io.StringIO()

@@ -5,7 +5,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
-from common import VERSION, atomic, bundle, encoded, identity, load, locked, need, now, output_path, text
+from common import VERSION, WORKSPACE_VERSION, atomic, bundle, encoded, identity, load, locked, need, now, output_path, text
 
 COLLECTIONS = ("requests", "decisions", "notes", "conflicts", "plans", "runs", "reviews", "merges",
                "retests", "incidents", "metrics", "snapshots", "imports", "owners", "events")
@@ -22,7 +22,7 @@ def inherit(value, tags):
 
 def init(destination, owner):
     text(owner, 120)
-    state = {"version": VERSION, "data_category": "synthetic", "revision": 0, "owner": owner,
+    state = {"version": WORKSPACE_VERSION, "data_category": "synthetic", "revision": 0, "owner": owner,
              "created_at": now(), "markings": ["ORCON"], "log_truncated": False,
              "handling": {"custodian": owner, "retention": "unresolved", "export": "human decision",
                           "deletion": "separately authorized, no automatic deletion"},
@@ -33,7 +33,7 @@ def init(destination, owner):
 
 def state(directory):
     value = load(output_path(directory) / "state.json")
-    need(isinstance(value, dict) and value.get("version") == VERSION
+    need(isinstance(value, dict) and value.get("version") == WORKSPACE_VERSION
          and value.get("data_category") == "synthetic", "unsupported_workspace")
     need(type(value.get("revision")) is int and value["revision"] >= 0, "invalid_revision")
     need(all(isinstance(value.get(key), dict) for key in COLLECTIONS), "invalid_workspace")

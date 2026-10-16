@@ -1,5 +1,21 @@
 # Workbench verification
 
+## Integration continuation — 2026-10-15
+
+Current tested app/workspace/reporter: 1.0.1 / 1.0.0 / 0.4.1. User clarified finishing integration/full records. Root editor/tester; independent reviewers read-only. Base6c8ec1d and the original615-entry snapshot remain recorded separately from this increment.
+
+| Evidence | Actual check / result | Limit |
+| --- | --- | --- |
+| V-DF-10 | Windows CPython3.12.14:20/20 workbench passed12.167 s;43/43 reporter passed3.127 s. Existing ReportLab4.4.9/python-docx1.2.0/pypdf6.10.0. New actual CLI produces Word/PDF or Word alone; XML confirms literal run text, failed downstream stage and inherited markings; all hashes match. Injected renderer failure leaves no bundle/state mutation. Format1.0.0 stays editable across app changes;2.0.0 rejects. | Synthetic owned worker/render tests only. Word structure/content validated; native Word pagination/layout not certified. |
+| V-DF-11 | Existing Linux image with network disabled/read-only source:18 tests passed/two optional tests skipped (20 total),1.290 s. Actual PDF generation succeeded. | pypdf QA and Word dependencies absent in that image; no install attempted. No new Linux Word verification claimed. |
+| V-DF-12 | Final source package54 members, exact hashes/safe paths/Python compilation/current source identity verified. Second build identical. Fresh extraction passed20 workbench tests11.580 s and43 reporter tests2.503 s, no skips. Includes all seven Word tests and public SPEC/VERIFICATION. | Existing Windows dependencies supplied runtime; package contains source, not scanner payloads/dependency wheels. |
+| V-DF-13 | All120 idea dispositions/44 requirement IDs retained. Incremental changed-file/base/current hashes and preserved archive checks recorded in [CONTINUATION-FILES.json](../../../CONTINUATION-FILES.json); current [machine evidence](../../../evidence/development-functions/continuation-checks.json). | Original PROJECT-FILES.json is the615-entry historical snapshot, not silently rewritten to match new files. Root executable code is authoritative over historical copies. |
+| V-DF-14 | Independent continuation code review positive: six changed Python files compile; default/Word CLI argument plumbing and keyword-only API alignment checked in-memory; stable workspace format and package coverage checked; no material new finding. | Root's filesystem/process/render suites remain separately attributed. Independent publication review also verified 27 file entries, 197 local references and 54 source-release members/hashes with the original snapshot preserved; root checked 201 references. No material finding remained. |
+
+Release: [workbench1.0.1 source ZIP](../../../releases/workbench-1.0.1/workbench-1.0.1.zip), SHA-256 `cb356c58e9d0fd1b473ff4261dc3e0be0da2d8af4adfa0496adecf9dcf0f47a5`;54 members including manifest. [Package manifest](../../../releases/workbench-1.0.1/MANIFEST.json) lists selected source bytes. Reporter/farm/installer/runner and existing archival files are unchanged from6c8ec1d. No participant speed gain or operational/client/cloud/event approval is claimed.
+
+Reproduce at the repository root: run the separate workbench/reporting unittest discovery commands in the public [verification guide](../../../../tooling/workbench/VERIFICATION.md); use `workbench.py package NEW_DIRECTORY`, compare the repeated ZIP hash, inspect exact members and run those same suites in a new extraction. Linux uses the existing image with `--network none`, read-only tooling/license inputs and a disposable copy. New scratch files/checkouts are not copied into the published records.
+
 Tester/root, 2026-10-15. Root owns editing. Workbench 1.0.0 and additive reporter 0.3.1; synthetic data only. [Scope](scope.md) maps all 120 choices; [design](design.md) maps all 44 original requirement dispositions. No target, scanner, installer, real evidence, model inference, cloud transfer or publication was used.
 
 ## Actual results

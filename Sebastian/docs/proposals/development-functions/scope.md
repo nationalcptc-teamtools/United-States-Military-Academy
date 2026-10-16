@@ -1,5 +1,9 @@
 # Settled scope and observable acceptance
 
+## Integration continuation — 2026-10-15
+
+All 120 dispositions below remain unchanged. FR-DF-025/IDEA-DF-102/103 now reach the already integrated reporter's Word format from workbench snapshots. FR-DF-009/015 retain its Word tests/public records in the source bundle. FR-DF-032 preserves existing format-1.0.0 workspaces across application updates. These finish integration of existing products without adding a new idea initiative; no deferred/excluded work is activated. Supplemental observable criteria AC-DF-C01–04 are in spec.md; current actual evidence is V-DF-10–14 in verification.md.
+
 2026-10-15. Normative reconciliation after all explicit replies: 70 Include, 6 Defer, 44 Exclude. Root editor. [User evidence](decisions.md) retains original wording; [design](design.md) maps all 44 original requirements. This table identifies the implemented observable contract for every retained idea; removed original requirement portions are not hidden prerequisites. Stable IDs are unchanged.
 
 Current versus desired: the existing farm catalog/renderer lacked this surrounding workflow. Workbench 1.0.0 adds the listed local commands and artifacts, with synthetic-only inputs and manual review. Operations are metadata previews/manual records; only a fixed synthetic worker is supervised. Existing completed-report JSON is the supported import; native adapters/envelope validation are excluded. IDEA-DF-118 is superseded by the user's manual cloud-handoff instruction; no local AI or AI correction. IDEA-DF-119 authorized evaluation, fulfilled by the written CLI/browser comparison. IDEA-DF-074 uses existing capability owners rather than the excluded new claims system.

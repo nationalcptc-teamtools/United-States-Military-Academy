@@ -1,5 +1,13 @@
 # Improve development related functions
 
+## Integration continuation — 2026-10-15
+
+User direction: "Continue with implementation. Push all changes to the repo in Sebastian/ and relevant changes directly to tools." Clarification: "Finish integration and publish the full records (recommended)." This is integration of the accepted scope; all 120 idea choices remain unchanged (70 Include, 6 Defer, 44 Exclude), and no local AI/correction or target execution is introduced.
+
+The latest published base `6c8ec1d2b0f7bc13b62452fafdac45e1cb92e031` already contains the complete 615-entry project snapshot and reporter 0.4.1 with optional Word. Root preserved that work and found two bounded integration gaps: workbench snapshots could not select Word, and source bundles omitted its seven regression tests. Workbench 1.0.1 connects the existing renderer, includes the current public records/tests in releases, and retains workspace format 1.0.0 independently of application version. The reporter, farm toolkit, installer and operational runners remain unchanged from that base.
+
+Root owns editing; independent agents inspected read-only. Implementation, Windows checks and scoped independent code review are complete. Full role records, [machine evidence](../../../evidence/development-functions/continuation-checks.json), [source release](../../../releases/workbench-1.0.1/workbench-1.0.1.zip) and the incremental [publication manifest](../../../CONTINUATION-FILES.json) live under Sebastian/. Current executable products remain in [root tooling](../../../../tooling/workbench/README.md). Original PROJECT-FILES.json and historical integration/tmp/output copies are preserved as the original snapshot, not overwritten with stale local files. User acceptance/event/runtime/client/cloud gates remain distinct.
+
 Proposal: `development-functions`; updated 2026-10-15 (America/New_York). Accountable requester: Sebastian Solberg. Root holds the sole editing slot; the authorized independent reviewer inspected read-only.
 
 **Implementation complete for the reconciled local preparation scope; verification passed; independent code review positive. User acceptance and event/operational approval remain pending.**
