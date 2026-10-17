@@ -446,5 +446,55 @@ class ReportTests(unittest.TestCase):
             self.assertEqual(list(Path(tmp).iterdir()), [])
 
 
+    def audit_large_report(self, size=8350):
+        data = copy.deepcopy(self.data)
+        original = data['findings'][0]
+        data['findings'] = []
+        for index in range(200):
+            finding = copy.deepcopy(original)
+            finding['id'] = 'F-AUDIT-' + str(index)
+            finding['description'] = 'A' * size
+            finding['evidence'] = [dict(copy.deepcopy(original['evidence'][0]), id='E-AUDIT-' + str(index))]
+            data['findings'].append(finding)
+        return data
+
+    def test_audit_compact_input_cannot_export_unreadable_source(self):
+        data = self.audit_large_report()
+        raw = json.dumps(data, separators=(',', ':')).encode()
+        self.assertLessEqual(len(raw), reportgen.MAX_INPUT_BYTES)
+        reportgen.validate(reportgen.load(raw))
+        self.assertGreater(len(reportgen.update_engine().encoded(data)), reportgen.MAX_INPUT_BYTES)
+        with patch.object(Path, 'mkdir', side_effect=AssertionError('filesystem mutation')):
+            with self.assertRaisesRegex(reportgen.ContractError, 'canonical'):
+                reportgen.generate(raw, reportgen.ROOT / 'output/audit-limit')
+
+    def test_audit_exact_canonical_limit_roundtrips_and_appendix_cannot_overflow(self):
+        data = self.audit_large_report(7900)
+        engine = reportgen.update_engine()
+        gap = reportgen.MAX_INPUT_BYTES - len(engine.encoded(data))
+        # Distribute padding without exceeding any field's 10,000 character bound.
+        for finding in data['findings']:
+            added = min(gap, 10000 - len(finding['description']))
+            finding['description'] += 'A' * added
+            gap -= added
+        self.assertEqual(gap, 0)
+        raw = json.dumps(data, separators=(',', ':')).encode()
+        self.assertEqual(len(engine.encoded(data)), reportgen.MAX_INPUT_BYTES)
+        with self.tmpdir() as temporary:
+            out = Path(temporary) / 'exact'
+            manifest = reportgen.generate(raw, out)
+            reloaded = reportgen.validate(reportgen.load((out / 'input.json').read_bytes()))
+            self.assertEqual(reportgen.describe(reloaded)['report_sha256'], manifest['report_sha256'])
+            for appendix in (False, True):
+                changed = copy.deepcopy(data)
+                if not appendix:
+                    next(f for f in changed['findings'] if len(f['description']) < 10000)['description'] += 'A'
+                options = {'appendix_blocks': [('paragraph', 'Synthetic note')],
+                           'appendix_markings': ['ORCON', 'FI']} if appendix else {}
+                with self.subTest(appendix=appendix), self.assertRaisesRegex(reportgen.ContractError, 'canonical'):
+                    reportgen.generate(json.dumps(changed, separators=(',', ':')).encode(),
+                                       Path(temporary) / ('rejected-' + str(appendix)), **options)
+                self.assertFalse((Path(temporary) / ('rejected-' + str(appendix))).exists())
+
 if __name__ == "__main__":
     unittest.main()

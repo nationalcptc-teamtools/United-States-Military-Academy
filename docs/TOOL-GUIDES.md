@@ -2,7 +2,7 @@
 
 This is the operator index for all forty catalog entries. It uses the checked-in catalog, not a new upstream compatibility assessment. Use the selected release and verify its actual help/API before rehearsal. Library/SDK entries need an authored, reviewed helper; they are not drop-in command-line tools. Held and lab-only entries retain their restrictions.
 
-For repository-owned commands, see the [user guide](USER-GUIDE.md). For suite setup, see [installation](../tooling/farmkit/INSTALL.md). The module preparation ZIP alone is not the full suite.
+For individual preparation one-liners, see [tool onboarding](../tooling/farmkit/ONBOARDING.md). For repository-owned commands, see the [user guide](USER-GUIDE.md). For suite setup, see [installation](../tooling/farmkit/INSTALL.md). The module preparation ZIP alone is not the full suite.
 
 ## Find your tool
 
@@ -59,6 +59,8 @@ The suite may stage some held/reference tools without granting operational or re
 
 ## TOOL-001
 
+Preparation from the repository root: `python3 tools.py plan linpeas`; then `python3 tools.py install linpeas`. Check with `python3 tools.py check linpeas`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **LinPEAS**
 
 Linux host configuration and privilege-path enumeration on authorized servers/gateways.
@@ -71,6 +73,8 @@ Linux host configuration and privilege-path enumeration on authorized servers/ga
 - **Reference:** [Upstream source](https://github.com/peass-ng/PEASS-ng).
 
 ## TOOL-002
+
+Preparation from the repository root: `python3 tools.py plan winpeas`; then `python3 tools.py install winpeas`. Check with `python3 tools.py check winpeas`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **WinPEAS**
 
@@ -85,6 +89,8 @@ Windows host/HMI/engineering-station configuration enumeration.
 
 ## TOOL-003
 
+Preparation from the repository root: `python3 tools.py plan tshark`; then `python3 tools.py install tshark`. Check with `python3 tools.py check tshark`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **Wireshark / TShark**
 
 Inspect supplied captures and identify observed IT/OT conversations.
@@ -97,6 +103,8 @@ Inspect supplied captures and identify observed IT/OT conversations.
 - **Reference:** [Upstream source](https://github.com/wireshark/wireshark).
 
 ## TOOL-004
+
+Preparation from the repository root: `python3 tools.py plan zeek`; then `python3 tools.py install zeek`. Check with `python3 tools.py check zeek`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **Zeek**
 
@@ -111,6 +119,8 @@ Turn captures into connection/protocol metadata and support asset hypotheses.
 
 ## TOOL-005
 
+Preparation from the repository root: `python3 tools.py plan suricata`; then `python3 tools.py install suricata`. Check with `python3 tools.py check suricata`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **Suricata**
 
 Offline protocol/event analysis as an alternative or complement to Zeek.
@@ -123,6 +133,8 @@ Offline protocol/event analysis as an alternative or complement to Zeek.
 - **Reference:** [Upstream source](https://github.com/OISF/suricata).
 
 ## TOOL-006
+
+Preparation from the repository root: `python3 tools.py plan scapy`; then `python3 tools.py install scapy`. Check with `python3 tools.py check scapy`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **Scapy**
 
@@ -137,6 +149,8 @@ Flexible packet parsing and synthetic protocol fixtures when a full product is u
 
 ## TOOL-007
 
+Preparation from the repository root: `python3 tools.py plan enum4linux-ng`; then `python3 tools.py install enum4linux-ng`. Check with `python3 tools.py check enum4linux-ng`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **enum4linux-ng**
 
 Windows/Samba inventory if business systems or file shares are in scope.
@@ -149,6 +163,8 @@ Windows/Samba inventory if business systems or file shares are in scope.
 - **Reference:** [Upstream source](https://github.com/cddmp/enum4linux-ng).
 
 ## TOOL-008
+
+Preparation from the repository root: `python3 tools.py plan netexec`; then `python3 tools.py install netexec`. Check with `python3 tools.py check netexec`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **NetExec**
 
@@ -163,6 +179,8 @@ Scope-limited Windows/network service assessment and inventory.
 
 ## TOOL-009
 
+Preparation from the repository root: `python3 tools.py plan impacket`; then `python3 tools.py install impacket`. Check with `python3 tools.py check impacket`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **Impacket**
 
 SMB/MSRPC/Kerberos protocol helpers for the IT side of an engagement.
@@ -175,6 +193,8 @@ SMB/MSRPC/Kerberos protocol helpers for the IT side of an engagement.
 - **Reference:** [Upstream source](https://github.com/fortra/impacket).
 
 ## TOOL-010
+
+Preparation from the repository root: `python3 tools.py plan testssl`; then `python3 tools.py install testssl`. Check with `python3 tools.py check testssl`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **testssl.sh**
 
@@ -189,6 +209,8 @@ TLS configuration review of approved web consoles, remote access or APIs.
 
 ## TOOL-011
 
+Preparation from the repository root: `python3 tools.py plan ffuf`; then `python3 tools.py install ffuf`. Check with `python3 tools.py check ffuf`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **ffuf**
 
 Limited web content discovery on an explicitly approved portal.
@@ -201,6 +223,8 @@ Limited web content discovery on an explicitly approved portal.
 - **Reference:** [Upstream source](https://github.com/ffuf/ffuf).
 
 ## TOOL-012
+
+Preparation from the repository root: `python3 tools.py plan metasploit`; then `python3 tools.py install metasploit`. Check with `python3 tools.py check metasploit`. This entry is held; install fails before acquisition.
 
 **Metasploit Framework**
 
@@ -215,6 +239,8 @@ Known module research and controlled lab reproduction; possible scoped IT checks
 
 ## TOOL-013
 
+Preparation from the repository root: `python3 tools.py plan pymodbus`; then `python3 tools.py install pymodbus`. Check with `python3 tools.py check pymodbus`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **PyModbus**
 
 Modbus TCP/serial clients and synthetic server/simulator; possible pump, meter or environmental controller interfaces.
@@ -227,6 +253,8 @@ Modbus TCP/serial clients and synthetic server/simulator; possible pump, meter o
 - **Reference:** [Upstream source](https://github.com/pymodbus-dev/pymodbus).
 
 ## TOOL-014
+
+Preparation from the repository root: `python3 tools.py plan mbpoll`; then `python3 tools.py install mbpoll`. Check with `python3 tools.py check mbpoll`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **mbpoll**
 
@@ -241,6 +269,8 @@ Convenient Modbus TCP/RTU command-line checks.
 
 ## TOOL-015
 
+Preparation from the repository root: `python3 tools.py plan libmodbus`; then `python3 tools.py install libmodbus`. Check with `python3 tools.py check libmodbus`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **libmodbus**
 
 C backend/alternative for Modbus TCP and RTU helpers.
@@ -253,6 +283,8 @@ C backend/alternative for Modbus TCP and RTU helpers.
 - **Reference:** [Upstream source](https://github.com/stephane/libmodbus).
 
 ## TOOL-016
+
+Preparation from the repository root: `python3 tools.py plan minimalmodbus`; then `python3 tools.py install minimalmodbus`. Check with `python3 tools.py check minimalmodbus`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **MinimalModbus**
 
@@ -267,6 +299,8 @@ Modbus RTU/ASCII instrument access where serial-only needs justify it.
 
 ## TOOL-017
 
+Preparation from the repository root: `python3 tools.py plan python-snap7`; then `python3 tools.py install python-snap7`. Check with `python3 tools.py check python-snap7`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **python-snap7**
 
 Siemens S7 communication and controlled simulator/metadata work if relevant.
@@ -279,6 +313,8 @@ Siemens S7 communication and controlled simulator/metadata work if relevant.
 - **Reference:** [Upstream source](https://github.com/gijzelaerr/python-snap7).
 
 ## TOOL-018
+
+Preparation from the repository root: `python3 tools.py plan cpppo`; then `python3 tools.py install cpppo`. Check with `python3 tools.py check cpppo`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **cpppo**
 
@@ -293,6 +329,8 @@ EtherNet/IP CIP client/server and synthetic fixtures.
 
 ## TOOL-019
 
+Preparation from the repository root: `python3 tools.py plan pycomm3`; then `python3 tools.py install pycomm3`. Check with `python3 tools.py check pycomm3`. This entry is held; install fails before acquisition.
+
 **pycomm3**
 
 Allen-Bradley/Rockwell-specific EtherNet/IP option.
@@ -305,6 +343,8 @@ Allen-Bradley/Rockwell-specific EtherNet/IP option.
 - **Reference:** [Upstream source](https://github.com/ottowayi/pycomm3).
 
 ## TOOL-020
+
+Preparation from the repository root: `python3 tools.py plan asyncua`; then `python3 tools.py install asyncua`. Check with `python3 tools.py check asyncua`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **asyncua / opcua-asyncio**
 
@@ -319,6 +359,8 @@ OPC UA client/server, namespace inspection and security-mode evaluation.
 
 ## TOOL-021
 
+Preparation from the repository root: `python3 tools.py plan open62541`; then `python3 tools.py install open62541`. Check with `python3 tools.py check open62541`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **open62541**
 
 C OPC UA client/server and controlled fixture alternative.
@@ -331,6 +373,8 @@ C OPC UA client/server and controlled fixture alternative.
 - **Reference:** [Upstream source](https://github.com/open62541/open62541).
 
 ## TOOL-022
+
+Preparation from the repository root: `python3 tools.py plan bacpypes3`; then `python3 tools.py install bacpypes3`. Check with `python3 tools.py check bacpypes3`. This entry is held; install fails before acquisition.
 
 **BACpypes3**
 
@@ -345,6 +389,8 @@ Python BACnet option for possible HVAC/ventilation/cold-room controls.
 
 ## TOOL-023
 
+Preparation from the repository root: `python3 tools.py plan bacnet`; then `python3 tools.py install bacnet`. Check with `python3 tools.py check bacnet`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **BACnet Stack**
 
 BACnet/IP CLI applications plus synthetic device; MS/TP only if separately supported.
@@ -357,6 +403,8 @@ BACnet/IP CLI applications plus synthetic device; MS/TP only if separately suppo
 - **Reference:** [Upstream source](https://github.com/bacnet-stack/bacnet-stack).
 
 ## TOOL-024
+
+Preparation from the repository root: `python3 tools.py plan mosquitto-clients`; then `python3 tools.py install mosquitto-clients`. Check with `python3 tools.py check mosquitto-clients`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **Mosquitto clients and broker**
 
@@ -371,6 +419,8 @@ MQTT subscriber/client checks and synthetic broker for possible farm telemetry.
 
 ## TOOL-025
 
+Preparation from the repository root: `python3 tools.py plan paho-mqtt`; then `python3 tools.py install paho-mqtt`. Check with `python3 tools.py check paho-mqtt`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **Eclipse Paho MQTT Python**
 
 Scriptable MQTT alternative when a reviewed structured adapter is useful.
@@ -383,6 +433,8 @@ Scriptable MQTT alternative when a reviewed structured adapter is useful.
 - **Reference:** [Upstream source](https://github.com/eclipse-paho/paho.mqtt.python).
 
 ## TOOL-026
+
+Preparation from the repository root: `python3 tools.py plan lib60870`; then `python3 tools.py install lib60870`. Check with `python3 tools.py check lib60870`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **lib60870**
 
@@ -397,6 +449,8 @@ IEC 60870-5-101/104 lab/client work if energy or remote telemetry is established
 
 ## TOOL-027
 
+Preparation from the repository root: `python3 tools.py plan libiec61850`; then `python3 tools.py install libiec61850`. Check with `python3 tools.py check libiec61850`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **libiec61850**
 
 IEC 61850 MMS/GOOSE analysis/lab possibility for site power systems.
@@ -409,6 +463,8 @@ IEC 61850 MMS/GOOSE analysis/lab possibility for site power systems.
 - **Reference:** [Upstream source](https://github.com/mz-automation/libiec61850).
 
 ## TOOL-028
+
+Preparation from the repository root: `python3 tools.py plan opendnp3`; then `python3 tools.py install opendnp3`. Check with `python3 tools.py check opendnp3`. This entry is held; install fails before acquisition.
 
 **OpenDNP3**
 
@@ -423,6 +479,8 @@ DNP3 reference/lab fallback for outstation/master scenarios.
 
 ## TOOL-029
 
+Preparation from the repository root: `python3 tools.py plan gurux-dlms`; then `python3 tools.py install gurux-dlms`. Check with `python3 tools.py check gurux-dlms`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **Gurux DLMS Python**
 
 DLMS/COSEM electricity/water/gas meter client possibilities.
@@ -435,6 +493,8 @@ DLMS/COSEM electricity/water/gas meter client possibilities.
 - **Reference:** [Upstream source](https://github.com/Gurux/Gurux.DLMS.Python).
 
 ## TOOL-030
+
+Preparation from the repository root: `python3 tools.py plan can-utils`; then `python3 tools.py install can-utils`. Check with `python3 tools.py check can-utils`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **can-utils**
 
@@ -449,6 +509,8 @@ CAN capture/log tools and J1939/ISOBUS utilities for possible vehicle/implement 
 
 ## TOOL-031
 
+Preparation from the repository root: `python3 tools.py plan python-can`; then `python3 tools.py install python-can`. Check with `python3 tools.py check python-can`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **python-can**
 
 Flexible CAN log/adapter abstraction and virtual-bus fixtures.
@@ -461,6 +523,8 @@ Flexible CAN log/adapter abstraction and virtual-bus fixtures.
 - **Reference:** [Upstream source](https://github.com/hardbyte/python-can).
 
 ## TOOL-032
+
+Preparation from the repository root: `python3 tools.py plan cantools`; then `python3 tools.py install cantools`. Check with `python3 tools.py check cantools`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **cantools**
 
@@ -475,6 +539,8 @@ Decode CAN logs using a supplied DBC or other supported database.
 
 ## TOOL-033
 
+Preparation from the repository root: `python3 tools.py plan canopen`; then `python3 tools.py install canopen`. Check with `python3 tools.py check canopen`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **canopen**
 
 CANopen object dictionary/EDS workflows if industrial actuators use it.
@@ -487,6 +553,8 @@ CANopen object dictionary/EDS workflows if industrial actuators use it.
 - **Reference:** [Upstream source](https://github.com/canopen-python/canopen).
 
 ## TOOL-034
+
+Preparation from the repository root: `python3 tools.py plan pymavlink`; then `python3 tools.py install pymavlink`. Check with `python3 tools.py check pymavlink`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **pymavlink**
 
@@ -501,6 +569,8 @@ Offline MAVLink log interpretation if aerial/robotic assets enter scope.
 
 ## TOOL-035
 
+Preparation from the repository root: `python3 tools.py plan chirpstack`; then `python3 tools.py install chirpstack`. Check with `python3 tools.py check chirpstack`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **ChirpStack**
 
 LoRaWAN server/API reference and synthetic telemetry training.
@@ -513,6 +583,8 @@ LoRaWAN server/API reference and synthetic telemetry training.
 - **Reference:** [Upstream source](https://github.com/chirpstack/chirpstack).
 
 ## TOOL-036
+
+Preparation from the repository root: `python3 tools.py plan zigpy`; then `python3 tools.py install zigpy`. Check with `python3 tools.py check zigpy`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **zigpy**
 
@@ -527,6 +599,8 @@ Zigbee protocol/coordinator reference if sensors/climate devices are established
 
 ## TOOL-037
 
+Preparation from the repository root: `python3 tools.py plan openplc`; then `python3 tools.py install openplc`. Check with `python3 tools.py check openplc`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **OpenPLC Runtime v4**
 
 Small synthetic controller process for agreed protocol fixtures.
@@ -539,6 +613,8 @@ Small synthetic controller process for agreed protocol fixtures.
 - **Reference:** [Upstream source](https://github.com/Autonomy-Logic/openplc-runtime).
 
 ## TOOL-038
+
+Preparation from the repository root: `python3 tools.py plan fuxa`; then `python3 tools.py install fuxa`. Check with `python3 tools.py check fuxa`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **FUXA**
 
@@ -553,6 +629,8 @@ Synthetic SCADA/HMI dashboard for Modbus, OPC UA, MQTT and S7 rehearsal.
 
 ## TOOL-039
 
+Preparation from the repository root: `python3 tools.py plan node-red`; then `python3 tools.py install node-red`. Check with `python3 tools.py check node-red`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
+
 **Node-RED**
 
 Synthetic telemetry and workflow fixtures.
@@ -565,6 +643,8 @@ Synthetic telemetry and workflow fixtures.
 - **Reference:** [Upstream source](https://github.com/node-red/node-red).
 
 ## TOOL-040
+
+Preparation from the repository root: `python3 tools.py plan conpot`; then `python3 tools.py install conpot`. Check with `python3 tools.py check conpot`. See [onboarding prerequisites and output locations](../tooling/farmkit/ONBOARDING.md).
 
 **Conpot**
 

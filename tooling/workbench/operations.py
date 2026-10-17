@@ -14,14 +14,18 @@ import workspace as ws
 STATUSES = ("queued", "running", "success", "partial", "failed", "cancelled", "not_run")
 
 
+def validate_targets(values):
+    need(isinstance(values, list) and len(values) <= 200, "invalid_target_list")
+    for value in values:
+        text(value, 240)
+
+
 def plan(directory, record):
     record = deepcopy(record)
     for key in ("command", "scope_ref", "profile", "effects", "limits", "destination"):
         text(record.get(key), 4000)
     for key in ("targets", "approved_targets", "excluded_targets", "discovered"):
-        need(isinstance(record.get(key, []), list) and len(record.get(key, [])) <= 200, "invalid_target_list")
-        for value in record.get(key, []):
-            text(value, 240)
+        validate_targets(record.get(key, []))
         record.setdefault(key, [])
     output_path(record["destination"])
     original = digest(encoded(record))
@@ -44,7 +48,7 @@ def revalidate(directory, identifier, current, reviewer, accept_change=False):
     for key in ("scope_ref", "profile", "targets", "approved_targets", "excluded_targets"):
         need(key in current, "revalidation_fields_missing")
     for key in ("targets", "approved_targets", "excluded_targets"):
-        need(isinstance(current[key], list) and all(isinstance(item, str) for item in current[key]), "invalid_target_list")
+        validate_targets(current[key])
     changed = any(previous.get(key) != current[key] for key in current)
     valid = bool(current["targets"]) and set(current["targets"]) <= set(current["approved_targets"])
     valid &= not bool(set(current["targets"]) & set(current["excluded_targets"]))

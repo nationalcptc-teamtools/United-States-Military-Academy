@@ -1,0 +1,8 @@
+# Preparation inventory only; explicitly avoid startup update checks/enrichment.
+check-for-app-update: false
+enrich: []
+file:
+  content:
+    globs: []
+license:
+  content: none

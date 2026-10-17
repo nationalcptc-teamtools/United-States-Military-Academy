@@ -265,12 +265,39 @@ def python_group(prefix, name, requirements):
     return {"requirements": requirements, "packages": installed, "interpreter": str(interpreter)}
 
 
+def validate_state(state):
+    """Validate persisted inventory before looking up paths or invoking metadata tools."""
+    if not isinstance(state, dict) or state.get("schema_version") != "cptc.install-state/1.0":
+        raise InstallError("Invalid installation inventory schema")
+    options = state.get("options")
+    if not isinstance(options, dict) or set(options) != {"prowler", "legacy_pdf"} or any(type(v) is not bool for v in options.values()):
+        raise InstallError("Invalid installation choices")
+    if not isinstance(state.get("apt_packages"), list) or not all(isinstance(v, str) for v in state["apt_packages"]):
+        raise InstallError("Invalid distro inventory")
+    if not isinstance(state.get("native"), dict) or not isinstance(state.get("python_groups"), dict):
+        raise InstallError("Invalid component inventory")
+    for source in state["native"].values():
+        if not isinstance(source, dict) or not isinstance(source.get("commit"), str) or not re.fullmatch(r"[a-f0-9]{40}", source["commit"]):
+            raise InstallError("Invalid native source inventory")
+        files = source.get("files")
+        if not isinstance(files, dict) or not files:
+            raise InstallError("Invalid native file inventory")
+        for relative, digest in files.items():
+            try:
+                kit.safe_path(relative, "native file")
+            except kit.Invalid:
+                raise InstallError("Invalid native file path") from None
+            if not isinstance(digest, str) or not re.fullmatch(r"[a-f0-9]{64}", digest):
+                raise InstallError("Invalid native file digest")
+
+
 def check(prefix, data, profile):
     check_existing_links(prefix)
     state_path = managed_path(prefix, "install-state.json")
     if not state_path.is_file():
         raise InstallError("No installation inventory found; run install first")
     state = kit.load(state_path)
+    validate_state(state)
     if state.get("complete") is not True or state.get("profile") != profile:
         raise InstallError("Installation is incomplete or uses a different profile")
     if state.get("manifest_sha256") != file_hash(MANIFEST):

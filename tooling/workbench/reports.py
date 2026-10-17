@@ -220,6 +220,10 @@ def undo_merge(directory, identifier, actor):
         comparison = dict(current, status="candidate")
         need(digest(encoded(comparison)) == record["after_sha256"], "finding_changed_after_merge")
         need(not any(f["id"] == record["secondary"] for f in item["report"]["findings"]), "secondary_already_present")
+        restored_ids = {original["id"] for original in record["originals"]}
+        other_ids = {finding["id"] for key, other in value["imports"].items()
+                     if key != record["import"] for finding in other["report"]["findings"]}
+        need(not restored_ids.intersection(other_ids), "conflicting_finding_ids")
         item["report"]["findings"] = [f for f in item["report"]["findings"] if f["id"] != record["primary"]]
         for original in record["originals"]:
             item["report"]["findings"].append(dict(deepcopy(original), status="candidate"))

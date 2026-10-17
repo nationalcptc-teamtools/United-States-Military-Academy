@@ -1,5 +1,11 @@
 # Workbench verification and review
 
+## Patch 1.1.1 — additional project audit, 16 October 2026
+
+Windows Python 3.12.14: final 33 workbench tests passed in 15.067 s after independent review corrections; reporter 0.5.1's 60 tests passed. Five new workbench regression methods cover cross-import undo collisions, explicit non-synthetic records, planning/revalidation bounds, handoff snapshot consistency and catalog retirement/Word metadata. Workspace format remains 1.0.0. A retired-only chooser match now reports a coverage gap while retaining migration diagnostics.
+
+Independent read-only review passed after correcting repeated terminal hostname dots in the shared configuration helper and retired-only chooser coverage. The reviewer independently checked undo atomicity/normal undo, category checks across collections, target boundaries, single-state handoff/review packet and the reporter's exact canonical byte limit without writes. Root ran fixture/process/export suites separately. Actual tool/client/event/cloud use and native Word pagination remain unverified. Prior release identities/results below remain historical; local patch bytes are not published.
+
 Version 1.0.1; 2026-10-15. This contribution contains reusable source, documentation, notices and synthetic tests. [Scope/acceptance](SPEC.md) preserves 120 explicit idea choices and 44 requirement dispositions; [contracts](CONTRACTS.md) define bounds and failure behavior.
 
 Current continuation adds the existing reporter's Word format to workbench snapshots, retains its Word regression coverage/public scope in source packages, and separates application/workspace versions. Earlier evidence below describes the prior 1.0.0 release and is preserved as history, including its original package checksum/member count.

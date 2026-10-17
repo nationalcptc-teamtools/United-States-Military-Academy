@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="350" viewBox="0 0 1120 350" role="img" aria-labelledby="title desc">
+<title id="title">Prepare an individual CPTC tool</title><desc id="desc">Find a tool, inspect its acquisition plan, install only selected prerequisites, verify local receipts, and use its independent guide. Held entries stop before acquisition. Services are never started by setup.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#68849e" stroke-width="1.5"/></marker></defs>
+<rect width="1120" height="350" rx="20" fill="#0e1c2b"/>
+<g font-family="Segoe UI,Arial,sans-serif">
+<text x="36" y="45" fill="#f5f8fc" font-size="26" font-weight="700">One tool, one preparation path</text>
+<text x="36" y="74" fill="#b8ccdf" font-size="15">Select only what you need. Acquisition and independent use are separate steps.</text>
+<g stroke="#68849e" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M224 164H248"/><path d="M438 164H462"/><path d="M652 164H676"/><path d="M866 164H890"/></g>
+<rect x="36" y="112" width="188" height="116" rx="12" fill="#1b3147" stroke="#49667f"/>
+<rect x="250" y="112" width="188" height="116" rx="12" fill="#1b3147" stroke="#49667f"/>
+<rect x="464" y="112" width="188" height="116" rx="12" fill="#1b3147" stroke="#49667f"/>
+<rect x="678" y="112" width="188" height="116" rx="12" fill="#173a3d" stroke="#4b918a"/>
+<rect x="892" y="112" width="192" height="116" rx="12" fill="#173a3d" stroke="#4b918a"/>
+<g fill="#8ddacb" font-size="13" font-weight="700"><text x="52" y="140">01 / FIND</text><text x="266" y="140">02 / INSPECT</text><text x="480" y="140">03 / ACQUIRE</text><text x="694" y="140">04 / CHECK</text><text x="908" y="140">05 / USE</text></g>
+<g fill="#fff" font-size="19" font-weight="600"><text x="52" y="169">Name or catalog ID</text><text x="266" y="169">Read the plan</text><text x="480" y="169">Install selection</text><text x="694" y="169">Local receipts</text><text x="908" y="169">Independent guide</text></g>
+<g fill="#c4d4e4" font-size="14"><text x="52" y="199">tools.py list / show</text><text x="266" y="199">No writes or network</text><text x="480" y="199">Pinned, isolated tools</text><text x="694" y="199">Offline integrity checks</text><text x="908" y="199">Inputs, output, recovery</text></g>
+<text x="36" y="272" fill="#b8ccdf" font-size="15">Held selection → explain the reason and stop before acquisition.</text>
+<path d="M36 294H1084" stroke="#354a60"/>
+<text x="36" y="322" fill="#a8bed2" font-size="14">Setup does not start sensors, brokers, lab servers or assessments. Installation does not grant operational or license acceptance.</text>
+</g></svg>

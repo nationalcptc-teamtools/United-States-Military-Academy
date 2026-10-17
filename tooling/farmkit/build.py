@@ -18,10 +18,16 @@ FILES = (
     "examples/artifacts/fixture.txt", "tests/test_kit.py", "tests/test_install.py",
     "install.py", "install-manifest.json", "INSTALL.md", "VERIFICATION.md",
     "proposal.md", "spec.md", "design.md",
+    "onboard.py", "onboarding.json", "ONBOARDING.md", "syft-local.yaml", "tests/test_onboard.py", "requirements/reporting.in", "requirements/ot.in", "requirements/cip.in", "requirements/extended.in", "requirements/onboarding.in",
 )
+EXTRA_FILES = ('tools.py', 'docs/TOOL-GUIDES.md', 'docs/REPORT-UPDATES.md',
+               'docs/assets/tool-onboarding.svg', 'docs/tool-onboarding/verification.md', 'docs/tool-onboarding/spec.md',
+               'docs/tool-onboarding/proposal.md', 'docs/tool-onboarding/design.md', 'docs/tool-onboarding/tasks.md',
+               'docs/tool-onboarding/execution-guide.md', 'docs/tool-onboarding/review.md')
 
 
 def build(destination):
+    kit.need("\x00" not in str(destination), "package", "NUL destination rejected")
     destination = Path(destination).absolute()
     kit.need(not destination.resolve().is_relative_to(kit.BASE), "package", "output must be outside source directory")
     payloads = {}
@@ -31,6 +37,11 @@ def build(destination):
             raw = source.read(kit.MAX_JSON + 1)
         kit.need(len(raw) <= kit.MAX_JSON, "package", "source file exceeds package bound")
         payloads["tooling/farmkit/" + relative] = raw
+    for relative in EXTRA_FILES:
+        path = kit.regular_path(kit.BASE.parents[1], relative)
+        raw = path.read_bytes()
+        kit.need(len(raw) <= kit.MAX_JSON, "package", "guide file exceeds package bound")
+        payloads[relative] = raw
     manifest = {"package_version": kit.VERSION, "kind": "team-authored-preparation-only",
                 "upstream_software_included": False,
                 "files": {name: {"size": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
@@ -56,7 +67,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         digest = build(args.output)
-        print(f"Built preparation-only package: {len(FILES)} files plus MANIFEST.json; SHA-256 {digest}")
+        print(f"Built preparation-only package: {len(FILES)+len(EXTRA_FILES)} files plus MANIFEST.json; SHA-256 {digest}")
         return 0
     except kit.Invalid as exc:
         print(f"Invalid package request: {exc}", file=sys.stderr)

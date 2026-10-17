@@ -11,7 +11,7 @@ from datetime import date
 from pathlib import Path
 from urllib.parse import urlsplit
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 BASE = Path(__file__).resolve().parent
 MAX_JSON = 2_000_000
 MAX_ARTIFACT = 512 * 1024 * 1024
@@ -77,7 +77,7 @@ def safe_path(value, where):
     need(not any(c in value for c in "\\:<>\"|?*%") and not value.startswith("/"),
          where, "unsafe relative path")
     for part in parts:
-        stem = part.split(".")[0].upper()
+        stem = part.split(".")[0].rstrip(" ").upper().translate(str.maketrans("¹²³", "123"))
         need(part not in ("", ".", "..") and not part.endswith((" ", ".")),
              where, "unsafe path component")
         need(stem not in {"CON", "PRN", "AUX", "NUL", *[f"COM{i}" for i in range(1, 10)],

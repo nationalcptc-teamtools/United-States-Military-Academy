@@ -1,5 +1,7 @@
 # CPTC tooling project
 
+Current status is maintained in the root [profile](../docs/project-profile.md), [roadmap](../docs/roadmap.md) and [readiness handoff](../docs/READINESS.md). The dated summaries, integrations, tmp and output records below are historical; use root products for execution. Archived payloads/manifests are preserved.
+
 Current continuation (15 October 2026): [workbench1.0.1](../tooling/workbench/README.md) integrates the existing Word renderer and preserves workspace format1.0.0. Full [role records](docs/proposals/development-functions/proposal.md), [publication notes](PUBLISHING.md), [incremental manifest](CONTINUATION-FILES.json) and [release/evidence](docs/proposals/development-functions/verification.md) are maintained here. Root tooling is the current implementation; the project snapshot/archive below is retained history.
 
 Local preparation workspace for C3T / United States Military Academy's Collegiate Penetration Testing Competition tooling. Start with [the project profile](docs/project-profile.md), [workflow](docs/workflow.md), [reporting proposal](docs/proposals/report-generator/proposal.md), and [farming IT/OT toolkit proposal](docs/proposals/farm-toolkit/proposal.md).

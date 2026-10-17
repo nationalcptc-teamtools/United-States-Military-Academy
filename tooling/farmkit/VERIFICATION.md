@@ -1,5 +1,11 @@
 # Verification and acceptance limits
 
+## Patch 1.1.1 — additional project audit, 16 October 2026
+
+Windows Python 3.12.14: final 43 tests ran, 42 passed and one native-symlink privilege case skipped in 1.764 s. Four added regression methods cover reporting dependency consistency, malformed persisted state before metadata commands, reserved Windows device-name variants and NUL package destinations. The previous empty-required-inventory regression retains a valid schema and checks its intended error.
+
+Independent read-only/mocked review passed 28 checks and rechecked the corrected regression fixture/current reporting version. No outstanding farmkit review finding. The reporting manifest now includes python-docx 1.2.0 alongside ReportLab 4.4.9; this changes manifest identity and invalidates old installed-state bindings until approved preparation/checking is rerun. No real installation of the changed manifest, dependency acquisition or operational test was performed here. The installation evidence and manifest digest below describe the prior 1.1.0 bytes; they do not certify the new manifest. Native/protocol/license/event acceptance remains pending.
+
 Version 1.1.0, tested 2026-10-15. Tests use synthetic files and disposable local containers; no customer/competition target was contacted. This record separates contract tests, installed-software checks and pending operational/event acceptance.
 
 ## Actual checks

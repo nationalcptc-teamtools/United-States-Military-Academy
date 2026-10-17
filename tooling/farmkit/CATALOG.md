@@ -49,7 +49,7 @@ Evaluation snapshot from catalog.json; checked 2026-10-15. Selected means select
 
 ## TOOL-001 LinPEAS
 
-Held for the license/module/maintenance issue below; no default staging.
+PEASS assets are staged by core/full or individually; execution and output integration remain held for the license/module issue below.
 
 - Runtime: Shell on target; review chosen script variant and external commands
 - Dependencies: Shell on target; review chosen script variant and external commands
@@ -64,7 +64,7 @@ Held for the license/module/maintenance issue below; no default staging.
 
 ## TOOL-002 WinPEAS
 
-Held for the license/module/maintenance issue below; no default staging.
+PEASS assets are staged by core/full or individually; execution and output integration remain held for the license/module issue below.
 
 - Runtime: Match selected C#/.NET/batch variant and architecture; assess AV/runtime effects
 - Dependencies: Match selected C#/.NET/batch variant and architecture; assess AV/runtime effects

@@ -448,5 +448,70 @@ class WorkbenchTests(unittest.TestCase):
         self.assertTrue(delivery.check_links()["consistent"])
 
 
+    def test_audit_undo_merge_refuses_reused_id_across_imports(self):
+        identifier, source = self.imported()
+        merge = reports.merge(self.directory, identifier, 'F-001', 'F-002', 'Analyst', 'Synthetic duplicates')
+        other = copy.deepcopy(source)
+        other['findings'] = [other['findings'][1]]
+        reports.import_report(self.directory, self.file('second.json', other))
+        before = (self.directory / 'state.json').read_bytes()
+        with self.assertRaisesRegex(common.Error, 'conflicting_finding_ids'):
+            reports.undo_merge(self.directory, merge['id'], 'Analyst')
+        self.assertEqual((self.directory / 'state.json').read_bytes(), before)
+
+    def test_audit_non_synthetic_records_fail_before_state_mutation(self):
+        row = ws.add(self.directory, 'notes', {'body': 'Synthetic note'})
+        before = (self.directory / 'state.json').read_bytes()
+        for category in ('client', None, 1):
+            with self.subTest(category=category):
+                with self.assertRaises(common.Error):
+                    ws.add(self.directory, 'notes', {'body': 'Synthetic sentinel', 'data_category': category})
+                with self.assertRaises(common.Error):
+                    ws.edit(self.directory, 'notes', row['id'], {'data_category': category}, row['revision'])
+                self.assertEqual((self.directory / 'state.json').read_bytes(), before)
+        added = ws.add(self.directory, 'notes', {'body': 'Synthetic note', 'data_category': 'synthetic'})
+        self.assertEqual(added['data_category'], 'synthetic')
+        state = ws.state(self.directory)
+        state['notes'][row['id']]['data_category'] = 'client'
+        (self.directory / 'state.json').write_bytes(common.encoded(state))
+        with self.assertRaisesRegex(common.Error, 'synthetic_record_required'):
+            ws.state(self.directory)
+
+    def test_audit_revalidation_has_same_bounds_as_initial_plan(self):
+        record = {'command': 'synthetic', 'scope_ref': 'training', 'profile': 'training',
+                  'effects': 'none', 'limits': 'manual', 'destination': str(self.root / 'manual'),
+                  'targets': ['192.0.2.1'], 'approved_targets': ['192.0.2.1'], 'excluded_targets': []}
+        plan = operations.plan(self.directory, record)
+        base = {key: record[key] for key in ('scope_ref', 'profile', 'targets', 'approved_targets', 'excluded_targets')}
+        before = (self.directory / 'state.json').read_bytes()
+        for targets in ([''], [' '], ['bad\tentry'], ['A' * 241], ['host-' + str(n) for n in range(201)]):
+            current = dict(base, targets=targets, approved_targets=targets)
+            with self.subTest(targets=targets[:1]), self.assertRaises(common.Error):
+                operations.revalidate(self.directory, plan['id'], current, 'Reviewer', True)
+            self.assertEqual((self.directory / 'state.json').read_bytes(), before)
+        targets = ['host-' + str(n) for n in range(200)]
+        self.assertTrue(operations.revalidate(self.directory, plan['id'], dict(base, targets=targets,
+                          approved_targets=targets), 'Reviewer', True)['validated'])
+
+    def test_audit_handoff_uses_one_workspace_snapshot(self):
+        first = ws.state(self.directory)
+        second = copy.deepcopy(first)
+        second['revision'] += 1
+        with patch.object(ws, 'state', side_effect=[first, second]) as reader:
+            delivery.handoff(self.directory, self.root / 'handoff-audit', 'Reviewer', approved=True)
+        exported = common.load(self.root / 'handoff-audit/handoff.json')
+        self.assertEqual(exported['workspace_revision'], exported['status']['revision'])
+        reader.assert_called_once()
+
+    def test_audit_catalog_reflects_retired_scanner_and_word_output(self):
+        legacy = catalog.card('LEGACY-NMAP')
+        self.assertEqual(legacy['lifecycle']['state'], 'retired')
+        self.assertEqual(legacy['operation_classes'], ['offline'])
+        self.assertNotIn('xml', str(legacy['outputs']))
+        self.assertFalse(next(row for row in catalog.search('super nmap') if row['id'] == 'LEGACY-NMAP')['eligible'])
+        self.assertIn('HELPER-REPORT', [row['id'] for row in catalog.search('word')])
+        self.assertTrue(catalog.choose('super nmap')['coverage_gap'])
+        self.assertFalse(catalog.choose('render report')['coverage_gap'])
+
 if __name__ == "__main__":
     unittest.main()

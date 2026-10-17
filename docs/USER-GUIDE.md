@@ -1,5 +1,7 @@
 # User guide
 
+For per-tool one-line acquisition, optional sensor/lab staging, SBOMs, dependency locks and Word conversion, see [tool onboarding](../tooling/farmkit/ONBOARDING.md). Use `python3 tools.py list` to see selections.
+
 Run examples from the repository root. Use the root products and `tooling/`. Python commands require Python 3.10+; substitute `python3` for `python` on Linux. On Windows, use **PowerShell**, not Command Prompt, for PowerShell examples. Run each command separately and wait for the prompt to return.
 
 ## Choose a tool
@@ -16,7 +18,7 @@ Run examples from the repository root. Use the root products and `tooling/`. Pyt
 | Find tools, curate reports and record preparation | `tooling/workbench/workbench.py` | JSON results, workspace and snapshots; [workbench](#workbench) |
 | Create or revise a synthetic report | `tooling/reporting/reportgen.py` | JSON, Markdown, optional PDF/Word and hashes; [reporting](#report-generator) |
 | Create the old scope configuration | `config.py` | Operator-selected JSON; [legacy](#legacy-compatibility) |
-| Inspect the original Nmap wrapper | `super_nmap.py` | XML/HTML/optional PDF and modified config; [legacy](#legacy-compatibility) |
+| Inspect retired scanner migration guidance | `super_nmap.py --help` | No scan or config writes; [legacy](#legacy-compatibility) |
 
 Enumeration runners perform network activity and require authorized scope. Acknowledgement flags do not grant permission. Farmkit metadata and reporting/workbench are passive preparation tools. Reporting/workbench accept **synthetic data only**. The suite installer downloads software; it does not run assessments.
 
@@ -342,19 +344,9 @@ Markdown uses the standard library. PDF/Word require local declared dependencies
 
 ## Legacy compatibility
 
-`python config.py` prompts for ranges/hosts/save location and writes `{"ranges":[],"hosts":[]}` (default `./config.json`). It can overwrite the selected file; preserve a copy first. Hostname text is not resolved. The fallback `~/.config.json` path is not expanded: select an explicit path.
+`python config.py` still creates `{"ranges":[],"hosts":[]}` JSON for compatible consumers such as the Windows runner's `-ConfigPath`. It can overwrite the selected file; preserve a copy. It validates ranges and IP/ASCII hostname syntax without DNS and does not grant scan authorization. Literal IP hosts must lie within any supplied ranges; host-only configurations remain possible. Invalid ranges, host bits/default routes, malformed/option-like hosts and malformed loaded JSON records are rejected. Validation precedes overwrite; read and save both expand home paths. Reading an explicit `~/` path or default home fallback now expands the home directory. A missing explicitly selected nondefault file fails instead of using unrelated scope; the default lookup still offers standalone interactive creation if no default/home file exists.
 
-The original wrapper requires Linux/POSIX, Python, sudo, Nmap, xsltproc and optional wkhtmltopdf. Inspect help with `python super_nmap.py --help`. New work should use the consolidated runners.
-
-| Flag | Meaning |
-| --- | --- |
-| `-C`, `--config FILE` | Default `./config.json` |
-| `-s`, `--scan-type TYPE` | ping/port/fast/full/udp/custom/vulscan; default custom |
-| `-H`, `--hosts-only` | Stored hosts instead of ranges |
-| `-o`, `--output DIRECTORY` | Default current directory |
-| `-c`, `--custom-args STRING` | Appended as one Nmap argument; multiple options are not split |
-
-It prints a command and waits for Enter before invoking sudo/Nmap, writes timestamped XML/HTML/PDF, and adds discovered hosts to its config. Vulscan requires `vulscan/vulscan.nse`. It lacks modern scope caps/frozen mappings/integrity guarantees; full/UDP/Vulscan can be expensive. Do not treat legacy output as a reviewed finding.
+`super_nmap.py` is retired. `python super_nmap.py --help` displays the old option names and migration guidance; all non-help invocations exit 2 without a prompt, subprocess, config read/write or scan artifacts. Its old modes/custom arguments are never translated automatically. Use the [Linux](#linux-runner) or [Windows](#windows-runner) consolidated runner, supplying reviewed scope and options deliberately. The original wrapper is recoverable at baseline commit `78dc1388b2b2f83afb89f80f19187156491695f0` for historical inspection; it is not the supported execution path.
 
 ## Troubleshooting
 
