@@ -14,7 +14,7 @@ from datetime import date, datetime
 from pathlib import Path, PurePosixPath
 from xml.sax.saxutils import escape
 
-VERSION = "0.5.0"
+VERSION = "0.5.1"
 MAX_INPUT_BYTES = 2_000_000
 SEVERITIES = ("critical", "high", "medium", "low", "info")
 MARKINGS = ("ORCON", "PROPIN", "PII", "PII Red", "FI")
@@ -834,6 +834,8 @@ def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appe
         validate(data, release)
         appendix_raw = json.dumps({"blocks": appendix_blocks, "markings": appendix_markings},
                                   ensure_ascii=False, sort_keys=True).encode("utf-8")
+    canonical_raw = update_engine().encoded(data)
+    require(len(canonical_raw) <= MAX_INPUT_BYTES, "report", "canonical export exceeds 2 MB limit")
     output_dir = Path(output_dir).resolve()
     require(not any(output_dir == blocked or blocked in output_dir.parents
                     for blocked in (ROOT / "sources", ROOT / "tooling")),
@@ -842,7 +844,7 @@ def generate(raw, output_dir, pdf=False, release=False, appendix_blocks=(), appe
     output_dir.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".report-staging-", dir=output_dir.parent) as staging:
         stage = Path(staging)
-        (stage / "input.json").write_bytes(update_engine().encoded(data))
+        (stage / "input.json").write_bytes(canonical_raw)
         if receipt is not None:
             (stage / "changes.json").write_bytes(update_engine().encoded(receipt))
             (stage / "update.json").write_bytes(update_raw)

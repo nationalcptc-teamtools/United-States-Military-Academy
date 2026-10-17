@@ -2,7 +2,8 @@
   "schema_version": "cptc.install/1.0",
   "python_groups": {
     "reporting": [
-      "reportlab==4.4.9"
+      "reportlab==4.4.9",
+      "python-docx==1.2.0"
     ],
     "ot": [
       "pymodbus==3.16.1",

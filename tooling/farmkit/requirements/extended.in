@@ -1,0 +1,9 @@
+# Target-platform input; compile with pip-tools --generate-hashes.
+scapy==2.8.0
+minimalmodbus==2.1.1
+paho-mqtt==2.1.0
+python-can==4.6.1
+cantools==45.0.0
+canopen==2.4.1
+gurux-dlms==1.0.203
+pymavlink==2.4.50

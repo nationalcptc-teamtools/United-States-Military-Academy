@@ -280,7 +280,7 @@ class KitTests(unittest.TestCase):
             self.assertEqual(first, second)
             self.assertEqual(one.read_bytes(), two.read_bytes())
             with zipfile.ZipFile(one) as archive:
-                self.assertEqual(set(archive.namelist()), {"MANIFEST.json", *["tooling/farmkit/"+f for f in builder.FILES]})
+                self.assertEqual(set(archive.namelist()), {"MANIFEST.json", *["tooling/farmkit/"+f for f in builder.FILES], *builder.EXTRA_FILES})
                 manifest = json.loads(archive.read("MANIFEST.json"))
                 self.assertFalse(manifest["upstream_software_included"])
                 for name, meta in manifest["files"].items():
@@ -314,6 +314,18 @@ class KitTests(unittest.TestCase):
         self.assertEqual(self.tools["TOOL-037"]["license"]["evidence"],
                          ["https://github.com/Autonomy-Logic/openplc-runtime/blob/main/LICENSE"])
 
+
+    def test_audit_windows_reserved_name_variants_rejected(self):
+        for name in ('CON .txt', 'NUL .txt', 'COM\u00b9.log', 'LPT\u00b2.log', 'nested/COM\u00b3.txt'):
+            with self.subTest(name=name), self.assertRaises(kit.Invalid):
+                kit.safe_path(name, 'fixture')
+
+    def test_audit_nul_package_destination_is_clean_rejection(self):
+        with contextlib.redirect_stderr(io.StringIO()) as error, \
+             patch.object(Path, 'resolve', side_effect=AssertionError('destination access')):
+            self.assertEqual(builder.main(['SENTINEL\x00output.zip']), 2)
+        self.assertNotIn('Traceback', error.getvalue())
+        self.assertNotIn('SENTINEL', error.getvalue())
 
 if __name__ == "__main__":
     unittest.main()

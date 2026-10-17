@@ -1,0 +1,2 @@
+# Target-platform input; compile with pip-tools --generate-hashes.
+cpppo==5.2.5

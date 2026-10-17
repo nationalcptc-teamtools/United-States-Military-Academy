@@ -20,11 +20,15 @@ REPORT_FILES = ("reportgen.py", "updates.py", "requirements.txt", "README.md", "
                 "tests/check_pdf_rendering.py", "tests/check_markdown_rendering.py", "tests/test_updates.py",
                 "examples/update-evidence.json")
 GUIDE_FILES = ("docs/USER-GUIDE.md", "docs/REPORT-UPDATES.md", "docs/TOOL-GUIDES.md",
-               "docs/assets/quick-start.svg", "docs/assets/report-update.svg")
+               "docs/assets/quick-start.svg", "docs/assets/report-update.svg", "docs/assets/tool-onboarding.svg",
+               "tools.py", "docs/tool-onboarding/verification.md", "docs/tool-onboarding/spec.md",
+               "docs/tool-onboarding/proposal.md", "docs/tool-onboarding/design.md", "docs/tool-onboarding/tasks.md",
+               "docs/tool-onboarding/execution-guide.md", "docs/tool-onboarding/review.md")
 FARM_FILES = ("catalog.json", "LICENSE", "NOTICES.md", "RUNBOOKS.md", "CATALOG.md", "README.md",
               "kit.py", "sources.json", "artifact-lock.json", "readiness.json", "INSTALL.md",
               "VERIFICATION.md", "install.py", "install-manifest.json", "spec.md", "design.md",
               "proposal.md", "build.py", "tests/test_kit.py", "tests/test_install.py",
+    "onboard.py", "onboarding.json", "ONBOARDING.md", "syft-local.yaml", "tests/test_onboard.py", "requirements/reporting.in", "requirements/ot.in", "requirements/cip.in", "requirements/extended.in", "requirements/onboarding.in",
               "examples/synthetic-lock.json", "examples/run-statuses.json", "examples/artifacts/fixture.txt")
 
 
@@ -93,7 +97,7 @@ def handoff(directory, destination, reviewer_name, approved=False, import_id=Non
     value = ws.state(directory)
     content = {"version": VERSION, "data_category": "synthetic", "purpose": "Manual cloud-system handoff; external processing is outside this application",
                "reviewer": reviewer_name, "workspace_revision": value["revision"],
-               "status": ws.status(directory), "handling": value["handling"], "markings": value["markings"],
+               "status": ws.status_value(value), "handling": value["handling"], "markings": value["markings"],
                "automatic_transfer": False, "local_ai": False, "ai_correction": False,
                "redaction_note": "Known metadata/assignment patterns redacted; markings preserved; human inspection still required"}
     if import_id:
@@ -126,7 +130,7 @@ def review_packet(directory, destination, evidence_path):
     value = ws.state(directory)
     evidence = load(evidence_path)
     need(isinstance(evidence, dict) and evidence.get("data_category") == "synthetic", "synthetic_verification_record_required")
-    content = scrub({"status": ws.status(directory), "checks": evidence,
+    content = scrub({"status": ws.status_value(value), "checks": evidence,
                      "source_hashes": {name: digest(read(ROOT / "tooling/workbench" / name)) for name in MODULE_FILES},
                      "limits": ["No target/client/cloud operation", "Inspect scope decisions and actual work; test totals alone are insufficient"]})
     return bundle(destination, {"review.json": encoded(content), "README.md": b"# Review packet\n\nSynthetic evidence only. Inspect current design, source and actual checks.\n"})

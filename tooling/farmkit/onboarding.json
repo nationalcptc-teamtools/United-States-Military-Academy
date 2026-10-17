@@ -1,0 +1,1071 @@
+{
+  "schema_version": "cptc.onboarding/1.0",
+  "checked_at": "2026-10-16",
+  "tools": [
+    {
+      "id": "TOOL-001",
+      "slug": "linpeas",
+      "name": "LinPEAS",
+      "purpose": "Linux host configuration and privilege-path enumeration on authorized servers/gateways",
+      "upstream": "https://github.com/peass-ng/PEASS-ng",
+      "notice": "GPL v2-or-later with custom clarifications/exceptions, not a plain GPL-3 label. Review output-parsing/aggregation terms and third-party components. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "asset",
+      "spec": {
+        "asset": "linpeas.sh"
+      }
+    },
+    {
+      "id": "TOOL-002",
+      "slug": "winpeas",
+      "name": "WinPEAS",
+      "purpose": "Windows host/HMI/engineering-station configuration enumeration",
+      "upstream": "https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS",
+      "notice": "Same PEASS license issue; enumerate potential paths, do not automatically exploit them. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "asset",
+      "spec": {
+        "asset": "winPEASx64.exe"
+      }
+    },
+    {
+      "id": "TOOL-003",
+      "slug": "tshark",
+      "name": "Wireshark / TShark",
+      "purpose": "Inspect supplied captures and identify observed IT/OT conversations",
+      "upstream": "https://github.com/wireshark/wireshark",
+      "notice": "GPL-2.0 family; preserve component notices. Dissector coverage is release dependent. Packet capture needs authorized placement and may contain secrets. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "tshark"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-004",
+      "slug": "zeek",
+      "name": "Zeek",
+      "purpose": "Turn captures into connection/protocol metadata and support asset hypotheses",
+      "upstream": "https://github.com/zeek/zeek",
+      "notice": "BSD-style; plugins have their own provenance. Do not assume complete vendor/OT coverage. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "image",
+      "spec": {
+        "image": "zeek/zeek@sha256:28749bec67c4895473d5244fb2d512a8e4f5cc96bd90aa0fdf1c096228b21d3a",
+        "release": "zeek/zeek:8.0.3"
+      }
+    },
+    {
+      "id": "TOOL-005",
+      "slug": "suricata",
+      "name": "Suricata",
+      "purpose": "Offline protocol/event analysis as an alternative or complement to Zeek",
+      "upstream": "https://github.com/OISF/suricata",
+      "notice": "GPL-2.0 family; rules have separate licenses. Use offline/IDS profile; do not deploy inline IPS in the initial kit. Acquisition does not resolve operational or output-integration holds. Community-maintained jasonish image, not an OISF official image; provenance https://github.com/jasonish/docker-suricata.",
+      "kind": "image",
+      "spec": {
+        "image": "jasonish/suricata@sha256:87a8bab38bb1df09a7e99b04d03849145a7cd05c2e6806f2dcfd9f40a77f1376",
+        "release": "jasonish/suricata:8.0.2"
+      }
+    },
+    {
+      "id": "TOOL-006",
+      "slug": "scapy",
+      "name": "Scapy",
+      "purpose": "Flexible packet parsing and synthetic protocol fixtures when a full product is unnecessary",
+      "upstream": "https://github.com/secdev/scapy",
+      "notice": "GPL-2.0 family. Restrict initial helpers to offline parsing; raw packet generation is a separate reviewed use. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "scapy==2.8.0"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-007",
+      "slug": "enum4linux-ng",
+      "name": "enum4linux-ng",
+      "purpose": "Windows/Samba inventory if business systems or file shares are in scope",
+      "upstream": "https://github.com/cddmp/enum4linux-ng",
+      "notice": "GPL-3.0. Authentication/enumeration creates traffic; distinguish access denial from absent assets. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "enum4linux-ng"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-008",
+      "slug": "netexec",
+      "name": "NetExec",
+      "purpose": "Scope-limited Windows/network service assessment and inventory",
+      "upstream": "https://github.com/Pennyw0rth/NetExec",
+      "notice": "BSD-2-Clause; modules/dependencies reviewed individually. No spraying, remote execution or bulk modules in default profiles. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "netexec"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-009",
+      "slug": "impacket",
+      "name": "Impacket",
+      "purpose": "SMB/MSRPC/Kerberos protocol helpers for the IT side of an engagement",
+      "upstream": "https://github.com/fortra/impacket",
+      "notice": "Slightly modified Apache Software License, per upstream. Do not relabel Apache-2.0; select exact examples and review terms/dependencies. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "python3-impacket"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-010",
+      "slug": "testssl",
+      "name": "testssl.sh",
+      "purpose": "TLS configuration review of approved web consoles, remote access or APIs",
+      "upstream": "https://github.com/testssl/testssl.sh",
+      "notice": "GPL-2.0. Many handshakes/probes; choose bounded checks and account for fragile embedded endpoints. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "testssl.sh"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-011",
+      "slug": "ffuf",
+      "name": "ffuf",
+      "purpose": "Limited web content discovery on an explicitly approved portal",
+      "upstream": "https://github.com/ffuf/ffuf",
+      "notice": "MIT. Request generation/fuzzing is not a default OT operation; require explicit endpoint and budget. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "ffuf"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-012",
+      "slug": "metasploit",
+      "name": "Metasploit Framework",
+      "purpose": "Known module research and controlled lab reproduction; possible scoped IT checks",
+      "upstream": "https://github.com/rapid7/metasploit-framework",
+      "notice": "BSD-style core with component terms. Module/source review required; no blanket ICS exploitation profile. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "held",
+      "spec": {
+        "reason": "Metasploit components/modules require separate selection and license review."
+      }
+    },
+    {
+      "id": "TOOL-013",
+      "slug": "pymodbus",
+      "name": "PyModbus",
+      "purpose": "Modbus TCP/serial clients and synthetic server/simulator; possible pump, meter or environmental controller interfaces",
+      "upstream": "https://github.com/pymodbus-dev/pymodbus",
+      "notice": "BSD-3-Clause-style terms. Upstream warns of API changes and limited nonstandard-device support. No arbitrary register sweeps. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "pymodbus==3.16.1"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-014",
+      "slug": "mbpoll",
+      "name": "mbpoll",
+      "purpose": "Convenient Modbus TCP/RTU command-line checks",
+      "upstream": "https://github.com/epsilonrt/mbpoll",
+      "notice": "GPL-3.0. Document selected major branch, finite polling, unit/address/type and no-write invocation. Distinct from proprietary modpoll. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "native",
+      "spec": {
+        "source": "mbpoll"
+      }
+    },
+    {
+      "id": "TOOL-015",
+      "slug": "libmodbus",
+      "name": "libmodbus",
+      "purpose": "C backend/alternative for Modbus TCP and RTU helpers",
+      "upstream": "https://github.com/stephane/libmodbus",
+      "notice": "LGPL-2.1-or-later. Useful backend, not another mandatory CLI; avoid duplicate implementations without need. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "libmodbus-dev"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-016",
+      "slug": "minimalmodbus",
+      "name": "MinimalModbus",
+      "purpose": "Modbus RTU/ASCII instrument access where serial-only needs justify it",
+      "upstream": "https://github.com/pyhys/minimalmodbus",
+      "notice": "Apache-2.0. Not a Modbus TCP replacement. Wiring, serial settings and physical access are prerequisites. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "minimalmodbus==2.1.1"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-017",
+      "slug": "python-snap7",
+      "name": "python-snap7",
+      "purpose": "Siemens S7 communication and controlled simulator/metadata work if relevant",
+      "upstream": "https://github.com/gijzelaerr/python-snap7",
+      "notice": "MIT. Current README describes pure Python and model/access limits; older releases may differ. Do not enable PUT/GET or change controller settings to make a test work. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "python-snap7==3.2.1"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-018",
+      "slug": "cpppo",
+      "name": "cpppo",
+      "purpose": "EtherNet/IP CIP client/server and synthetic fixtures",
+      "upstream": "https://github.com/pjkundert/cpppo",
+      "notice": "GPL-3 with stated exceptions/alternative terms. Use GPL route consistently; choose bounded identity/read operations, not arbitrary CIP services. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "cpppo==5.2.5"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-019",
+      "slug": "pycomm3",
+      "name": "pycomm3",
+      "purpose": "Allen-Bradley/Rockwell-specific EtherNet/IP option",
+      "upstream": "https://github.com/ottowayi/pycomm3",
+      "notice": "MIT. Upstream explicitly says no longer actively developed. Keep as documented fallback; do not default-stage without ownership and compatibility evidence. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "held",
+      "spec": {
+        "reason": "Existing project maintenance hold on pycomm3 remains unresolved."
+      }
+    },
+    {
+      "id": "TOOL-020",
+      "slug": "asyncua",
+      "name": "asyncua / opcua-asyncio",
+      "purpose": "OPC UA client/server, namespace inspection and security-mode evaluation",
+      "upstream": "https://github.com/FreeOpcUa/opcua-asyncio",
+      "notice": "LGPL-3.0. Pin API/runtime; credentials/trust policy and node reads must be approved. Do not use writes, method calls or trust bypass by default. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "asyncua==2.1.0"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-021",
+      "slug": "open62541",
+      "name": "open62541",
+      "purpose": "C OPC UA client/server and controlled fixture alternative",
+      "upstream": "https://github.com/open62541/open62541",
+      "notice": "MPL-2.0; some examples/plugins CC0. Preserve per-file notices. Prefer one sufficient lab/backend over two mandatory stacks. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "native",
+      "spec": {
+        "source": "open62541"
+      }
+    },
+    {
+      "id": "TOOL-022",
+      "slug": "bacpypes3",
+      "name": "BACpypes3",
+      "purpose": "Python BACnet option for possible HVAC/ventilation/cold-room controls",
+      "upstream": "https://github.com/JoelBender/BACpypes3",
+      "notice": "pyproject says MIT but classifier says BSD. Resolve exact artifact licensing before staging; disable unrelated MCP/AI integration. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "held",
+      "spec": {
+        "reason": "Existing BACpypes3 license metadata mismatch remains unresolved."
+      }
+    },
+    {
+      "id": "TOOL-023",
+      "slug": "bacnet",
+      "name": "BACnet Stack",
+      "purpose": "BACnet/IP CLI applications plus synthetic device; MS/TP only if separately supported",
+      "upstream": "https://github.com/bacnet-stack/bacnet-stack",
+      "notice": "GPL-2.0-or-later WITH GCC-exception-2.0 core; examples include MIT/Apache-2.0. Per-file review required. Bound discovery; default to explicit unicast reads. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "native",
+      "spec": {
+        "source": "bacnet"
+      }
+    },
+    {
+      "id": "TOOL-024",
+      "slug": "mosquitto-clients",
+      "name": "Mosquitto clients and broker",
+      "purpose": "MQTT subscriber/client checks and synthetic broker for possible farm telemetry",
+      "upstream": "https://github.com/eclipse-mosquitto/mosquitto",
+      "notice": "EPL-2.0 OR BSD-3-Clause. A subscription sends traffic and can expose retained secrets. No publish/retained changes against a target by default. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "mosquitto-clients"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-025",
+      "slug": "paho-mqtt",
+      "name": "Eclipse Paho MQTT Python",
+      "purpose": "Scriptable MQTT alternative when a reviewed structured adapter is useful",
+      "upstream": "https://github.com/eclipse-paho/paho.mqtt.python",
+      "notice": "EPL-2.0 / EDL-1.0 dual license. Mosquitto CLI may suffice; do not require both without a concrete use. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "paho-mqtt==2.1.0"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-026",
+      "slug": "lib60870",
+      "name": "lib60870",
+      "purpose": "IEC 60870-5-101/104 lab/client work if energy or remote telemetry is established",
+      "upstream": "https://github.com/mz-automation/lib60870",
+      "notice": "GPL-3.0 open-source route; commercial alternative is not selected. Commands/control services require separate approval. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "native",
+      "spec": {
+        "source": "lib60870"
+      }
+    },
+    {
+      "id": "TOOL-027",
+      "slug": "libiec61850",
+      "name": "libiec61850",
+      "purpose": "IEC 61850 MMS/GOOSE analysis/lab possibility for site power systems",
+      "upstream": "https://github.com/mz-automation/libiec61850",
+      "notice": "GPL-3.0 open-source route; review dependencies. No GOOSE injection or protection/control operations in initial profiles. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "native",
+      "spec": {
+        "source": "libiec61850"
+      }
+    },
+    {
+      "id": "TOOL-028",
+      "slug": "opendnp3",
+      "name": "OpenDNP3",
+      "purpose": "DNP3 reference/lab fallback for outstation/master scenarios",
+      "upstream": "https://github.com/dnp3/opendnp3",
+      "notice": "Apache-2.0; repository archived in 2022. DNP3 coverage is a selection gap until a maintained alternative or owned lab-only fallback is evaluated. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "held",
+      "spec": {
+        "reason": "OpenDNP3 is archived; no maintained backend has been accepted."
+      }
+    },
+    {
+      "id": "TOOL-029",
+      "slug": "gurux-dlms",
+      "name": "Gurux DLMS Python",
+      "purpose": "DLMS/COSEM electricity/water/gas meter client possibilities",
+      "upstream": "https://github.com/Gurux/Gurux.DLMS.Python",
+      "notice": "GPL-2.0 family upstream declaration. Meter compatibility/authentication and selected modules need testing; do not alter meter configuration. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "gurux-dlms==1.0.203"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-030",
+      "slug": "can-utils",
+      "name": "can-utils",
+      "purpose": "CAN capture/log tools and J1939/ISOBUS utilities for possible vehicle/implement networks",
+      "upstream": "https://github.com/linux-can/can-utils",
+      "notice": "Per-file terms; candump is GPL-2.0-only OR BSD-3-Clause. Initial profile uses logs/listen-only capture; address claiming/replay/transmit are active and excluded. Not a complete agricultural implement decoder. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "can-utils"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-031",
+      "slug": "python-can",
+      "name": "python-can",
+      "purpose": "Flexible CAN log/adapter abstraction and virtual-bus fixtures",
+      "upstream": "https://github.com/hardbyte/python-can",
+      "notice": "LGPL-3.0. Hardware-independent API does not remove adapter or privilege requirements. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "python-can==4.6.1"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-032",
+      "slug": "cantools",
+      "name": "cantools",
+      "purpose": "Decode CAN logs using a supplied DBC or other supported database",
+      "upstream": "https://github.com/cantools/cantools",
+      "notice": "MIT. Without signal definitions, report raw frames/uncertainty; do not guess engineering meaning or upload proprietary DBC files. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "cantools==45.0.0"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-033",
+      "slug": "canopen",
+      "name": "canopen",
+      "purpose": "CANopen object dictionary/EDS workflows if industrial actuators use it",
+      "upstream": "https://github.com/canopen-python/canopen",
+      "notice": "MIT. Not interchangeable with J1939/ISOBUS. NMT commands/SDO writes are excluded from initial profiles. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "canopen==2.4.1"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-034",
+      "slug": "pymavlink",
+      "name": "pymavlink",
+      "purpose": "Offline MAVLink log interpretation if aerial/robotic assets enter scope",
+      "upstream": "https://github.com/ArduPilot/pymavlink",
+      "notice": "LGPL-3-or-later; generated code MIT, per upstream. Start with offline logs; no arming, navigation, parameter updates or radio operation. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "pymavlink==2.4.50"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-035",
+      "slug": "chirpstack",
+      "name": "ChirpStack",
+      "purpose": "LoRaWAN server/API reference and synthetic telemetry training",
+      "upstream": "https://github.com/chirpstack/chirpstack",
+      "notice": "MIT server; dependencies separate. Not a universal LoRa sniffer or key-recovery tool. Full stack may be too large for event staging. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "compose",
+      "spec": {
+        "source": {
+          "repository": "https://github.com/chirpstack/chirpstack-docker",
+          "commit": "91a7826adfc52beb3c0624adeaa8049a4645bd3a"
+        },
+        "images": [
+          "chirpstack/chirpstack@sha256:2969efac093879a3dd1b9abf93920ea9a1b954aae031fc41711d16166a2936ab",
+          "chirpstack/chirpstack-gateway-bridge@sha256:1563f963cbd8eb1d39e7852f29239bdc140a90c980c4104e61b5d5cccabe1297",
+          "chirpstack/chirpstack-rest-api@sha256:7085dfb6f7a0bc6746c53e91af3e827cd4b4e8b7aab4db4bcb54046280eb8acf",
+          "library/postgres@sha256:7116ab7df71ef638eda416adbb92466b58a9da423f5476f2b830aae0a97b4fa5",
+          "library/redis@sha256:ca0acbb137c1dc3339c8b147a58fd6f42775d4599327b50e7b116c23de501af2",
+          "library/eclipse-mosquitto@sha256:12436df85d6b2b91e63c71184da35ec89400a98abdc688a78b1403a11ecf44b4"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-036",
+      "slug": "zigpy",
+      "name": "zigpy",
+      "purpose": "Zigbee protocol/coordinator reference if sensors/climate devices are established",
+      "upstream": "https://github.com/zigpy/zigpy",
+      "notice": "GPL-3.0 family with COPYING details; radio libraries separate. Joining/control/OTA are active; not a passive packet sniffer. No automatic firmware downloads. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "zigpy==2.3.0"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-037",
+      "slug": "openplc",
+      "name": "OpenPLC Runtime v4",
+      "purpose": "Small synthetic controller process for agreed protocol fixtures",
+      "upstream": "https://github.com/Autonomy-Logic/openplc-runtime",
+      "notice": "MIT core upstream declaration; dependency review needed. Use v4 evaluation, not EOL v3. Do not run upstream pipe-to-shell installers or enable cloud integrations by default. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "image",
+      "spec": {
+        "image": "ghcr.io/autonomy-logic/openplc-runtime@sha256:58d959f0245e307c4967dd9eeadb9120769f98223f44b4a59666d51668773cc1",
+        "release": "OpenPLC v4.3.1"
+      }
+    },
+    {
+      "id": "TOOL-038",
+      "slug": "fuxa",
+      "name": "FUXA",
+      "purpose": "Synthetic SCADA/HMI dashboard for Modbus, OPC UA, MQTT and S7 rehearsal",
+      "upstream": "https://github.com/frangoteam/FUXA",
+      "notice": "MIT. Lab-only boundary; avoid a heavyweight HMI if minimal protocol fixtures suffice. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "image",
+      "spec": {
+        "image": "frangoteam/fuxa@sha256:89bc9ef57915b2e2b79208a2bf75a9c890ea9e56f6164ad9149a3169bae63400",
+        "release": "frangoteam/fuxa:1.3.4"
+      }
+    },
+    {
+      "id": "TOOL-039",
+      "slug": "node-red",
+      "name": "Node-RED",
+      "purpose": "Synthetic telemetry and workflow fixtures",
+      "upstream": "https://github.com/node-red/node-red",
+      "notice": "Apache-2.0 core; contributed nodes have independent licenses/security. No remote flow downloads, dashboard exposure or customer credentials. Acquisition does not resolve operational or output-integration holds.",
+      "kind": "image",
+      "spec": {
+        "image": "nodered/node-red@sha256:148cf534d628591aa605f808971153d7de03b5ea5ca84b569daeadd97dc52769",
+        "release": "nodered/node-red:5.0.8"
+      }
+    },
+    {
+      "id": "TOOL-040",
+      "slug": "conpot",
+      "name": "Conpot",
+      "purpose": "ICS honeypot/service emulation for identification/capture exercises",
+      "upstream": "https://github.com/mushorg/conpot",
+      "notice": "GPL-2.0. Emulation does not certify actual PLC behavior. Disable external intelligence feeds/telemetry and isolate the lab. Acquisition does not resolve operational or output-integration holds. Conpot 1.0.0 source Dockerfile uses Python 3.14 and BACpypes3; dependency license review remains pending.",
+      "kind": "build-image",
+      "spec": {
+        "source": {
+          "repository": "https://github.com/mushorg/conpot",
+          "commit": "c9245e6cb0fe7166298068dc983f273ad282f0de"
+        }
+      }
+    },
+    {
+      "id": "PREP-SYFT",
+      "slug": "syft",
+      "name": "Syft",
+      "purpose": "Create local software bills of materials.",
+      "upstream": "https://oss.anchore.com/docs/installation/syft/",
+      "kind": "syft",
+      "spec": {
+        "url": "https://github.com/anchore/syft/releases/download/v1.54.1/syft_1.54.1_linux_amd64.tar.gz",
+        "version": "1.54.1",
+        "sha256": "c069905b391cc4c20a5ba65ad5c10be2a7ba074f8ea6ad203e24d14e303dad47",
+        "size": 30968256
+      },
+      "notice": "Apache-2.0; original binary LICENSE retained. Disable startup update checks and network enrichment for local inventory."
+    },
+    {
+      "id": "PREP-PIP-TOOLS",
+      "slug": "pip-tools",
+      "name": "pip-tools",
+      "purpose": "Compile environment-specific dependency locks with hashes.",
+      "upstream": "https://pip-tools.pypa.io/en/stable/",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "pip-tools==7.6.2"
+        ]
+      },
+      "notice": "BSD-3-Clause; compile on the matching target Python/platform. Installation alone does not produce locks."
+    },
+    {
+      "id": "PREP-LIBREOFFICE",
+      "slug": "libreoffice",
+      "name": "LibreOffice headless QA",
+      "purpose": "Convert synthetic Word reports to PDF for visual review.",
+      "upstream": "https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "libreoffice-writer"
+        ]
+      },
+      "notice": "MPL-2.0/LGPL and component notices; distro-resolved. Conversion is not native Microsoft Word certification."
+    },
+    {
+      "id": "PREP-MQTT-BROKER",
+      "slug": "mosquitto-broker",
+      "name": "Mosquitto broker lab",
+      "purpose": "Acquire a separate synthetic MQTT broker.",
+      "upstream": "https://mosquitto.org/",
+      "kind": "image",
+      "spec": {
+        "image": "library/eclipse-mosquitto@sha256:12436df85d6b2b91e63c71184da35ec89400a98abdc688a78b1403a11ecf44b4",
+        "release": "eclipse-mosquitto:2 resolved 2026-10-16"
+      },
+      "notice": "EPL-2.0/EDL-1.0; image acquired only, no broker launched."
+    },
+    {
+      "id": "PREP-REPORTING",
+      "slug": "reporting",
+      "name": "Reporting dependencies",
+      "purpose": "Prepare the existing PDF and editable Word exporter.",
+      "upstream": "https://github.com/nationalcptc-teamtools/United-States-Military-Academy",
+      "kind": "python",
+      "spec": {
+        "requirements": [
+          "reportlab==4.4.9",
+          "python-docx==1.2.0"
+        ]
+      },
+      "notice": "ReportLab BSD; python-docx MIT. Report tooling accepts synthetic preparation data only."
+    },
+    {
+      "id": "RUNNER-NMAP",
+      "slug": "nmap",
+      "name": "nmap",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "nmap"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-JQ",
+      "slug": "jq",
+      "name": "jq",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "jq"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-CURL",
+      "slug": "curl",
+      "name": "curl",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "curl"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-IPROUTE2",
+      "slug": "iproute2",
+      "name": "iproute2",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "iproute2"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-UTIL-LINUX",
+      "slug": "util-linux",
+      "name": "util-linux",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "util-linux"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-DNSUTILS",
+      "slug": "dnsutils",
+      "name": "dnsutils",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "dnsutils"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-SMBCLIENT",
+      "slug": "smbclient",
+      "name": "smbclient",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "smbclient"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-LDAP-UTILS",
+      "slug": "ldap-utils",
+      "name": "ldap-utils",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "ldap-utils"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-SNMP",
+      "slug": "snmp",
+      "name": "snmp",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "snmp"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-RPCBIND",
+      "slug": "rpcbind",
+      "name": "rpcbind",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "held",
+      "spec": {
+        "reason": "rpcbind is a service-bearing existing runner dependency; prepare separately using the existing Linux installer, with host service policy review."
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-NFS-COMMON",
+      "slug": "nfs-common",
+      "name": "nfs-common",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "held",
+      "spec": {
+        "reason": "nfs-common has service-bearing dependencies; prepare separately using the existing Linux installer, with host service policy review."
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-OPENSSL",
+      "slug": "openssl",
+      "name": "openssl",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "openssl"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-NETCAT-OPENBSD",
+      "slug": "netcat-openbsd",
+      "name": "netcat-openbsd",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "netcat-openbsd"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-XSLTPROC",
+      "slug": "xsltproc",
+      "name": "xsltproc",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "xsltproc"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-ARP-SCAN",
+      "slug": "arp-scan",
+      "name": "arp-scan",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "arp-scan"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-ONESIXTYONE",
+      "slug": "onesixtyone",
+      "name": "onesixtyone",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "onesixtyone"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-WHATWEB",
+      "slug": "whatweb",
+      "name": "whatweb",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "whatweb"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-NIKTO",
+      "slug": "nikto",
+      "name": "nikto",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "nikto"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-SSLSCAN",
+      "slug": "sslscan",
+      "name": "sslscan",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "sslscan"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-SSH-AUDIT",
+      "slug": "ssh-audit",
+      "name": "ssh-audit",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "ssh-audit"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-SWAKS",
+      "slug": "swaks",
+      "name": "swaks",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "swaks"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-IPMITOOL",
+      "slug": "ipmitool",
+      "name": "ipmitool",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "ipmitool"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-GOBUSTER",
+      "slug": "gobuster",
+      "name": "gobuster",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "gobuster"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-SECLISTS",
+      "slug": "seclists",
+      "name": "seclists",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "seclists"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-EXPLOITDB",
+      "slug": "exploitdb",
+      "name": "exploitdb",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "exploitdb"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-EYEWITNESS",
+      "slug": "eyewitness",
+      "name": "eyewitness",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "eyewitness"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-NUCLEI",
+      "slug": "nuclei",
+      "name": "nuclei",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "nuclei"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "RUNNER-HTTPX-TOOLKIT",
+      "slug": "httpx-toolkit",
+      "name": "httpx-toolkit",
+      "purpose": "Existing Linux runner prerequisite or optional independent utility; see Linux runner guidance.",
+      "upstream": "https://www.kali.org/tools/",
+      "kind": "apt",
+      "spec": {
+        "packages": [
+          "httpx-toolkit"
+        ]
+      },
+      "notice": "Distro-resolved package and component notices. Nmap uses NPSL; Npcap is separate. httpx-toolkit is ProjectDiscovery httpx, not the Python HTTP client. Acquisition does not add a runner execution path."
+    },
+    {
+      "id": "PREP-VULSCAN",
+      "slug": "vulscan",
+      "name": "Vulscan source reference",
+      "purpose": "Acquire the existing source-pinned optional Nmap extension without running it.",
+      "upstream": "https://github.com/scipag/vulscan",
+      "notice": "Upstream COPYING.TXT contains unresolved merge markers. Source staging is not license clearance; no database updater or NSE script is run.",
+      "kind": "native",
+      "spec": {
+        "source": "vulscan"
+      }
+    }
+  ],
+  "bundles": {
+    "qa": [
+      "syft",
+      "pip-tools",
+      "libreoffice",
+      "reporting"
+    ],
+    "sensors": [
+      "tshark",
+      "zeek",
+      "suricata"
+    ],
+    "labs": [
+      "open62541",
+      "chirpstack",
+      "zigpy",
+      "openplc",
+      "fuxa",
+      "node-red",
+      "conpot",
+      "mosquitto-broker"
+    ],
+    "runner": [
+      "nmap",
+      "jq",
+      "curl",
+      "iproute2",
+      "util-linux",
+      "dnsutils",
+      "smbclient",
+      "ldap-utils",
+      "snmp",
+      "openssl",
+      "netcat-openbsd",
+      "xsltproc",
+      "arp-scan",
+      "onesixtyone",
+      "whatweb",
+      "nikto",
+      "sslscan",
+      "ssh-audit",
+      "swaks",
+      "ipmitool",
+      "gobuster",
+      "seclists",
+      "exploitdb",
+      "eyewitness",
+      "nuclei",
+      "httpx-toolkit"
+    ]
+  }
+}
