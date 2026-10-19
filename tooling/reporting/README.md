@@ -1,6 +1,6 @@
 # Offline reporting starter
 
-Version 0.5.0. Preparation prototype using **synthetic input only**. It generates authoritative JSON, editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
+Version 0.5.1. Preparation prototype using **synthetic input only**. It generates authoritative JSON, editable Markdown, optional PDF and Word (.docx), and a hash manifest. No network requests, AI, CVE lookup, scanner execution, remote images, or evidence-file reads.
 
 Start with the [human user guide](../../docs/USER-GUIDE.md#report-generator) or the [illustrated update walkthrough](../../docs/REPORT-UPDATES.md), including a complete demo for new evidence supporting an existing finding.
 
@@ -108,3 +108,7 @@ Text is rendered literally, without interpreting source markup or instructions. 
 Outputs stage together and publish only after successful rendering. No destination overwrite option is provided. The source tool directory and synced sources directory cannot be output targets. Store real engagement material only in approved, access-controlled event storage outside public code and consumer sync folders. Ignore files do not remove tracked data or prevent unrelated uploads.
 
 Only this reusable directory's code/templates/synthetic fixtures are public-integration candidates. An eligible student must review it against the team's existing repo conventions, current rules and dependency/runtime availability before porting. This package does not claim repository approval.
+
+## Canonical source capacity
+
+Version 0.5.1 checks the final authoritative input.json against the existing 2 MB input limit after updates and appendix marking promotion. A compact source can fit on input while its indented canonical form exceeds the limit; that export is rejected before output-directory/staging creation. Reduce or split the source within the existing contract rather than publishing a next-revision source that cannot be reopened. Successful exports remain reloadable and retain the same canonical report fingerprint.

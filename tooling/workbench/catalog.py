@@ -40,15 +40,15 @@ def tools():
                                "Check selected runtime and approval", "Review output route: native adapters not implemented"]
         result.append(row)
     for identifier, name, purpose, output in (
-        ("LEGACY-NMAP", "Super Nmap", "Legacy network scanning wrapper; known limitations", "xml/html/pdf"),
-        ("HELPER-REPORT", "Report generator", "Render completed synthetic report JSON", "markdown/pdf"),
+        ("LEGACY-NMAP", "Super Nmap", "Retired scanner entrypoint; migration guidance only, no scanning", "migration diagnostic"),
+        ("HELPER-REPORT", "Report generator", "Render or incrementally update completed synthetic report JSON", "json/markdown/pdf/word/docx"),
         ("HELPER-WORKBENCH", "Development workbench", "Find tools and curate synthetic workflow records", "json/markdown")):
         result.append({"id": identifier, "name": name, "purpose": purpose, "aliases": [],
-                       "platform": "linux" if identifier == "LEGACY-NMAP" else "linux/windows",
+                       "platform": "linux/windows",
                        "runtime": "Python 3.10+", "protocols": [], "operations": [],
-                       "operation_classes": ["active-query-capable"] if identifier == "LEGACY-NMAP" else ["offline"],
+                       "operation_classes": ["offline"],
                        "input": "completed report JSON" if identifier == "HELPER-REPORT" else "operator-supplied parameters",
-                       "outputs": [output], "disposition": "legacy" if identifier == "LEGACY-NMAP" else "preparation",
+                       "outputs": [output], "disposition": "retired" if identifier == "LEGACY-NMAP" else "preparation",
                        "ready": False, "needs": {"privileges": "Check the selected operation/runtime"},
                        "owner": "unassigned", "license": {"review": "team review required"},
                        "acquisition_status": "local source", "runtime_status": "see recorded verification",
@@ -60,8 +60,11 @@ def tools():
                                    "tested": "not_run" if legacy else "see synthetic verification",
                                    "reviewed": "not verified here" if legacy else "see scoped independent review", "accepted": "pending",
                                    "published": "not verified here", "event_approved": "pending"})
-        row.setdefault("lifecycle", {"state": "legacy" if row["id"] == "LEGACY-NMAP" else "preparation",
-                                     "replacement": None, "gap": None})
+        row.setdefault("lifecycle", {"state": "retired" if legacy else "preparation",
+                                     "replacement": "cptc-linux.sh / cptc-windows.ps1" if legacy else None,
+                                     "gap": "Legacy calls refuse execution; choose reviewed scope/options explicitly" if legacy else None})
+        if legacy:
+            row["next_actions"] = ["Read docs/USER-GUIDE.md#legacy-compatibility; legacy arguments are not translated"]
     return result
 
 
@@ -74,8 +77,8 @@ def search(query="", **filters):
         score = sum(word in haystack for word in words)
         if words and score != len(words):
             continue
-        eligible = True
-        reasons = []
+        eligible = row["lifecycle"]["state"] != "retired"
+        reasons = [] if eligible else ["lifecycle:retired"]
         for field, value in filters.items():
             if not value:
                 continue
@@ -112,5 +115,5 @@ def choose(task):
                "opc ua endpoint": "opcua", "render report": "report generator"}
     query = aliases.get(task.lower(), task)
     matches = search(query)
-    return {"task": task, "candidates": matches, "coverage_gap": not bool(matches),
+    return {"task": task, "candidates": matches, "coverage_gap": not any(row["eligible"] for row in matches),
             "operation_approved": False, "executed": False}

@@ -37,7 +37,15 @@ def state(directory):
          and value.get("data_category") == "synthetic", "unsupported_workspace")
     need(type(value.get("revision")) is int and value["revision"] >= 0, "invalid_revision")
     need(all(isinstance(value.get(key), dict) for key in COLLECTIONS), "invalid_workspace")
+    for collection in COLLECTIONS:
+        for record in value[collection].values():
+            synthetic_record(record)
     return value
+
+
+def synthetic_record(record):
+    need(isinstance(record, dict) and record.get("data_category", "synthetic") == "synthetic",
+         "synthetic_record_required")
 
 
 def change(directory, action, expected=None):
@@ -68,6 +76,7 @@ def event(value, action, status, reference=""):
 def add(directory, collection, record, expected=None):
     need(collection in COLLECTIONS and collection not in ("events", "conflicts"), "unsupported_collection")
     need(isinstance(record, dict), "invalid_record")
+    synthetic_record(record)
     identifier = record.get("id", identity(collection[:-1] or "item"))
     text(identifier, 64)
     def action(value):
@@ -90,6 +99,7 @@ def get(directory, collection, identifier):
 def edit(directory, collection, identifier, patch, base_revision):
     need(collection in COLLECTIONS and isinstance(patch, dict)
          and not ({"id", "revision", "updated_at"} & patch.keys()), "invalid_edit")
+    synthetic_record(patch)
     def action(value):
         need(identifier in value[collection], "record_missing")
         current = value[collection][identifier]
@@ -171,7 +181,11 @@ def handling(directory, record):
 
 
 def status(directory):
-    value = state(directory)
+    return status_value(state(directory))
+
+
+def status_value(value):
+    """Describe one loaded workspace snapshot without independently rereading it."""
     return {"version": VERSION, "revision": value["revision"], "updated_at": now(),
             "data_category": "synthetic", "markings": value["markings"],
             "counts": {key: len(value[key]) for key in COLLECTIONS if key != "events"},

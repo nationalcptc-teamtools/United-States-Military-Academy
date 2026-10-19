@@ -4,6 +4,8 @@ Competition enumeration runners for Linux and Windows. **The last commit to this
 
 These scripts are for systems listed in the competition ROE. They require explicit scope, cap target expansion, keep follow-up checks tied to discovered in-scope addresses, and do not automate exploitation, password spraying, or credential brute force.
 
+Current project status and unresolved decisions: [profile](docs/project-profile.md), [roadmap](docs/roadmap.md), [readiness handoff](docs/READINESS.md) and [maintenance](docs/MAINTENANCE.md).
+
 ## Quick start
 
 ![Choose a workflow: prepare tools, use authorized enumeration or synthetic JSON, curate evidence, and export a new report revision.](docs/assets/quick-start.svg)
@@ -37,6 +39,17 @@ python tooling/reporting/reportgen.py output/report-v2/input.json --output-dir o
 
 Reporting/workbench accept synthetic preparation data only. Raw scanner exports require curation into the report/update contract; native import adapters remain future work.
 
+## Individual tools and preparation additions
+
+```sh
+python3 tools.py list
+python3 tools.py plan zeek syft pip-tools
+python3 tools.py install zeek syft pip-tools
+python3 tools.py check zeek syft pip-tools
+```
+
+[One-line onboarding](tooling/farmkit/ONBOARDING.md) covers all forty catalog tools, optional sensors/lab acquisition, reporting QA and existing Linux runner packages. Select by name or catalog ID; held tools explain their reason and refuse acquisition. Setup does not launch tools or lab services.
+
 ## Entrypoints
 
 - `cptc-linux.sh`: Bash 5 runner for Kali, Debian, and Ubuntu.
@@ -57,9 +70,8 @@ bash install.sh --check --profile full
 
 Includes protocol/IT clients, isolated Python libraries, source-built OT clients/SDKs, reporting dependencies and hash-checked LinPEAS/WinPEAS downloads. Setup never runs payloads, assessment tools or lab servers. Use `--profile core` for the smaller selected-protocol profile; Prowler and legacy wkhtmltopdf are explicit options. All forty candidates have installation or held/lab dispositions.
 
-Read [installation and offline-use guidance](tooling/farmkit/INSTALL.md), [the catalog](tooling/farmkit/CATALOG.md) and [actual checks and limitations](tooling/farmkit/VERIFICATION.md). No full offline reinstallation cache or operational/event approval is claimed. The [proposal/spec/design](tooling/farmkit/proposal.md) record requirements, source evidence and unresolved gates. Existing scanner/configuration behavior is preserved; its general Nmap defaults are not approved OT profiles.
-
-Both scripts install or locate tools, check the workstation, enumerate a supplied scope, retain raw evidence, and build a report. The older `config.py` and `super_nmap.py` remain available for compatibility; `install.sh` now prepares the broader assessment suite.
+Read [installation and offline-use guidance](tooling/farmkit/INSTALL.md), [the catalog](tooling/farmkit/CATALOG.md) and [actual checks and limitations](tooling/farmkit/VERIFICATION.md). No full offline reinstallation cache or operational/event approval is claimed. The [proposal/spec/design](tooling/farmkit/proposal.md) record requirements, source evidence and unresolved gates. The installer prepares software separately from assessment execution; general Nmap defaults are not approved OT profiles. See [legacy migration](docs/USER-GUIDE.md#legacy-compatibility) for the retired wrapper and configuration lookup changes.
+Both scripts install or locate tools, check the workstation, enumerate a supplied scope, retain raw evidence, and build a report. `config.py` retains JSON compatibility; `super_nmap.py` is retired and exits without scanning; `install.sh` now prepares the broader assessment suite.
 
 [Nmap searches per-user directories when a requested data file is absent](https://nmap.org/book/data-files-replacing-data-files.html). The runners bind Nmap to a hashed, complete data tree and refuse nonempty per-user Nmap override directories such as `~/.nmap` or `%APPDATA%\nmap`; move intentional overrides aside before a competition run.
 
@@ -297,7 +309,7 @@ Enumeration output can contain sensitive network and domain data. Generated resu
 
 ## Development workbench
 
-The [offline workbench](tooling/workbench/README.md) provides one place to find cataloged tools, compare prerequisites and holds, record capability requests, create tool starters, and manage synthetic preparation records. It reuses the farm catalog and existing report schemas, with human finding review, immutable Markdown/PDF/Word snapshots and separate tool/import/render outcomes. Version 1.1.0 keeps existing workspace format 1.0.0 readable and editable.
+The [offline workbench](tooling/workbench/README.md) provides one place to find cataloged tools, compare prerequisites and holds, record capability requests, create tool starters, and manage synthetic preparation records. It reuses the farm catalog and existing report schemas, with human finding review, immutable Markdown/PDF/Word snapshots and separate tool/import/render outcomes. Version 1.2.0 keeps existing workspace format 1.0.0 readable and editable.
 
 ```sh
 python3 tooling/workbench/workbench.py search modbus --protocol modbus
@@ -310,7 +322,7 @@ Requires Python 3.10+; optional PDF/Word use the existing reporting dependencies
 ## Legacy tools
 
 - `config.py` interactively writes the original `{"ranges": [], "hosts": []}` JSON format.
-- `super_nmap.py` is the original Nmap wrapper.
+- `super_nmap.py` is a retired entrypoint: help shows migration guidance; every non-help invocation exits nonzero without scanning or changing config. Choose consolidated runner scope/options explicitly; old arguments are not translated.
 - `install.sh` is the current assessment-suite installer; see [installation](tooling/farmkit/INSTALL.md).
 
 The consolidated Linux and Windows runners are the recommended entrypoints.

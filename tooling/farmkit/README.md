@@ -1,6 +1,8 @@
 # CPTC tool selection and preparation package
 
-Version 1.1.0, 2026-10-15. A forty-entry open-source tooling catalog for a possible agriculture-themed IT/OT assessment. **Selected means selected for evaluation. Upstream software is not vendored here; the separate installer acquires supported assessment components. Installation and operational acceptance are distinct.** All technology scenarios are hypotheses.
+Version 1.2.0 adds [individual one-line onboarding](ONBOARDING.md) for the complete catalog, optional tools and preparation utilities. Existing core/full profiles retain separate inventories.
+
+Version 1.2.0, 2026-10-16. A forty-entry open-source tooling catalog for a possible agriculture-themed IT/OT assessment. **Selected means selected for evaluation. Upstream software is not vendored here; the separate installer acquires supported assessment components. Installation and operational acceptance are distinct.** All technology scenarios are hypotheses.
 
 Start with [the catalog](CATALOG.md), [bounded runbooks](RUNBOOKS.md), [source references](sources.json), [readiness record](readiness.json) and [notices](NOTICES.md). The machine-readable catalog includes priorities, dispositions, purpose, protocol coverage, runtime/dependencies/privileges/hardware, operational effects, outputs, license evidence, maintenance limits, ownership and test state. LinPEAS and WinPEAS are retained prominently with their license-review hold.
 
@@ -59,7 +61,7 @@ Artifact roots and every ancestor/component must be ordinary directories/files w
 
 ## Evidence and reporting
 
-[Synthetic status examples](examples/run-statuses.json) distinguish success-empty, partial, timeout, authentication failure, unsupported protocol and not-run. They are invented metadata, not tool outputs or confirmed findings. The refreshed reporting base v0.3.0 accepts completed report schemas 1.0/1.1/1.2; the separate `cptc.tool-run/1.0` intake design remains planned. These example records are not inputs to the report command and no adapter is implemented here.
+[Synthetic status examples](examples/run-statuses.json) distinguish success-empty, partial, timeout, authentication failure, unsupported protocol and not-run. They are invented metadata, not tool outputs or confirmed findings. Reporter v0.5.1 accepts completed synthetic report schemas 1.0/1.1/1.2 and curated updates; the separate `cptc.tool-run/1.0` intake design remains deferred. These example records are not inputs to the report command and no adapter is implemented here.
 
 Actual engagement output belongs in authorized private event storage outside public code and consumer sync. Record source artifact hashes separately from later normalized/import envelope hashes. Do not commit credentials, controller values/logic, payloads, real captures, inventories, client-derived summaries or proprietary signal databases. Ignore rules supplement an exact upload inspection; they do not remove already tracked content.
 
@@ -73,4 +75,4 @@ For repository integration, refresh target revision/conventions and inspect this
 
 The local release ZIP contains only this module's code, documents, JSON, tests, notices and synthetic fixture plus a hash manifest. It excludes private planning, reference originals, reporting outputs, upstream payloads and credentials. Publication and competition acceptance remain separate decisions.
 
-To rebuild the fixed preparation-only ZIP, create an output parent outside this source directory and run `python -B tooling/farmkit/build.py output/farmkit-1.1.0.zip`. It includes exactly the files allowlisted in build.py plus MANIFEST.json with per-file sizes/hashes, fixed archive timestamps and no current-user path metadata. Existing outputs are refused. Repeat bytes are deterministic in the same Python/zlib runtime; ZIP compression bytes across other runtimes are not guaranteed identical. The module ZIP is source-only; installing the suite requires the complete repository checkout for the root entry point and reporting module.
+To rebuild the fixed preparation-only ZIP, create an output parent outside this source directory and run `python -B tooling/farmkit/build.py output/farmkit-1.2.0.zip`. It includes exactly the files allowlisted in build.py plus MANIFEST.json with per-file sizes/hashes, fixed archive timestamps and no current-user path metadata. Existing outputs are refused. Repeat bytes are deterministic in the same Python/zlib runtime; ZIP compression bytes across other runtimes are not guaranteed identical. The module ZIP is source-only; installing the suite requires the complete repository checkout for the root entry point and reporting module.

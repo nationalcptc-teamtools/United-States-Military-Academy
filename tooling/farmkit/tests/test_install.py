@@ -43,7 +43,12 @@ class InstallerTests(unittest.TestCase):
             suite.run(["synthetic"])
 
     def test_failure_preserves_incomplete_state(self):
-        with patch.object(suite.platform, "system", return_value="Linux"), patch.object(Path, "read_text", return_value='ID=kali\n'), patch.object(suite.shutil, "which", return_value="/usr/bin/apt-get"), patch.object(suite.os, "geteuid", return_value=0, create=True), patch.object(suite, "run", side_effect=suite.InstallError("synthetic failure")), self.assertRaises(suite.InstallError):
+        # Supply the full-repository prerequisite explicitly, even in a farmkit-only ZIP.
+        fixture_root = Path(self.temp.name) / 'fixture-repository'
+        reporter = fixture_root / 'tooling/reporting/reportgen.py'
+        reporter.parent.mkdir(parents=True)
+        reporter.write_text('# Synthetic prerequisite; never executed.\n', encoding='utf-8')
+        with patch.object(suite, 'ROOT', fixture_root), patch.object(suite.platform, "system", return_value="Linux"), patch.object(Path, "read_text", return_value='ID=kali\n'), patch.object(suite.shutil, "which", return_value="/usr/bin/apt-get"), patch.object(suite.os, "geteuid", return_value=0, create=True), patch.object(suite, "run", side_effect=suite.InstallError("synthetic failure")), self.assertRaises(suite.InstallError):
             suite.install(self.data, "full", self.prefix)
         state = json.loads((self.prefix / "install-state.json").read_text())
         self.assertFalse(state["complete"])
@@ -108,9 +113,9 @@ class InstallerTests(unittest.TestCase):
 
     def test_checker_rejects_empty_required_inventories(self):
         self.prefix.mkdir()
-        state = {"complete": True, "profile": "full", "manifest_sha256": suite.file_hash(suite.MANIFEST), "options": {"prowler": False, "legacy_pdf": False}, "apt_packages": [], "native": {}, "python_groups": {}}
+        state = {"schema_version": "cptc.install-state/1.0", "complete": True, "profile": "full", "manifest_sha256": suite.file_hash(suite.MANIFEST), "options": {"prowler": False, "legacy_pdf": False}, "apt_packages": [], "native": {}, "python_groups": {}}
         suite.save_state(self.prefix, state)
-        with patch.object(suite, "run") as runner, self.assertRaises(suite.InstallError):
+        with patch.object(suite, "run") as runner, self.assertRaisesRegex(suite.InstallError, "Required installation inventory is incomplete"):
             suite.check(self.prefix, self.data, "full")
         runner.assert_not_called()
 
@@ -122,6 +127,42 @@ class InstallerTests(unittest.TestCase):
         self.assertNotIn("zeek", apt)
         self.assertEqual({p["name"] for p in self.data["payloads"]}, {"linpeas.sh", "winPEASx64.exe"})
 
+
+    def test_audit_reporting_dependencies_match_active_reporter(self):
+        requirements = BASE.parent / 'reporting/requirements.txt'
+        if not requirements.is_file():
+            self.skipTest('Cross-module reporting requirements absent in farmkit-only source package')
+        expected = {line.strip() for line in requirements.read_text().splitlines()
+                    if line.strip() and not line.lstrip().startswith('#')}
+        self.assertEqual(set(self.data['python_groups']['reporting']), expected)
+
+    def test_audit_malformed_state_rejected_before_external_commands(self):
+        self.prefix.mkdir()
+        valid = {'schema_version': 'cptc.install-state/1.0', 'complete': True, 'profile': 'full',
+                 'manifest_sha256': suite.file_hash(suite.MANIFEST), 'options': {'prowler': False, 'legacy_pdf': False},
+                 'apt_packages': self.data['profiles']['full']['apt'],
+                 'python_groups': {name: [] for name in self.data['profiles']['full']['groups']},
+                 'native': {name: {'commit': self.data['sources'][name]['commit'], 'files': {'bin/fixture': '0' * 64}}
+                            for name in self.data['profiles']['full']['sources']}}
+        states = [[], dict(valid, schema_version='wrong'), dict(valid, native=None),
+                  dict(valid, native=[]), dict(valid, python_groups=[])]
+        for item in (None, {'commit': '0' * 40, 'files': None},
+                     {'commit': '0' * 40, 'files': {'../unsafe': '0' * 64}},
+                     {'commit': '0' * 40, 'files': {'bin/fixture': 'SENTINEL'}}):
+            changed = copy.deepcopy(valid)
+            changed['native'][next(iter(changed['native']))] = item
+            states.append(changed)
+        state_path = self.prefix / 'install-state.json'
+        for index, state in enumerate(states):
+            state_path.write_text(json.dumps(state), encoding='utf-8')
+            with self.subTest(index=index), patch.object(suite, 'run', side_effect=AssertionError('external command')):
+                with self.assertRaises(suite.InstallError):
+                    suite.check(self.prefix, self.data, 'full')
+        state_path.write_text('[]', encoding='utf-8')
+        with contextlib.redirect_stderr(io.StringIO()) as error:
+            self.assertEqual(suite.main(['check', '--prefix', str(self.prefix)]), 1)
+        self.assertNotIn('Traceback', error.getvalue())
+        self.assertNotIn('SENTINEL', error.getvalue())
 
 if __name__ == "__main__":
     unittest.main()

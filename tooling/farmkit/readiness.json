@@ -12,8 +12,11 @@
       "id": "OD-FT-02",
       "state": "partial",
       "owner": "Captain/student maintainer",
-      "detail": "Contribution access exists for earlier reporting work; this package publication, event assignment and frozen revision remain pending.",
-      "evidence": []
+      "detail": "Preparation package is published on master at 78dc1388b2b2f83afb89f80f19187156491695f0; event assignment and frozen event revision remain pending. Publication is not operational acceptance.",
+      "evidence": [
+        "https://github.com/nationalcptc-teamtools/United-States-Military-Academy/tree/78dc1388b2b2f83afb89f80f19187156491695f0/tooling/farmkit",
+        "../../docs/READINESS.md"
+      ]
     },
     {
       "id": "OD-FT-03",

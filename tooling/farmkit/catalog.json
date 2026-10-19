@@ -16,7 +16,7 @@
       "upstream": "https://github.com/peass-ng/PEASS-ng",
       "priority": "P0",
       "disposition": "hold",
-      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "rationale": "PEASS assets are staged by core/full or individually; execution and output integration remain held for the license/module issue below.",
       "purpose": "Linux host configuration and privilege-path enumeration on authorized servers/gateways",
       "runtime": "Shell on target; review chosen script variant and external commands",
       "operations": [
@@ -62,7 +62,7 @@
       "upstream": "https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS",
       "priority": "P0",
       "disposition": "hold",
-      "rationale": "Held for the license/module/maintenance issue below; no default staging.",
+      "rationale": "PEASS assets are staged by core/full or individually; execution and output integration remain held for the license/module issue below.",
       "purpose": "Windows host/HMI/engineering-station configuration enumeration",
       "runtime": "Match selected C#/.NET/batch variant and architecture; assess AV/runtime effects",
       "operations": [
