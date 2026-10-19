@@ -16,4 +16,4 @@ Reviewed 16 October 2026. Current onboarding base is published master `96c7be575
 | November milestone | 14 November 2026 is the recorded development session, not evidence of competition start |
 | Governance | Preserve historical workflow/idea decisions; root edits, reviewers inspect read-only. Implementation, verification, review and user/event acceptance remain separate |
 
-Use [the user guide](USER-GUIDE.md), [roadmap](roadmap.md) and [readiness handoff](READINESS.md). Historical copies under `Sebastian/integrations`, `Sebastian/tmp` and `Sebastian/output` are records, not alternate runtime roots. Public availability, installation, markings and synthetic checks do not establish operational approval.
+Use [the user guide](USER-GUIDE.md), [roadmap](roadmap.md) and [readiness handoff](READINESS.md). Historical copies under `Solberg/integrations`, `Solberg/tmp` and `Solberg/output` are records, not alternate runtime roots. Public availability, installation, markings and synthetic checks do not establish operational approval.

@@ -15,7 +15,7 @@ Reviewed 16 October 2026. The preceding audit baseline was historical master `78
 | Deferred | Native scanner adapters and broader reporting/workbench CI | Explicit user instruction on 16 October: keep both deferred; retain existing farm CI |
 | Optional | Browser interface, resource study and offline enrichment | No new implementation commissioned; existing evaluation/manual metrics remain available |
 
-Local AI/correction remains removed. Prior 120 choices are preserved in [the historical decision register](../Sebastian/docs/proposals/development-functions/decisions.md). This roadmap supersedes old feature ambitions without changing their historical records or granting event, client-data, target, deletion or publication approval.
+Local AI/correction remains removed. Prior 120 choices are preserved in [the historical decision register](../Solberg/docs/proposals/development-functions/decisions.md). This roadmap supersedes old feature ambitions without changing their historical records or granting event, client-data, target, deletion or publication approval.
 
 Local audit patch revisions: reporter 0.5.1, workbench 1.1.1 and farmkit 1.1.1. These local changes correct confirmed boundary/integrity/dependency/catalog errors; they are not yet published or operationally accepted. Published baseline versions above remain historical facts.
 

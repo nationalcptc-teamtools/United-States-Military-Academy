@@ -339,8 +339,12 @@ PDF and Word dependencies are declared in tooling/reporting/requirements.txt. Th
 
 Use [incremental report updates](docs/REPORT-UPDATES.md) to add evidence or amend selected authored fields. The shared update engine preserves prior evidence, rejects stale edits and emits finding/evidence differences. The workbench adds locked revisions and review history.
 
-## Sebastian project files
+## Solberg project files
 
-[Project documentation and working records](Sebastian/README.md) are collected under `Sebastian/`. The runnable products remain at the repository root: `cptc-linux.sh`, `cptc-windows.ps1`, `cptc-collect-logs.sh`, `install.sh`, and `tooling/`.
+[Project documentation and working records](Solberg/README.md) are collected under `Solberg/`. The runnable products remain at the repository root: `cptc-linux.sh`, `cptc-windows.ps1`, `cptc-collect-logs.sh`, `install.sh`, and `tooling/`.
 
-The historical integration checkouts and the generated `tmp/` and `output/` trees are no longer tracked; the project's own ignore rules exclude that preparation material from public contents, and it stayed tracked only because those rules were added after the fact. It remains recoverable from Git history, and [the file manifest](Sebastian/PROJECT-FILES.json) still records its source and destination hashes. Use the root products for current code.
+The historical integration checkouts and the generated `tmp/` and `output/` trees are no longer tracked; the project's own ignore rules exclude that preparation material from public contents, and it stayed tracked only because those rules were added after the fact. It remains recoverable from Git history, and [the file manifest](Solberg/PROJECT-FILES.json) still records its source and destination hashes. Use the root products for current code.
+
+The archive was renamed from `Sebastian/` to `Solberg/`. Archived file contents,
+dated manifests and quoted commit subjects retain their original names and hashes.
+When locating those records in this checkout, map a leading `Sebastian/` to `Solberg/`.
