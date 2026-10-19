@@ -1,6 +1,6 @@
 # Maintain the active repository
 
-Use root products and current [profile](project-profile.md), [roadmap](roadmap.md), [readiness](READINESS.md) and [user guide](USER-GUIDE.md). `Sebastian/` preserves history, manifests and synthetic artifacts; its integrations/tmp/output subtrees are not current dependency or execution roots. No archived payload bytes are deleted. Presentation attributes do not make tracked content private or exclude it from every dependency scanner.
+Use root products and current [profile](project-profile.md), [roadmap](roadmap.md), [readiness](READINESS.md) and [user guide](USER-GUIDE.md). `Solberg/` preserves history, manifests and synthetic artifacts; its integrations/tmp/output subtrees are not current dependency or execution roots. No archived payload bytes are deleted. Presentation attributes do not make tracked content private or exclude it from every dependency scanner.
 
 Select active roots explicitly. From the repository root:
 

@@ -6,9 +6,9 @@
 /tooling/farmkit/examples/** text eol=lf
 
 # Preserve archived project bytes, including generated artifacts.
-/Sebastian/** -text
+/Solberg/** -text
 
 # Archive presentation only; not publication or dependency-scanner exclusion.
-/Sebastian/integrations/** linguist-vendored=true
-/Sebastian/tmp/** linguist-generated=true
-/Sebastian/output/** linguist-generated=true
+/Solberg/integrations/** linguist-vendored=true
+/Solberg/tmp/** linguist-generated=true
+/Solberg/output/** linguist-generated=true
